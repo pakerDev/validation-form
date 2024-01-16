@@ -21,10 +21,10 @@
 ## Work flow
 - 請在 [Issue](https://github.com/pakerDev/validation-form/issues) 自行建立工單 eg. Jira
 - 以 gitflow 進行開發
-- Commit Pattern 遵循 game client commit 規範，並在 commit message 開頭加上 issue 單號
+- Commit Pattern 遵循 game client commit 規範，並在 commit message 開頭加上 issue 單號    
   ex: Issue 單號為 1 Commit: `feat: #1 add ...etc`
-- PR 必須 tag `Reviewer`, `Assignees`
-  Ex: 
+- PR 必須 tag `Reviewer`, `Assignees`   
+  Ex:   
 ![Screenshot 2024-01-16 at 17 33 59](https://github.com/pakerDev/validation-form/assets/136687205/2118725c-24c4-44b0-bdb0-76c6b93f8c0e)
 
 ## Note: 
