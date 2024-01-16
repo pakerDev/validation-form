@@ -5,15 +5,16 @@
 - Typescript
 
 ## Request:
-1. 建立一個表單（如附圖）
-2. 表單輸入框動態新增要求如下：
-   2.1 Title Input: 1, default: 1
-   2.2 Sub Title: 3, default: 1
-   2.3 Description: 5, default 1
-3. 當輸入框達到新增上限時必須將 Add button 轉為 `disabled`，功能與樣式都需達到演示 disabled 需求
-4. 表單渲染的 inputs 必須包裝在一個 `Data Schema` 內
+1. 建立 React 專案
+2. 建立一個表單（如附圖）
+3. 表單輸入框動態新增要求如下：
+   3.1 Title Input: 1, default: 1
+   3.2 Sub Title: 3, default: 1
+   3.3 Description: 5, default 1
+4. 當輸入框達到新增上限時必須將 Add button 轉為 `disabled`，功能與樣式都需達到演示 disabled 需求
+5. 表單渲染的 inputs 必須包裝在一個 `Data Schema` 內
    ```js { title, subTtitle, description }```
-5. 使用組件與資料進行整個表單渲染
+6. 使用組件與資料進行整個表單渲染
 
 ![Screenshot 2024-01-16 at 17 34 10](https://github.com/pakerDev/validation-form/assets/136687205/bddc0ec3-d790-47c3-9a38-889c3bce5e3d)
 
