@@ -1,4 +1,4 @@
-# validation-form
+# Validation Form
 
 ## Tech Stack Requirement: 
 - React 18
