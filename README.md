@@ -7,10 +7,10 @@
 ## Request:
 1. 建立 React 專案
 2. 建立一個表單（如附圖）
-3. 表單輸入框動態新增要求如下：
-   3.1 Title Input: 1, default: 1
-   3.2 Sub Title: 3, default: 1
-   3.3 Description: 5, default 1
+3. 表單輸入框動態新增要求如下：   
+   3.1 Title input limit: `1`, default: `1`   
+   3.2 Sub Title input limit: `3`, default: `1`   
+   3.3 Description input limit: `5`, default `1`   
 4. 當輸入框達到新增上限時必須將 Add button 轉為 `disabled`，功能與樣式都需達到演示 disabled 需求
 5. 表單渲染的 inputs 必須包裝在一個 `Data Schema` 內   
    ```js
