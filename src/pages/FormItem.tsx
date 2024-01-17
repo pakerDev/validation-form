@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface IFormItemProps {
-    title: string;
-    limit: number;
+    title?: string;
+    limit?: number;
 }
 
 const FormItem = (props: IFormItemProps) => {
@@ -13,10 +13,11 @@ const FormItem = (props: IFormItemProps) => {
     const btnHandler = (l: number) => {
         if (inp.length < l) {
             setInp((arr) => [...arr, arr.length]);
-        } else {
-            setIsDisable(true);
         }
     };
+    useEffect(() => {
+        inp.length < limit ? setIsDisable(false) : setIsDisable(true);
+    }, [inp]);
 
     return (
         <div>
