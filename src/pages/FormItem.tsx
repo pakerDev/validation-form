@@ -6,7 +6,7 @@ interface IFormItemProps {
 }
 
 const FormItem = (props: IFormItemProps) => {
-    const { title = "hello", limit = 3 } = props;
+    const { title = "default limit=3", limit = 3 } = props;
 
     const [inp, setInp] = useState([0]);
     const [isDisable, setIsDisable] = useState(false);
@@ -28,7 +28,7 @@ const FormItem = (props: IFormItemProps) => {
                 ))}
             </div>
             <div className='fifooter'>
-                <span className='fialert'>{isDisable && "已達輸入上限"}</span>
+                <span className='fialert'>{isDisable && `can't be more than ${limit}`}</span>
                 <button className='fibtn' onClick={() => btnHandler(limit)} disabled={isDisable}>
                     +
                 </button>

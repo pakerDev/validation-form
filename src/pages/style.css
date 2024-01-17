@@ -5,12 +5,12 @@
 
 .ficon {
     padding: 1rem;
+    width: 320px;
 }
 
 .fititle {
-    margin-bottom: 0.2rem;
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 500;
     color: #646cff;
     text-align: left;
 }
@@ -23,10 +23,15 @@
 .fiinp {
     height: 1rem;
     border: none;
+    border-bottom: 1px solid #646cff;
+    border-radius: 0.25rem;
     color: #747bff;
     font-size: 1rem;
     padding: 0.5rem;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.25rem;
+    &:last-child {
+        margin-bottom: 0.5rem;
+    }
 }
 
 .fifooter {
@@ -45,11 +50,11 @@
     font-weight: 700;
     border: 2px solid lightgray;
     border-radius: 50%;
-    color: #646cff;
     padding: 0rem;
     height: 2rem;
     width: 2rem;
     &:hover {
+        color: #646cff;
         transform: scale(1.1);
     }
 
