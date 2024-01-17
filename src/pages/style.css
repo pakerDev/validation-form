@@ -6,10 +6,11 @@
 
 .fiinp {
     height: 2rem;
-    width: 100%;
+    width: 60vw;
     border: none;
     font-size: 1.5rem;
     padding: 1rem;
+    margin-bottom: 1rem;
 }
 
 .fibtn {
