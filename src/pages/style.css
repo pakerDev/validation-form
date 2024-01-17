@@ -1,9 +1,15 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .fititle {
+    margin-bottom: 1rem;
     font-size: 3rem;
     font-weight: 700;
-    padding-left: 2rem;
     color: #646cff;
     text-align: left;
+    padding-left: 4rem;
     width: 100%;
 }
 
@@ -11,6 +17,7 @@
     height: 2rem;
     width: 60vw;
     border: none;
+    color: #646cff;
     font-size: 1.5rem;
     padding: 1rem;
     margin-bottom: 1rem;
@@ -23,19 +30,21 @@
 }
 
 .fibtn {
-    border: 1px solid #fff;
+    font-weight: 700;
+    border: 2px solid #fff;
     border-radius: 50%;
     padding: 0.5rem;
     height: 3rem;
     width: 3rem;
     margin-top: 1rem;
-}
-.fibtn:disabled {
-    cursor: default;
-    color: brown;
-    transform: rotate(45deg);
-    border-color: brown;
-    &:hover {
+
+    &:disabled {
+        cursor: not-allowed;
+        color: brown;
+        transform: rotate(45deg);
         border-color: brown;
+        &:hover {
+            border-color: brown;
+        }
     }
 }
