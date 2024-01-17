@@ -1,5 +1,4 @@
-import React from "react";
-import Form from "../container/Form";
+import Form from "../container/Form.tsx";
 
 const Home = () => {
     return (
