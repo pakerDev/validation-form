@@ -1,11 +1,10 @@
 import React from "react";
-import FormItem from "./FormItem";
+import Form from "../container/Form";
 
 const Home = () => {
     return (
         <div>
-            <h1>Home</h1>
-            <FormItem />
+            <Form />
         </div>
     );
 };
