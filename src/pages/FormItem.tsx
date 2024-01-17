@@ -20,19 +20,19 @@ const FormItem = (props: IFormItemProps) => {
     }, [inp]);
 
     return (
-        <div>
+        <div className='ficon'>
             <p className='fititle'>{title}</p>
-            <div>
-                {inp.map((item, idx) => (
-                    <div>
-                        <input key={idx} className='fiinp' placeholder={`${item}`} type='text' />
-                    </div>
+            <div className='fimain'>
+                {inp.map((item) => (
+                    <input className='fiinp' placeholder={`${item + 1}`} type='text' />
                 ))}
-                {isDisable && <p className='fialert'>已達輸入上限</p>}
             </div>
-            <button className='fibtn' onClick={() => btnHandler(limit)} disabled={isDisable}>
-                +
-            </button>
+            <div className='fifooter'>
+                <span className='fialert'>{isDisable && "已達輸入上限"}</span>
+                <button className='fibtn' onClick={() => btnHandler(limit)} disabled={isDisable}>
+                    +
+                </button>
+            </div>
         </div>
     );
 };

@@ -3,21 +3,36 @@
     padding: 0;
 }
 
+.ficon {
+    padding: 1rem;
+}
+
 .fititle {
-    margin-bottom: 1rem;
-    font-size: 3rem;
+    margin-bottom: 0.2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: #646cff;
     text-align: left;
 }
 
+.fimain {
+    display: flex;
+    flex-direction: column;
+}
+
 .fiinp {
-    height: 2rem;
+    height: 1rem;
     border: none;
-    color: #646cff;
-    font-size: 1.5rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
+    color: #747bff;
+    font-size: 1rem;
+    padding: 0.5rem;
+    margin-bottom: 0.2rem;
+}
+
+.fifooter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .fialert {
@@ -28,15 +43,18 @@
 
 .fibtn {
     font-weight: 700;
-    border: 2px solid #fff;
+    border: 2px solid lightgray;
     border-radius: 50%;
-    padding: 0.5rem;
-    height: 3rem;
-    width: 3rem;
-    margin-top: 1rem;
+    color: #646cff;
+    padding: 0rem;
+    height: 2rem;
+    width: 2rem;
+    &:hover {
+        transform: scale(1.1);
+    }
 
     &:disabled {
-        cursor: not-allowed;
+        cursor: default;
         color: brown;
         transform: rotate(45deg);
         border-color: brown;
