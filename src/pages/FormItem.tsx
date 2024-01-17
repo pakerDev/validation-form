@@ -6,23 +6,28 @@ interface IFormItemProps {
 }
 
 const FormItem = (props: IFormItemProps) => {
-    const { title = "hello", limit = 5 } = props;
+    const { title = "hello", limit = 3 } = props;
 
     const [inp, setInp] = useState([0]);
+    const [isDisable, setIsDisable] = useState(false);
     const btnHandler = (l: number) => {
         if (inp.length < l) {
             setInp((arr) => [...arr, arr.length]);
+        } else {
+            setIsDisable(true);
         }
     };
+
     return (
         <div>
-            <h1 className='fititle'>{title}</h1>
+            <p className='fititle'>{title}</p>
             <div>
                 {inp.map((item, idx) => (
-                    <input key={idx} className='fiinp' placeholder={`${item}`} type='text' disabled={false} />
+                    <input key={idx} className='fiinp' placeholder={`${item}`} type='text' />
                 ))}
+                {isDisable && <p className='fialert'>已達輸入上限</p>}
             </div>
-            <button className='fibtn' onClick={() => btnHandler(limit)} disabled={false}>
+            <button className='fibtn' onClick={() => btnHandler(limit)} disabled={isDisable}>
                 +
             </button>
         </div>

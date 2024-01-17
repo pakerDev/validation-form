@@ -1,7 +1,10 @@
 .fititle {
     font-size: 3rem;
+    font-weight: 700;
+    padding-left: 2rem;
     color: #646cff;
     text-align: left;
+    width: 100%;
 }
 
 .fiinp {
@@ -13,10 +16,26 @@
     margin-bottom: 1rem;
 }
 
+.fialert {
+    color: brown;
+    margin: 0;
+    padding: 0;
+}
+
 .fibtn {
     border: 1px solid #fff;
     border-radius: 50%;
+    padding: 0.5rem;
     height: 3rem;
     width: 3rem;
     margin-top: 1rem;
+}
+.fibtn:disabled {
+    cursor: default;
+    color: brown;
+    transform: rotate(45deg);
+    border-color: brown;
+    &:hover {
+        border-color: brown;
+    }
 }
