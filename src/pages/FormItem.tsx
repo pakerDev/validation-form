@@ -24,7 +24,9 @@ const FormItem = (props: IFormItemProps) => {
             <p className='fititle'>{title}</p>
             <div>
                 {inp.map((item, idx) => (
-                    <input key={idx} className='fiinp' placeholder={`${item}`} type='text' />
+                    <div>
+                        <input key={idx} className='fiinp' placeholder={`${item}`} type='text' />
+                    </div>
                 ))}
                 {isDisable && <p className='fialert'>已達輸入上限</p>}
             </div>
