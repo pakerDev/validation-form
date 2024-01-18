@@ -24,7 +24,7 @@ const FormItem = (props: IFormItemProps) => {
             <p className='fititle'>{title}</p>
             <div className='fimain'>
                 {inp.map((item) => (
-                    <input className='fiinp' placeholder={`${item + 1}`} type='text' />
+                    <input key={item} className='fiinp' placeholder={`${item + 1}`} type='text' />
                 ))}
             </div>
             <div className='fifooter'>
