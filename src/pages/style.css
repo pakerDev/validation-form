@@ -20,6 +20,17 @@
     flex-direction: column;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .fiinp {
     height: 1rem;
     border: none;
@@ -29,6 +40,8 @@
     font-size: 1rem;
     padding: 0.5rem;
     margin-bottom: 0.25rem;
+    animation: fadeIn 0.5s ease-out;
+
     &:last-child {
         margin-bottom: 0.5rem;
     }
@@ -40,10 +53,30 @@
     align-items: center;
 }
 
+@keyframes alert {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 .fialert {
     color: brown;
     margin: 0;
     padding: 0;
+    animation: alert 1s linear;
+    animation-iteration-count: 2;
 }
 
 .fibtn {
