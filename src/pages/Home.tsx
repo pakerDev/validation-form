@@ -1,11 +1,7 @@
 import Form from "../container/Form.tsx";
 
 const Home = () => {
-    return (
-        <div>
-            <Form />
-        </div>
-    );
+    return <Form />;
 };
 
 export default Home;
