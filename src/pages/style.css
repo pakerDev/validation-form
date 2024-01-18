@@ -23,7 +23,7 @@
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(-20px);
+        transform: translateY(-1.5rem);
     }
     to {
         opacity: 1;
@@ -76,7 +76,7 @@
     margin: 0;
     padding: 0;
     animation: alert 1s linear;
-    animation-iteration-count: 2;
+    animation-iteration-count: 2.5;
 }
 
 .fibtn {
@@ -86,13 +86,14 @@
     padding: 0rem;
     height: 2rem;
     width: 2rem;
+    background-color: transparent;
     &:hover {
         color: #646cff;
         transform: scale(1.1);
     }
 
     &:disabled {
-        cursor: default;
+        cursor: not-allowed;
         color: brown;
         transform: rotate(45deg);
         border-color: brown;
