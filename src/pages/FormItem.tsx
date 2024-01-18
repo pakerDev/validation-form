@@ -24,11 +24,12 @@ const FormItem = (props: IFormItemProps) => {
             <p className='fititle'>{title}</p>
             <div className='fimain'>
                 {inp.map((item) => (
-                    <input className='fiinp' placeholder={`${item + 1}`} type='text' />
+                    <input key={item} className='fiinp' placeholder={`${item + 1}`} type='text' />
                 ))}
             </div>
             <div className='fifooter'>
-                <span className='fialert'>{isDisable && `can't be more than ${limit}`}</span>
+                {isDisable && <span className='fialert'>up to {limit}</span>}
+                <div></div>
                 <button className='fibtn' onClick={() => btnHandler(limit)} disabled={isDisable}>
                     +
                 </button>
