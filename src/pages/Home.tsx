@@ -1,9 +1,9 @@
-import FormItem from "./FormItem";
+import Form from "../container/Form.tsx";
 
 const Home = () => {
     return (
         <div>
-            <FormItem />
+            <Form />
         </div>
     );
 };
