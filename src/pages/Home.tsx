@@ -1,7 +1,11 @@
-import React from "react";
+import FormItem from "./FormItem";
 
 const Home = () => {
-    return <div>Home</div>;
+    return (
+        <div>
+            <FormItem />
+        </div>
+    );
 };
 
 export default Home;
