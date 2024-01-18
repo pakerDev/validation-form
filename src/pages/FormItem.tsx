@@ -28,7 +28,8 @@ const FormItem = (props: IFormItemProps) => {
                 ))}
             </div>
             <div className='fifooter'>
-                <span className='fialert'>{isDisable && `up to ${limit}`}</span>
+                {isDisable && <span className='fialert'>up to {limit}</span>}
+                <div></div>
                 <button className='fibtn' onClick={() => btnHandler(limit)} disabled={isDisable}>
                     +
                 </button>
