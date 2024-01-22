@@ -5,6 +5,7 @@
 - Typescript
 
 ## Request:
+### Step 1.
 1. 建立 React 專案
 2. 建立一個表單（如附圖）
 3. 表單輸入框動態新增要求如下：   
@@ -20,6 +21,23 @@
 7. 使用組件與資料進行整個表單渲染
 
 ![Screenshot 2024-01-16 at 17 34 10](https://github.com/pakerDev/validation-form/assets/136687205/bddc0ec3-d790-47c3-9a38-889c3bce5e3d)
+
+### Step 2.
+1. 表單字數限制
+  - Title: 15 個字
+  - SubTitle: 30 個字
+  - Description: 60 個字
+2. 表單驗證
+  - 中英數字數驗證
+  - 排除特殊字元
+3. 增加 Input Field 刪除功能
+4. 新增 Submit 並在表單右側顯示資料內容
+
+Note. 請不依賴相關套件下手刻實作
+  - 驗證核心
+  - 表單控制
+
+---
 
 ## Work flow
 - 請在 [Issue](https://github.com/pakerDev/validation-form/issues) 自行建立工單 eg. Jira
