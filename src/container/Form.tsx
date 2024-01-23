@@ -1,4 +1,4 @@
-import FormItem from "../pages/FormItem.tsx";
+import FormItem from "../components/FormItem.tsx";
 
 const Form = () => {
     const data = [

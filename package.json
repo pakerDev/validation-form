@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
-        "dev": "vite",
+        "dev": "vite --port 9527",
         "build": "tsc && vite build",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
         "preview": "vite preview"
@@ -24,11 +24,6 @@
         "eslint-plugin-react-refresh": "^0.4.5",
         "typescript": "^5.2.2",
         "vite": "^5.0.8"
-    },
-    "babelMacros": {
-        "twin": {
-            "preset": "styled-components"
-        }
     },
     "description": "## Tech Stack Requirement:  - React 18 - Typescript",
     "main": "index.js",
