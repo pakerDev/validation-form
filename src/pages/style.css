@@ -3,21 +3,22 @@
     padding: 0;
 }
 
-.ficon {
+.FIContainer {
     padding: 1rem;
     width: 320px;
 }
 
-.fititle {
+.FITitle {
     font-size: 2rem;
     font-weight: 500;
     color: #646cff;
     text-align: left;
 }
 
-.fimain {
+.FIMain {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 @keyframes fadeIn {
@@ -31,7 +32,13 @@
     }
 }
 
-.fiinp {
+.FIRow {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.FIInput {
     height: 1rem;
     border: none;
     border-bottom: 1px solid #646cff;
@@ -47,7 +54,22 @@
     }
 }
 
-.fifooter {
+.FIMinus {
+    margin-left: 1rem;
+    border: #646cff 2px solid;
+    color: #646cff;
+
+    &:hover {
+        border: 2px solid lightgray;
+        color: lightgrey;
+    }
+
+    &:disabled {
+        visibility: hidden;
+    }
+}
+
+.FIFooter {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -71,7 +93,7 @@
     }
 }
 
-.fialert {
+.FIAlert {
     color: brown;
     margin: 0;
     padding: 0;
@@ -79,9 +101,15 @@
     animation-iteration-count: 2.5;
 }
 
-.fibtn {
-    font-weight: 700;
+.FIPlus {
     border: 2px solid lightgray;
+    &:disabled {
+        transform: rotate(45deg);
+    }
+}
+
+.FIBtn {
+    font-weight: 700;
     border-radius: 50%;
     padding: 0rem;
     height: 2rem;
@@ -95,7 +123,6 @@
     &:disabled {
         cursor: not-allowed;
         color: brown;
-        transform: rotate(45deg);
         border-color: brown;
         &:hover {
             border-color: brown;
