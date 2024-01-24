@@ -42,33 +42,31 @@ const FormItem = (props: IFormItemProps) => {
     };
 
     return (
-        <>
-            <div className='FIContainer'>
-                <p className='FITitle'>{label}</p>
-                <div className='FIMain'>
-                    {itemInfo.map((each) => {
-                        return (
-                            <div className='FIRow' key={each.createTime}>
-                                <input className='FIInput' placeholder={`${limit}_${each.createTime}`} type='text' />
-                                <button
-                                    className='FIMinus FIBtn'
-                                    disabled={!canDelete}
-                                    onClick={() => btnMinusHandler(each.createTime)}
-                                >
-                                    -
-                                </button>
-                            </div>
-                        );
-                    })}
-                </div>
-                <div className='FIFooter'>
-                    {!canAdd ? <span className='FIAlert'>up to {limit}</span> : <span></span>}
-                    <button className='FIBtn FIPlus' onClick={() => btnPlusHandler(limit)} disabled={!canAdd}>
-                        +
-                    </button>
-                </div>
+        <div className='FIContainer'>
+            <p className='FITitle'>{label}</p>
+            <div className='FIMain'>
+                {itemInfo.map((each) => {
+                    return (
+                        <div className='FIRow' key={each.createTime}>
+                            <input className='FIInput' placeholder={`${limit}_${each.createTime}`} type='text' />
+                            <button
+                                className='FIMinus FIBtn'
+                                disabled={!canDelete}
+                                onClick={() => btnMinusHandler(each.createTime)}
+                            >
+                                -
+                            </button>
+                        </div>
+                    );
+                })}
             </div>
-        </>
+            <div className='FIFooter'>
+                {!canAdd ? <span className='FIAlert'>up to {limit}</span> : <span></span>}
+                <button className='FIBtn FIPlus' onClick={() => btnPlusHandler(limit)} disabled={!canAdd}>
+                    +
+                </button>
+            </div>
+        </div>
     );
 };
 
