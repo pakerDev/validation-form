@@ -43,6 +43,18 @@ const FormItem = (props: IFormItemProps) => {
         setItemInfo(itemInfo.filter((obj) => obj.createTime !== n));
     };
 
+    const auth = (val: string) => {
+        let res =
+            val
+                .match(wordReg)
+                ?.filter((char) => char !== "_")
+                .join("") ?? "";
+        if (res.length > maxLength) {
+            res = res.slice(0, maxLength);
+        }
+        return res;
+    };
+
     const compositionHandler = (
         e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>
     ) => {
@@ -50,9 +62,7 @@ const FormItem = (props: IFormItemProps) => {
         const val = target.value;
         if (e.type === "compositionend") {
             setIsOnComposition(false);
-            if (val.length >= maxLength) {
-                target.value = val.slice(0, maxLength);
-            }
+            target.value = auth(val);
         } else {
             setIsOnComposition(true);
         }
@@ -65,16 +75,7 @@ const FormItem = (props: IFormItemProps) => {
         if (isOnComposition) return;
         const val = e.target.value;
 
-        const output =
-            val
-                .match(wordReg)
-                ?.filter((char) => char !== "_")
-                .join("") ?? "";
-        e.target.value = output;
-
-        if (output.length > maxLength) {
-            e.target.value = output.slice(0, maxLength);
-        }
+        e.target.value = auth(val);
     };
 
     return (
