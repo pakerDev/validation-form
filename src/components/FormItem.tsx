@@ -38,13 +38,6 @@ const FormItem = (props: IFormItemProps) => {
         itemInfo.length > 1 ? setCanDelete(true) : setCanDelete(false);
     }, [itemInfo]);
 
-    const inputTag = document.getElementsByTagName("input");
-    const textAreaTag = document.getElementsByTagName("textArea");
-    useEffect(() => {
-        console.log(inputTag);
-        console.log(textAreaTag);
-    }, [itemInfo]);
-
     const btnMinusHandler = (n: number) => {
         if (itemInfo.length < 2) return;
         setItemInfo(itemInfo.filter((obj) => obj.createTime !== n));
@@ -72,15 +65,16 @@ const FormItem = (props: IFormItemProps) => {
         if (isOnComposition) return;
         const val = e.target.value;
 
-        if (val.length >= maxLength) {
-            e.target.value = val.slice(0, maxLength);
-        }
-        const finalString = val
-            .match(wordReg)
-            ?.filter((char) => char !== "_")
-            .join("");
+        const output =
+            val
+                .match(wordReg)
+                ?.filter((char) => char !== "_")
+                .join("") ?? "";
+        e.target.value = output;
 
-        e.target.value = finalString ?? val;
+        if (output.length > maxLength) {
+            e.target.value = output.slice(0, maxLength);
+        }
     };
 
     return (
