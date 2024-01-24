@@ -7,6 +7,7 @@ const FormItem = (props: IFormItemProps) => {
     const [itemInfo, setItemInfo] = useState(info);
     const [canAdd, setCanAdd] = useState(false);
     const [canDelete, setCanDelete] = useState(false);
+    const [isOnComposition, setIsOnComposition] = useState(false);
 
     if (itemInfo.length > limit) {
         setItemInfo(itemInfo.slice(-limit));
@@ -34,9 +35,6 @@ const FormItem = (props: IFormItemProps) => {
     useEffect(() => {
         itemInfo.length < limit ? setCanAdd(true) : setCanAdd(false);
         itemInfo.length > 1 ? setCanDelete(true) : setCanDelete(false);
-        // itemInfo.map((i) => {
-        //     i.content.length <= maxLength ? setMatchLength(true) : setMatchLength(false);
-        // });
     }, [itemInfo]);
 
     const btnMinusHandler = (n: number) => {
@@ -44,11 +42,26 @@ const FormItem = (props: IFormItemProps) => {
         setItemInfo(itemInfo.filter((obj) => obj.createTime !== n));
     };
 
-    const onChangeHandler = (e, index) => {
+    const compositionHandler = (
+        e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>
+    ) => {
+        const val = e.target.value;
+        if (e.type === "compositionend") {
+            setIsOnComposition(false);
+            if (val.length >= maxLength) {
+                e.target.value = e.target.value.slice(0, maxLength);
+            }
+        } else {
+            setIsOnComposition(true);
+        }
+    };
+
+    const onChangeHandler = (e, index: number) => {
+        if (isOnComposition) return;
         const val = e.target.value;
         itemInfo[index].content = val;
         if (val.length >= maxLength) {
-            e.target.value = e.target.value.slice(0, 15);
+            e.target.value = val.slice(0, maxLength);
         }
     };
 
@@ -60,12 +73,27 @@ const FormItem = (props: IFormItemProps) => {
                     {itemInfo.map((each, index) => {
                         return (
                             <div className='FIRow' key={each.createTime}>
-                                <input
-                                    className='FIInput'
-                                    placeholder={`${limit}_${each.createTime}`}
-                                    onChange={(e) => onChangeHandler(e, index)}
-                                    type='text'
-                                />
+                                {label === "Title" ? (
+                                    <input
+                                        className='FIInput'
+                                        placeholder={`${limit}_${each.createTime}`}
+                                        onCompositionStart={compositionHandler}
+                                        onCompositionUpdate={compositionHandler}
+                                        onCompositionEnd={compositionHandler}
+                                        onChange={(e) => onChangeHandler(e, index)}
+                                        type='text'
+                                    />
+                                ) : (
+                                    <textarea
+                                        className='FIInput'
+                                        placeholder={`${limit}_${each.createTime}`}
+                                        onCompositionStart={compositionHandler}
+                                        onCompositionUpdate={compositionHandler}
+                                        onCompositionEnd={compositionHandler}
+                                        onChange={(e) => onChangeHandler(e, index)}
+                                    />
+                                )}
+
                                 <button
                                     className='FIMinus FIBtn'
                                     disabled={!canDelete}
