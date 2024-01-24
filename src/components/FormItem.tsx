@@ -8,6 +8,7 @@ const FormItem = (props: IFormItemProps) => {
     const [canAdd, setCanAdd] = useState(false);
     const [canDelete, setCanDelete] = useState(false);
     const [isOnComposition, setIsOnComposition] = useState(false);
+    const wordReg = /[\w\u4e00-\u9fa5]/g;
 
     if (itemInfo.length > limit) {
         setItemInfo(itemInfo.slice(-limit));
@@ -37,6 +38,13 @@ const FormItem = (props: IFormItemProps) => {
         itemInfo.length > 1 ? setCanDelete(true) : setCanDelete(false);
     }, [itemInfo]);
 
+    const inputTag = document.getElementsByTagName("input");
+    const textAreaTag = document.getElementsByTagName("textArea");
+    useEffect(() => {
+        console.log(inputTag);
+        console.log(textAreaTag);
+    }, [itemInfo]);
+
     const btnMinusHandler = (n: number) => {
         if (itemInfo.length < 2) return;
         setItemInfo(itemInfo.filter((obj) => obj.createTime !== n));
@@ -45,24 +53,34 @@ const FormItem = (props: IFormItemProps) => {
     const compositionHandler = (
         e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>
     ) => {
-        const val = e.target.value;
+        const target = e.target as HTMLInputElement;
+        const val = target.value;
         if (e.type === "compositionend") {
             setIsOnComposition(false);
             if (val.length >= maxLength) {
-                e.target.value = e.target.value.slice(0, maxLength);
+                target.value = val.slice(0, maxLength);
             }
         } else {
             setIsOnComposition(true);
         }
     };
 
-    const onChangeHandler = (e, index: number) => {
+    const onChangeHandler = (
+        e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+        index: number
+    ) => {
         if (isOnComposition) return;
         const val = e.target.value;
-        itemInfo[index].content = val;
+
         if (val.length >= maxLength) {
             e.target.value = val.slice(0, maxLength);
         }
+        const finalString = val
+            .match(wordReg)
+            ?.filter((char) => char !== "_")
+            .join("");
+
+        e.target.value = finalString ?? val;
     };
 
     return (
@@ -76,6 +94,7 @@ const FormItem = (props: IFormItemProps) => {
                                 {label === "Title" ? (
                                     <input
                                         className='FIInput'
+                                        id={`${label}_${index}`}
                                         placeholder={`${limit}_${each.createTime}`}
                                         onCompositionStart={compositionHandler}
                                         onCompositionUpdate={compositionHandler}
@@ -86,6 +105,7 @@ const FormItem = (props: IFormItemProps) => {
                                 ) : (
                                     <textarea
                                         className='FIInput'
+                                        id={`${label}_${index}`}
                                         placeholder={`${limit}_${each.createTime}`}
                                         onCompositionStart={compositionHandler}
                                         onCompositionUpdate={compositionHandler}
