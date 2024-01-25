@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { IFormItemProps, IBaseInfoObj } from "../container/Form";
 
-const FormItem = (props: IFormItemProps) => {
-    const { label, limit, maxLength, info } = props;
+interface IProps extends IFormItemProps {
+    formSet: (info: IBaseInfoObj[]) => void;
+}
+
+const FormItem = (props: IProps) => {
+    const { label, limit, maxLength, info, formSet } = props;
 
     const [itemInfo, setItemInfo] = useState(info);
     const [canAdd, setCanAdd] = useState(false);
     const [canDelete, setCanDelete] = useState(false);
     const [isOnComposition, setIsOnComposition] = useState(false);
-    const wordReg = /[\w\u4e00-\u9fa5]/g;
+    const wordReg = /[\w\u4e00-\u9fa5\s]/g;
 
     if (itemInfo.length > limit) {
         setItemInfo(itemInfo.slice(-limit));
@@ -36,6 +40,7 @@ const FormItem = (props: IFormItemProps) => {
     useEffect(() => {
         itemInfo.length < limit ? setCanAdd(true) : setCanAdd(false);
         itemInfo.length > 1 ? setCanDelete(true) : setCanDelete(false);
+        formSet(itemInfo);
     }, [itemInfo]);
 
     const btnMinusHandler = (n: number) => {
@@ -63,16 +68,37 @@ const FormItem = (props: IFormItemProps) => {
         if (e.type === "compositionend") {
             setIsOnComposition(false);
             target.value = auth(val);
+            updateInfo(e);
         } else {
             setIsOnComposition(true);
+        }
+    };
+
+    const updateInfo = (
+        e:
+            | React.ChangeEvent<HTMLInputElement>
+            | React.ChangeEvent<HTMLTextAreaElement>
+            | React.CompositionEvent<HTMLTextAreaElement>
+            | React.CompositionEvent<HTMLInputElement>
+    ) => {
+        const target = e.target as HTMLInputElement;
+        const index = itemInfo.findIndex((obj) => obj.createTime === +target.placeholder);
+
+        if (index !== -1) {
+            const newItemInfo = [...itemInfo];
+            newItemInfo[index] = {
+                ...newItemInfo[index],
+                content: auth(target.value),
+            };
+            setItemInfo(newItemInfo);
         }
     };
 
     const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         if (isOnComposition) return;
         const val = e.target.value;
-
         e.target.value = auth(val);
+        updateInfo(e);
     };
 
     return (
@@ -80,14 +106,13 @@ const FormItem = (props: IFormItemProps) => {
             <div className='FIContainer'>
                 <p className='FITitle'>{label}</p>
                 <div className='FIMain'>
-                    {itemInfo.map((each, index) => {
+                    {itemInfo.map((each) => {
                         return (
                             <div className='FIRow' key={each.createTime}>
                                 {label === "Title" ? (
                                     <input
                                         className='FIInput'
-                                        id={`${label}_${index}`}
-                                        placeholder={`${limit}_${each.createTime}`}
+                                        placeholder={`${each.createTime}`}
                                         onCompositionStart={compositionHandler}
                                         onCompositionUpdate={compositionHandler}
                                         onCompositionEnd={compositionHandler}
@@ -97,8 +122,7 @@ const FormItem = (props: IFormItemProps) => {
                                 ) : (
                                     <textarea
                                         className='FIInput'
-                                        id={`${label}_${index}`}
-                                        placeholder={`${limit}_${each.createTime}`}
+                                        placeholder={`${each.createTime}`}
                                         onCompositionStart={compositionHandler}
                                         onCompositionUpdate={compositionHandler}
                                         onCompositionEnd={compositionHandler}

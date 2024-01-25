@@ -1,3 +1,4 @@
+import { useState } from "react";
 import FormItem from "../components/FormItem.tsx";
 
 export interface IBaseInfoObj {
@@ -12,7 +13,7 @@ export interface IFormItemProps {
     info: IBaseInfoObj[];
 }
 
-export const data: IFormItemProps[] = [
+export const formData: IFormItemProps[] = [
     {
         label: "Title",
         limit: 1,
@@ -34,19 +35,49 @@ export const data: IFormItemProps[] = [
 ];
 
 const Form = () => {
+    const [data, setData] = useState(formData);
+
+    const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
+        const newData = data.map((item) => {
+            if (item.label === label) {
+                return { ...item, info: updatedInfo };
+            }
+            return item;
+        });
+        setData(newData);
+    };
+
+    const btnSubmitHandler = () => {
+        console.log(data[0].info);
+    };
+
     return (
-        <>
-            {data.map((item) => (
-                <FormItem
-                    key={item.label}
-                    label={item.label}
-                    limit={item.limit}
-                    maxLength={item.maxLength}
-                    info={item.info}
-                />
-            ))}
-            <button type='submit'>submit</button>
-        </>
+        <div className='formContainer'>
+            <div className='fromLeft'>
+                {data.map((item) => {
+                    return (
+                        <FormItem
+                            key={item.label}
+                            formSet={(updatedInfo) => updateData(item.label, updatedInfo)}
+                            label={item.label}
+                            limit={item.limit}
+                            maxLength={item.maxLength}
+                            info={item.info}
+                        />
+                    );
+                })}
+                <div className='FFooter'>
+                    <button className='FBtn' onClick={() => btnSubmitHandler()} type='submit'>
+                        submit
+                    </button>
+                </div>
+            </div>
+            <div className='formRight'>
+                {data.map((i) => {
+                    return <p key={i.label}>{`${JSON.stringify(i.info)}\n`}</p>;
+                })}
+            </div>
+        </div>
     );
 };
 
