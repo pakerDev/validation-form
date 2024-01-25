@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { IFormItemProps, IBaseInfoObj } from "../container/Form";
 
 const FormItem = (props: IFormItemProps) => {
-    const { label, limit, info } = props;
+    const { label, limit, maxLength, info } = props;
 
     const [itemInfo, setItemInfo] = useState(info);
     const [canAdd, setCanAdd] = useState(false);
     const [canDelete, setCanDelete] = useState(false);
+    const [isOnComposition, setIsOnComposition] = useState(false);
+    const wordReg = /[\w\u4e00-\u9fa5]/g;
 
     if (itemInfo.length > limit) {
         setItemInfo(itemInfo.slice(-limit));
@@ -41,15 +43,69 @@ const FormItem = (props: IFormItemProps) => {
         setItemInfo(itemInfo.filter((obj) => obj.createTime !== n));
     };
 
+    const auth = (val: string) => {
+        let res =
+            val
+                .match(wordReg)
+                ?.filter((char) => char !== "_")
+                .join("") ?? "";
+        if (res.length > maxLength) {
+            res = res.slice(0, maxLength);
+        }
+        return res;
+    };
+
+    const compositionHandler = (
+        e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>
+    ) => {
+        const target = e.target as HTMLInputElement;
+        const val = target.value;
+        if (e.type === "compositionend") {
+            setIsOnComposition(false);
+            target.value = auth(val);
+        } else {
+            setIsOnComposition(true);
+        }
+    };
+
+    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+        if (isOnComposition) return;
+        const val = e.target.value;
+
+        e.target.value = auth(val);
+    };
+
     return (
         <>
             <div className='FIContainer'>
                 <p className='FITitle'>{label}</p>
                 <div className='FIMain'>
-                    {itemInfo.map((each) => {
+                    {itemInfo.map((each, index) => {
                         return (
                             <div className='FIRow' key={each.createTime}>
-                                <input className='FIInput' placeholder={`${limit}_${each.createTime}`} type='text' />
+                                {label === "Title" ? (
+                                    <input
+                                        className='FIInput'
+                                        id={`${label}_${index}`}
+                                        placeholder={`${limit}_${each.createTime}`}
+                                        onCompositionStart={compositionHandler}
+                                        onCompositionUpdate={compositionHandler}
+                                        onCompositionEnd={compositionHandler}
+                                        onChange={(e) => onChangeHandler(e)}
+                                        type='text'
+                                    />
+                                ) : (
+                                    <textarea
+                                        className='FIInput'
+                                        id={`${label}_${index}`}
+                                        placeholder={`${limit}_${each.createTime}`}
+                                        onCompositionStart={compositionHandler}
+                                        onCompositionUpdate={compositionHandler}
+                                        onCompositionEnd={compositionHandler}
+                                        onChange={(e) => onChangeHandler(e)}
+                                    />
+                                )}
+
                                 <button
                                     className='FIMinus FIBtn'
                                     disabled={!canDelete}
