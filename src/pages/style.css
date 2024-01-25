@@ -159,10 +159,16 @@
 }
 
 .formRight {
-    background-color: black;
-    max-width: 20rem;
     display: flex;
-    place-items: center;
-    word-wrap: break-word;
-    white-space: pre-line;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.formJson {
+    width: 100%;
+    padding: 8px;
+    margin: 8px;
+    border-bottom: 2px solid lightgray;
+    text-align: left;
 }

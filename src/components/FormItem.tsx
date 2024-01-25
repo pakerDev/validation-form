@@ -40,7 +40,7 @@ const FormItem = (props: IProps) => {
     useEffect(() => {
         itemInfo.length < limit ? setCanAdd(true) : setCanAdd(false);
         itemInfo.length > 1 ? setCanDelete(true) : setCanDelete(false);
-        formSet(itemInfo);
+        formSet([...itemInfo]);
     }, [itemInfo]);
 
     const btnMinusHandler = (n: number) => {

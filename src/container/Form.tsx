@@ -18,19 +18,34 @@ export const formData: IFormItemProps[] = [
         label: "Title",
         limit: 1,
         maxLength: 15,
-        info: [],
+        info: [
+            {
+                createTime: Date.now(),
+                content: "",
+            },
+        ],
     },
     {
         label: "SubTitle",
         limit: 3,
         maxLength: 30,
-        info: [],
+        info: [
+            {
+                createTime: Date.now(),
+                content: "",
+            },
+        ],
     },
     {
         label: "Description",
         limit: 5,
         maxLength: 60,
-        info: [],
+        info: [
+            {
+                createTime: Date.now(),
+                content: "",
+            },
+        ],
     },
 ];
 
@@ -48,7 +63,7 @@ const Form = () => {
     };
 
     const btnSubmitHandler = () => {
-        console.log(data[0].info);
+        console.log(...data);
     };
 
     return (
@@ -74,7 +89,14 @@ const Form = () => {
             </div>
             <div className='formRight'>
                 {data.map((i) => {
-                    return <p key={i.label}>{`${JSON.stringify(i.info)}\n`}</p>;
+                    return (
+                        <div key={i.label} className='formJson'>
+                            <p>label: {i.label} </p>
+                            <p>limit: {i.limit} </p>
+                            <p>maxLength: {i.maxLength} </p>
+                            <p>info: {JSON.stringify(i.info).split(`"`)} </p>
+                        </div>
+                    );
                 })}
             </div>
         </div>
