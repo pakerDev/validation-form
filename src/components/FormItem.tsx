@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import { IFormItemProps, IBaseInfoObj } from "../container/Form";
 
-interface IProps extends IFormItemProps {
+interface IProps {
     formSet: (info: IBaseInfoObj[]) => void;
+    item: IFormItemProps;
 }
 
 const FormItem = (props: IProps) => {
-    const { label, limit, maxLength, info, formSet } = props;
+    const { item, formSet } = props;
+    const { label, limit, maxLength, info } = { ...item };
 
     const [itemInfo, setItemInfo] = useState(info);
     const [canAdd, setCanAdd] = useState(false);
     const [canDelete, setCanDelete] = useState(false);
     const [isOnComposition, setIsOnComposition] = useState(false);
+
     const wordReg = /[\w\u4e00-\u9fa5\s]/g;
 
     if (itemInfo.length > limit) {
@@ -29,13 +32,6 @@ const FormItem = (props: IProps) => {
             setItemInfo([...itemInfo, newItem]);
         }
     };
-
-    useEffect(() => {
-        if (itemInfo.length < 1) {
-            const newItem = { ...baseInfoObj, createTime: Date.now() };
-            setItemInfo([...itemInfo, newItem]);
-        }
-    }, []);
 
     useEffect(() => {
         itemInfo.length < limit ? setCanAdd(true) : setCanAdd(false);

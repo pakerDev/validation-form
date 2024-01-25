@@ -51,6 +51,7 @@ export const formData: IFormItemProps[] = [
 
 const Form = () => {
     const [data, setData] = useState(formData);
+    const [previewData, setPreviewData] = useState(formData);
 
     const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
         const newData = data.map((item) => {
@@ -63,7 +64,7 @@ const Form = () => {
     };
 
     const btnSubmitHandler = () => {
-        console.log(...data);
+        setPreviewData(data);
     };
 
     return (
@@ -74,10 +75,7 @@ const Form = () => {
                         <FormItem
                             key={item.label}
                             formSet={(updatedInfo) => updateData(item.label, updatedInfo)}
-                            label={item.label}
-                            limit={item.limit}
-                            maxLength={item.maxLength}
-                            info={item.info}
+                            item={item}
                         />
                     );
                 })}
@@ -88,7 +86,7 @@ const Form = () => {
                 </div>
             </div>
             <div className='formRight'>
-                {data.map((i) => {
+                {previewData.map((i) => {
                     return (
                         <div key={i.label} className='formJson'>
                             <p>label: {i.label} </p>
