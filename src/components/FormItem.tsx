@@ -68,10 +68,7 @@ const FormItem = (props: IFormItemProps) => {
         }
     };
 
-    const onChangeHandler = (
-        e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
-        index: number
-    ) => {
+    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         if (isOnComposition) return;
         const val = e.target.value;
 
@@ -94,7 +91,7 @@ const FormItem = (props: IFormItemProps) => {
                                         onCompositionStart={compositionHandler}
                                         onCompositionUpdate={compositionHandler}
                                         onCompositionEnd={compositionHandler}
-                                        onChange={(e) => onChangeHandler(e, index)}
+                                        onChange={(e) => onChangeHandler(e)}
                                         type='text'
                                     />
                                 ) : (
@@ -105,7 +102,7 @@ const FormItem = (props: IFormItemProps) => {
                                         onCompositionStart={compositionHandler}
                                         onCompositionUpdate={compositionHandler}
                                         onCompositionEnd={compositionHandler}
-                                        onChange={(e) => onChangeHandler(e, index)}
+                                        onChange={(e) => onChangeHandler(e)}
                                     />
                                 )}
 
