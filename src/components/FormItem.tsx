@@ -15,8 +15,9 @@ const FormItem = (props: IProps) => {
     const [canAdd, setCanAdd] = useState(false);
     const [canDelete, setCanDelete] = useState(false);
     const [isOnComposition, setIsOnComposition] = useState(false);
-    const [alertType, setAlertType] = useState(0);
+    const [alertType, setAlertType] = useState("");
     const [count, setCount] = useState(0);
+    const [msg, setMsg] = useState("");
 
     const wordReg = /[\w\u4e00-\u9fa5\s]/g;
 
@@ -39,7 +40,9 @@ const FormItem = (props: IProps) => {
     useEffect(() => {
         itemInfo.length < limit ? setCanAdd(true) : setCanAdd(false);
         itemInfo.length > 1 ? setCanDelete(true) : setCanDelete(false);
-        itemInfo.length >= limit && setAlertType((t) => (t % 10 === 1 ? t : t + 1));
+        itemInfo.length >= limit
+            ? setAlertType((t) => (t.indexOf("Limit") > -1 ? t : (t += "Limit")))
+            : setAlertType((t) => t.replace("Limit", ""));
 
         formSet([...itemInfo]);
     }, [itemInfo]);
@@ -47,7 +50,7 @@ const FormItem = (props: IProps) => {
     const btnMinusHandler = (n: number) => {
         if (itemInfo.length < 2) return;
         setItemInfo(itemInfo.filter((obj) => obj.createTime !== n));
-        itemInfo.length >= limit ? setAlertType((t) => (t % 10 === 1 ? t - 1 : t)) : "";
+        setAlertType((t) => t.replace("Limit", ""));
     };
 
     const auth = (val: string) => {
@@ -58,10 +61,9 @@ const FormItem = (props: IProps) => {
                 .match(wordReg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
-
         chk === res
-            ? setAlertType((t) => (t % 1000 >= 100 ? t - 100 : t))
-            : setAlertType((t) => (t % 1000 >= 100 ? t : t + 100));
+            ? setAlertType((t) => t.replace("Reg", ""))
+            : setAlertType((t) => (t.indexOf("Reg") > -1 ? t : (t += "Reg")));
 
         if (res.length >= maxLength) {
             res = res.slice(0, maxLength);
@@ -113,17 +115,16 @@ const FormItem = (props: IProps) => {
 
     useEffect(() => {
         count >= maxLength
-            ? setAlertType((t) => (t % 100 >= 10 ? t : t + 10))
-            : setAlertType((t) => (t % 100 >= 10 ? t - 10 : t));
+            ? setAlertType((t) => (t.indexOf("Max") > -1 ? t : (t += "Max")))
+            : setAlertType((t) => t.replace("Max", ""));
     }, [count]);
 
-    const [msg, setMsg] = useState("");
     useEffect(() => {
-        alertType === 0 && setMsg("");
-        alertType % 10 >= 1 && setMsg((m) => (m.indexOf("欄") > 0 ? m : (m = ` 至多${limit}欄`)));
-        alertType % 100 >= 10 && setMsg((m) => (m.indexOf("字") > 0 ? m : (m = ` 至多${maxLength}字`)));
-        alertType % 1000 >= 100 && setMsg((m) => (m.indexOf("限") > 0 ? m : (m = ` 限半形英數及中文`)));
-        alertType >= 100 ? canSubmit(false) : canSubmit(true);
+        alertType === "" && setMsg("");
+        alertType.indexOf("Limit") > -1 && setMsg((m) => (m.indexOf("欄") > -1 ? m : (m = ` 至多${limit}欄`)));
+        alertType.indexOf("Max") > -1 && setMsg((m) => (m.indexOf("字") > -1 ? m : (m = ` 至多${maxLength}字`)));
+        alertType.indexOf("Reg") > -1 && setMsg((m) => (m.indexOf("限") > -1 ? m : (m = ` 限半形英數及中文`)));
+        alertType.indexOf("Reg") > -1 ? canSubmit(false) : canSubmit(true);
         true;
     }, [alertType]);
 
