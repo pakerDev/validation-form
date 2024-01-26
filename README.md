@@ -37,6 +37,11 @@ Note. 請不依賴相關套件下手刻實作
   - 驗證核心
   - 表單控制
 
+### Setup 3.
+1. 修復 Bug Tickets
+2. 完成表定 [Issues](https://github.com/pakerDev/validation-form/issues)
+
+
 ---
 
 ## Work flow
