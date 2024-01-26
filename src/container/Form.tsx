@@ -52,6 +52,7 @@ export const formData: IFormItemProps[] = [
 const Form = () => {
     const [data, setData] = useState(formData);
     const [previewData, setPreviewData] = useState(formData);
+    const [canSubmit, setCanSubmit] = useState(true);
 
     const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
         const newData = data.map((item) => {
@@ -76,11 +77,12 @@ const Form = () => {
                             key={item.label}
                             formSet={(updatedInfo) => updateData(item.label, updatedInfo)}
                             item={item}
+                            canSubmit={setCanSubmit}
                         />
                     );
                 })}
                 <div className='FFooter'>
-                    <button className='FBtn' onClick={() => btnSubmitHandler()} type='submit'>
+                    <button className='FBtn' onClick={() => btnSubmitHandler()} disabled={!canSubmit} type='submit'>
                         submit
                     </button>
                 </div>

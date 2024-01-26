@@ -104,6 +104,7 @@
 
 .FIPlus {
     border: 2px solid lightgray;
+    margin-left: 8px;
     &:disabled {
         transform: rotate(45deg);
     }
@@ -156,6 +157,16 @@
         border: 2px transparent solid;
         color: black;
     }
+
+    &:disabled {
+        cursor: not-allowed;
+        color: brown;
+        background-color: transparent;
+        border-color: brown;
+        &:hover {
+            border-color: brown;
+        }
+    }
 }
 
 .formRight {
@@ -163,12 +174,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-left: 1rem;
 }
 
 .formJson {
-    width: 100%;
+    width: 22rem;
     padding: 8px;
     margin: 8px;
     border-bottom: 2px solid lightgray;
     text-align: left;
+    word-break: break-word;
 }
