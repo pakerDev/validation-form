@@ -49,6 +49,38 @@ export const formData: IFormItemProps[] = [
     },
 ];
 
+export const mainData = [
+    {
+        info: {
+            Title: [],
+            SubTitle: [],
+            Description: [],
+        },
+        createTime: 0,
+        isCreateNew: true,
+        isDone: false,
+        isTemplate: false,
+    },
+];
+
+const formConfig = [
+    {
+        label: "Title",
+        limit: 1,
+        maxLength: 15,
+    },
+    {
+        label: "SubTitle",
+        limit: 3,
+        maxLength: 30,
+    },
+    {
+        label: "Description",
+        limit: 5,
+        maxLength: 60,
+    },
+];
+
 const Form = () => {
     const [data, setData] = useState(formData);
     const [previewData, setPreviewData] = useState(formData);
@@ -82,12 +114,19 @@ const Form = () => {
                     );
                 })}
                 <div className='FFooter'>
-                    <button className='FBtn' onClick={() => btnSubmitHandler()} disabled={!canSubmit} type='submit'>
+                    <button className='FBtn'>use template</button>
+                    <button className='FBtn'>clear</button>
+                    <button
+                        className='FSubmit FBtn'
+                        onClick={() => btnSubmitHandler()}
+                        disabled={!canSubmit}
+                        type='submit'
+                    >
                         submit
                     </button>
                 </div>
             </div>
-            <div className='formRight'>
+            {/* <div className='formRight'>
                 {previewData.map((i) => {
                     return (
                         <div key={i.label} className='formJson'>
@@ -98,7 +137,7 @@ const Form = () => {
                         </div>
                     );
                 })}
-            </div>
+            </div> */}
         </div>
     );
 };

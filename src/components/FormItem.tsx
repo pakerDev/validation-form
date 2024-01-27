@@ -136,6 +136,7 @@ const FormItem = (props: IProps) => {
                     {itemInfo.map((each) => {
                         return (
                             <div className='FIRow' key={each.createTime}>
+                                <input className='FIcheck' type='checkbox' name={label} />
                                 {label === "Title" ? (
                                     <input
                                         className='FIInput'
@@ -156,14 +157,17 @@ const FormItem = (props: IProps) => {
                                         onChange={(e) => onChangeHandler(e)}
                                     />
                                 )}
-
-                                <button
-                                    className='FIMinus FIBtn'
-                                    disabled={!canDelete}
-                                    onClick={() => btnMinusHandler(each.createTime)}
-                                >
-                                    -
-                                </button>
+                                <div className='FIInputCtrl'>
+                                    <button
+                                        className='FIMinus FIBtn'
+                                        disabled={!canDelete}
+                                        onClick={() => btnMinusHandler(each.createTime)}
+                                    >
+                                        -
+                                    </button>
+                                    <span className='FIWordCount'> {`${count}/${maxLength}`} </span>
+                                </div>
+                                <span className='FIAlert FIRowAlert'>{msg}</span>
                             </div>
                         );
                     })}
@@ -171,7 +175,6 @@ const FormItem = (props: IProps) => {
                 <div className='FIFooter'>
                     <span className='FIAlert'>{msg}</span>
                     <div>
-                        <span> {`${count}/${maxLength}`} </span>
                         <button className='FIBtn FIPlus' onClick={() => btnPlusHandler(limit)} disabled={!canAdd}>
                             +
                         </button>
