@@ -5,7 +5,7 @@
 
 .FIContainer {
     padding: 1rem;
-    width: 320px;
+    /* width: 320px; */
 }
 
 .FITitle {
@@ -18,7 +18,7 @@
 .FIMain {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    /* width: 100%; */
 }
 
 @keyframes fadeIn {
@@ -35,11 +35,11 @@
 .FIRow {
     display: flex;
     flex-direction: row;
-    width: 20rem;
+    /* width: 20rem; */
 }
 
 .FIInput {
-    width: 16rem;
+    width: 10rem;
     border: none;
     border-bottom: 1px solid #646cff;
     border-radius: 0.25rem;
@@ -104,6 +104,7 @@
 
 .FIPlus {
     border: 2px solid lightgray;
+    margin-left: 8px;
     &:disabled {
         transform: rotate(45deg);
     }
@@ -133,4 +134,54 @@
             border-color: brown;
         }
     }
+}
+
+.formContainer {
+    display: flex;
+}
+
+.FFooter {
+    display: flex;
+    justify-content: end;
+}
+
+.FBtn {
+    margin-top: 2rem;
+    font-weight: 700;
+    border: #747bff 2px solid;
+    border-radius: 0.5rem;
+    background-color: transparent;
+
+    &:hover {
+        background-color: #646cff;
+        border: 2px transparent solid;
+        color: black;
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+        color: brown;
+        background-color: transparent;
+        border-color: brown;
+        &:hover {
+            border-color: brown;
+        }
+    }
+}
+
+.formRight {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+}
+
+.formJson {
+    width: 22rem;
+    padding: 8px;
+    margin: 8px;
+    border-bottom: 2px solid lightgray;
+    text-align: left;
+    word-break: break-word;
 }
