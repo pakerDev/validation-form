@@ -29,21 +29,25 @@ const FormItem = (props: any) => {
     // const { item, formSet, canSubmit } = props;
 
     //console.log(formConfig.findIndex((i) => i.label === "Title"));
-    // const [itemInfo, setItemInfo] = useState(info);
+    const [info, setInfo] = useState(initInfo);
     // const [canAdd, setCanAdd] = useState(false);
     // const [canDelete, setCanDelete] = useState(false);
-    // const [isOnComposition, setIsOnComposition] = useState(false);
-    // const [alertType, setAlertType] = useState("");
+    const [isOnComposition, setIsOnComposition] = useState(false);
+    const [alertType, setAlertType] = useState("");
     // const [count, setCount] = useState(0);
     // const [msg, setMsg] = useState("");
 
     const wordReg = /[\w\u4e00-\u9fa5\s]/g;
 
+    const initInfo = {
+        Title: ["1"],
+        SubTitle: ["22", "44", "77"],
+        Description: ["333", "55555"],
+    };
+
     const initData = {
         info: {
-            Title: ["1"],
-            SubTitle: ["22", "4444"],
-            Description: ["333", "55555"],
+            ...initInfo,
         },
         createTime: 0,
         isCreateNew: true,
@@ -56,10 +60,11 @@ const FormItem = (props: any) => {
     //     content: "",
     // };
 
-    const btnPlusHandler = (limit: number) => {
-        if (itemInfo.length < limit) {
-            const newItem = { ...baseInfoObj, createTime: Date.now() };
-            setItemInfo([...itemInfo, newItem]);
+    const btnPlusHandler = (limit: number, label) => {
+        if (info[label].length < limit) {
+            const updatedInfo = { ...info };
+            updatedInfo[label].push("");
+            setInfo(updatedInfo);
         }
     };
 
@@ -74,10 +79,11 @@ const FormItem = (props: any) => {
     //     //}, [itemInfo]);
     // }, []);
 
-    const btnMinusHandler = (n: number) => {
-        if (itemInfo.length < 2) return;
-        setItemInfo(itemInfo.filter((obj) => obj.createTime !== n));
-        setAlertType((t) => t.replace("Limit", ""));
+    const btnMinusHandler = (label: string, n: number) => {
+        if (info[label].length < 2) return;
+        const updatedInfo = { ...info };
+        updatedInfo[label].splice(n, 1);
+        setInfo(updatedInfo);
     };
 
     const auth = (val: string) => {
@@ -92,22 +98,24 @@ const FormItem = (props: any) => {
             ? setAlertType((t) => t.replace("Reg", ""))
             : setAlertType((t) => (t.indexOf("Reg") > -1 ? t : (t += "Reg")));
 
-        if (res.length >= maxLength) {
-            res = res.slice(0, maxLength);
-        }
-        setCount(res.length);
+        // if (res.length >= maxLength) {
+        //     res = res.slice(0, maxLength);
+        // }
+        // setCount(res.length);
         return res;
     };
 
     const compositionHandler = (
         e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>
     ) => {
-        const target = e.target as HTMLInputElement;
-        const val = target.value;
+        console.log(e);
+
+        // const target = e.target as HTMLInputElement;
+        // const val = target.value;
         if (e.type === "compositionend") {
             setIsOnComposition(false);
-            target.value = auth(val);
-            updateInfo(e);
+            //     target.value = auth(val);
+            //     updateInfo(e);
         } else {
             setIsOnComposition(true);
         }
@@ -137,7 +145,7 @@ const FormItem = (props: any) => {
         if (isOnComposition) return;
         const val = e.target.value;
         e.target.value = auth(val);
-        updateInfo(e);
+        // updateInfo(e);
     };
 
     // useEffect(() => {
@@ -159,16 +167,16 @@ const FormItem = (props: any) => {
 
     return (
         <>
-            {Object.entries(initData.info).map(([label, info]) => {
-                return formConfig.map((rule, index) => {
+            {Object.entries(info).map(([label, info], idx) => {
+                return formConfig.map((rule, indexRule) => {
                     return (
-                        <>
+                        <div key={idx}>
                             {rule.label === label && (
-                                <div key={index} className='FIContainer'>
+                                <div key={indexRule} className='FIContainer'>
                                     <p className='FITitle'>{label}</p>
-                                    {info.map((each, index) => {
+                                    {info.map((each, indexEachInfo) => {
                                         return (
-                                            <div key={index} className='FIMain'>
+                                            <div key={indexEachInfo} className='FIMain'>
                                                 {label === rule.label && (
                                                     <div className='FIRow'>
                                                         <input className='FIcheck' type='checkbox' name={label} />
@@ -193,18 +201,24 @@ const FormItem = (props: any) => {
                                                             />
                                                         )}
                                                         <div className='FIInputCtrl'>
-                                                            <button
-                                                                className='FIMinus FIBtn'
-                                                                onClick={() => btnMinusHandler(index)}
-                                                            >
-                                                                -
-                                                            </button>
+                                                            {each.length > 1 ? (
+                                                                <button
+                                                                    className='FIMinus FIBtn'
+                                                                    onClick={() =>
+                                                                        btnMinusHandler(label, indexEachInfo)
+                                                                    }
+                                                                >
+                                                                    -
+                                                                </button>
+                                                            ) : (
+                                                                <button className='FIMinus FIBtn' disabled></button>
+                                                            )}
 
                                                             <span className='FIWordCount'>
-                                                                {`${each.length}/${rule.maxLength}`}{" "}
+                                                                {`${each.length}/${rule.maxLength}`}
                                                             </span>
                                                         </div>
-                                                        <span className='FIAlert FIRowAlert'>{`reg`}</span>
+                                                        <span className='FIAlert FIRowAlert'>{alertType}</span>
                                                     </div>
                                                 )}
                                             </div>
@@ -213,14 +227,17 @@ const FormItem = (props: any) => {
                                     <div className='FIFooter'>
                                         <span className='FIAlert'>{`msg`}</span>
                                         <div>
-                                            <button className='FIBtn FIPlus' onClick={() => btnPlusHandler(rule.limit)}>
+                                            <button
+                                                className='FIBtn FIPlus'
+                                                onClick={() => btnPlusHandler(rule.limit, label)}
+                                            >
                                                 +
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             )}
-                        </>
+                        </div>
                     );
                 });
             })}
