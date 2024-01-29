@@ -52,9 +52,9 @@ export const formData: IFormItemProps[] = [
 export const mainData = [
     {
         info: {
-            Title: ["a"],
-            SubTitle: ["b"],
-            Description: ["c"],
+            Title: [""],
+            SubTitle: [""],
+            Description: [""],
         },
         createTime: 0,
         isCreateNew: true,
@@ -62,18 +62,6 @@ export const mainData = [
         isTemplate: false,
     },
 ];
-
-// const emptyData = {
-//     info: {
-//         Title: ["1"],
-//         SubTitle: ["2"],
-//         Description: ["3"],
-//     },
-//     createTime: 0,
-//     isCreateNew: true,
-//     isDone: false,
-//     isTemplate: false,
-// };
 
 const Form = () => {
     const [data, setData] = useState(formData);
@@ -98,17 +86,6 @@ const Form = () => {
         <div className='formContainer'>
             <div className='fromLeft'>
                 <FormItem />
-                {/* {formConfig.map((item) => {
-                    return (
-                        <FormItem
-                            key={item.label}
-                            // formSet={(updatedInfo) => updateData(item.label, updatedInfo)}
-                            // item={item}
-                            label={item.label}
-                            canSubmit={setCanSubmit}
-                        />
-                    );
-                })} */}
                 <div className='FFooter'>
                     <button className='FBtn'>use template</button>
                     <button className='FBtn'>clear</button>

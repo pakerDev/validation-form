@@ -7,60 +7,79 @@ interface IProps {
     canSubmit: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const formConfig = [
+type TLabel = "Title" | "SubTitle" | "Description";
+
+interface IInitInfo {
+    label: TLabel;
+    limit: number;
+    maxLength: number;
+    reg: RegExp;
+}
+
+const titleReg = /[\w\u4e00-\u9fa5\s]/g;
+const subReg = /[\w\u4e00-\u9fa5\s]/g;
+const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\,\.\'\"s]/g;
+
+const formConfig: IInitInfo[] = [
     {
         label: "Title",
         limit: 1,
         maxLength: 15,
+        reg: titleReg,
     },
     {
         label: "SubTitle",
         limit: 3,
         maxLength: 30,
+        reg: subReg,
     },
     {
         label: "Description",
         limit: 5,
         maxLength: 60,
+        reg: descReg,
     },
 ];
 
-const FormItem = (props: any) => {
-    // const { item, formSet, canSubmit } = props;
+const initInfo = {
+    Title: [""],
+    SubTitle: [""],
+    Description: [""],
+};
 
-    //console.log(formConfig.findIndex((i) => i.label === "Title"));
+interface IsubmitInfo {
+    Title: number[];
+    SubTitle: number[];
+    Description: number[];
+}
+
+const submitInit: IsubmitInfo = {
+    Title: [],
+    SubTitle: [],
+    Description: [],
+};
+
+const FormItem = () => {
     const [info, setInfo] = useState(initInfo);
-    // const [canAdd, setCanAdd] = useState(false);
-    // const [canDelete, setCanDelete] = useState(false);
+    const [submitInfo, setSubmitInfo] = useState(submitInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
-    const [alertType, setAlertType] = useState("");
-    // const [count, setCount] = useState(0);
-    // const [msg, setMsg] = useState("");
 
-    const wordReg = /[\w\u4e00-\u9fa5\s]/g;
-
-    const initInfo = {
-        Title: ["1"],
-        SubTitle: ["22", "44", "77"],
-        Description: ["333", "55555"],
+    const checkHandler = (e, label: TLabel, id: number) => {
+        const isChecked = e.target.checked;
+        if (isChecked) {
+            const updatedSubmit = { ...submitInfo };
+            if (updatedSubmit[label].indexOf(id) > -1) return;
+            updatedSubmit[label].push(id);
+            setSubmitInfo(updatedSubmit);
+        } else {
+            const updatedSubmit = { ...submitInfo };
+            let a = updatedSubmit[label].indexOf(id);
+            updatedSubmit[label].splice(a, 1);
+            setSubmitInfo(updatedSubmit);
+        }
     };
 
-    const initData = {
-        info: {
-            ...initInfo,
-        },
-        createTime: 0,
-        isCreateNew: true,
-        isDone: false,
-        isTemplate: false,
-    };
-
-    // const baseInfoObj: IBaseInfoObj = {
-    //     createTime: 0,
-    //     content: "",
-    // };
-
-    const btnPlusHandler = (limit: number, label) => {
+    const btnPlusHandler = (limit: number, label: TLabel) => {
         if (info[label].length < limit) {
             const updatedInfo = { ...info };
             updatedInfo[label].push("");
@@ -68,54 +87,50 @@ const FormItem = (props: any) => {
         }
     };
 
-    // useEffect(() => {
-    //     itemInfo.length < limit ? setCanAdd(true) : setCanAdd(false);
-    //     itemInfo.length > 1 ? setCanDelete(true) : setCanDelete(false);
-    //     itemInfo.length >= limit
-    //         ? setAlertType((t) => (t.indexOf("Limit") > -1 ? t : (t += "Limit")))
-    //         : setAlertType((t) => t.replace("Limit", ""));
-
-    //     formSet([...itemInfo]);
-    //     //}, [itemInfo]);
-    // }, []);
-
-    const btnMinusHandler = (label: string, n: number) => {
+    const btnMinusHandler = (label: TLabel, n: number) => {
         if (info[label].length < 2) return;
         const updatedInfo = { ...info };
         updatedInfo[label].splice(n, 1);
         setInfo(updatedInfo);
     };
 
-    const auth = (val: string) => {
+    const auth = (val: string, max: number) => {
         let res = val;
+
+        if (res.length >= max) {
+            res = res.slice(0, max);
+        }
+        return res;
+    };
+
+    const authRex = (label: TLabel, id: number, reg: RegExp) => {
+        let res = "";
+        let val = info[label][id];
 
         const chk =
             val
-                .match(wordReg)
+                .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
-        chk === res
-            ? setAlertType((t) => t.replace("Reg", ""))
-            : setAlertType((t) => (t.indexOf("Reg") > -1 ? t : (t += "Reg")));
+        chk === val ? "" : (res = "reg");
 
-        // if (res.length >= maxLength) {
-        //     res = res.slice(0, maxLength);
-        // }
-        // setCount(res.length);
         return res;
     };
 
     const compositionHandler = (
-        e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>
+        e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>,
+        label: TLabel,
+        id: number,
+        max: number
     ) => {
-        console.log(e);
-
-        // const target = e.target as HTMLInputElement;
-        // const val = target.value;
+        const target = e.target as HTMLInputElement;
+        const val = target.value;
         if (e.type === "compositionend") {
             setIsOnComposition(false);
-            //     target.value = auth(val);
-            //     updateInfo(e);
+            target.value = auth(val, max);
+            const updatedInfo = { ...info };
+            updatedInfo[label].splice(id, 1, target.value);
+            setInfo(updatedInfo);
         } else {
             setIsOnComposition(true);
         }
@@ -127,81 +142,121 @@ const FormItem = (props: any) => {
             | React.ChangeEvent<HTMLTextAreaElement>
             | React.CompositionEvent<HTMLTextAreaElement>
             | React.CompositionEvent<HTMLInputElement>
+    ) => {};
+
+    const onChangeHandler = (
+        e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+        label: TLabel,
+        id: number,
+        max: number
     ) => {
-        const target = e.target as HTMLInputElement;
-        const index = itemInfo.findIndex((obj) => obj.createTime === +target.placeholder);
-
-        if (index !== -1) {
-            const newItemInfo = [...itemInfo];
-            newItemInfo[index] = {
-                ...newItemInfo[index],
-                content: auth(target.value),
-            };
-            setItemInfo(newItemInfo);
-        }
-    };
-
-    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         if (isOnComposition) return;
+
         const val = e.target.value;
-        e.target.value = auth(val);
-        // updateInfo(e);
+        e.target.value = auth(val, max);
+        const updatedInfo = { ...info };
+        updatedInfo[label].splice(id, 1, e.target.value);
+        setInfo(updatedInfo);
     };
-
-    // useEffect(() => {
-    //     count >= maxLength
-    //         ? setAlertType((t) => (t.indexOf("Max") > -1 ? t : (t += "Max")))
-    //         : setAlertType((t) => t.replace("Max", ""));
-    // // }, [count]);
-    // }, []);
-
-    // useEffect(() => {
-    //     alertType === "" && setMsg("");
-    //     alertType.indexOf("Limit") > -1 && setMsg((m) => (m.indexOf("欄") > -1 ? m : (m = ` 至多${limit}欄`)));
-    //     alertType.indexOf("Max") > -1 && setMsg((m) => (m.indexOf("字") > -1 ? m : (m = ` 至多${maxLength}字`)));
-    //     alertType.indexOf("Reg") > -1 && setMsg((m) => (m.indexOf("限") > -1 ? m : (m = ` 限半形英數及中文`)));
-    //     alertType.indexOf("Reg") > -1 ? canSubmit(false) : canSubmit(true);
-    //     true;
-    // // }, [alertType]);
-    // }, []);
 
     return (
         <>
-            {Object.entries(info).map(([label, info], idx) => {
+            {Object.entries(info).map(([label, info]) => {
                 return formConfig.map((rule, indexRule) => {
                     return (
-                        <div key={idx}>
+                        <div key={`${indexRule}`}>
                             {rule.label === label && (
-                                <div key={indexRule} className='FIContainer'>
+                                <div className='FIContainer'>
                                     <p className='FITitle'>{label}</p>
                                     {info.map((each, indexEachInfo) => {
                                         return (
-                                            <div key={indexEachInfo} className='FIMain'>
+                                            <div key={`${label}${indexEachInfo}`} className='FIMain'>
                                                 {label === rule.label && (
                                                     <div className='FIRow'>
-                                                        <input className='FIcheck' type='checkbox' name={label} />
+                                                        <input
+                                                            className='FIcheck'
+                                                            type='checkbox'
+                                                            name={label}
+                                                            onChange={(e) => checkHandler(e, label, indexEachInfo)}
+                                                        />
                                                         {label === "Title" ? (
                                                             <input
                                                                 className='FIInput'
                                                                 placeholder={`${each}`}
-                                                                onCompositionStart={compositionHandler}
-                                                                onCompositionUpdate={compositionHandler}
-                                                                onCompositionEnd={compositionHandler}
-                                                                onChange={(e) => onChangeHandler(e)}
+                                                                onCompositionStart={(e) =>
+                                                                    compositionHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                onCompositionUpdate={(e) =>
+                                                                    compositionHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                onCompositionEnd={(e) =>
+                                                                    compositionHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                onChange={(e) =>
+                                                                    onChangeHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
                                                                 type='text'
                                                             />
                                                         ) : (
                                                             <textarea
                                                                 className='FIInput'
                                                                 placeholder={`${each}`}
-                                                                onCompositionStart={compositionHandler}
-                                                                onCompositionUpdate={compositionHandler}
-                                                                onCompositionEnd={compositionHandler}
-                                                                onChange={(e) => onChangeHandler(e)}
+                                                                onCompositionStart={(e) =>
+                                                                    compositionHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                onCompositionUpdate={(e) =>
+                                                                    compositionHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                onCompositionEnd={(e) =>
+                                                                    compositionHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                onChange={(e) =>
+                                                                    onChangeHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
                                                             />
                                                         )}
                                                         <div className='FIInputCtrl'>
-                                                            {each.length > 1 ? (
+                                                            {info.length > 1 ? (
                                                                 <button
                                                                     className='FIMinus FIBtn'
                                                                     onClick={() =>
@@ -218,21 +273,30 @@ const FormItem = (props: any) => {
                                                                 {`${each.length}/${rule.maxLength}`}
                                                             </span>
                                                         </div>
-                                                        <span className='FIAlert FIRowAlert'>{alertType}</span>
+                                                        <span className='FIAlert FIRowAlert'>{`${authRex(
+                                                            label,
+                                                            indexEachInfo,
+                                                            rule.reg
+                                                        )}`}</span>
                                                     </div>
                                                 )}
                                             </div>
                                         );
                                     })}
                                     <div className='FIFooter'>
-                                        <span className='FIAlert'>{`msg`}</span>
+                                        <span className='FIAlert'>{""}</span>
                                         <div>
-                                            <button
-                                                className='FIBtn FIPlus'
-                                                onClick={() => btnPlusHandler(rule.limit, label)}
-                                            >
-                                                +
-                                            </button>
+                                            {label !== "Title" ? (
+                                                <button
+                                                    className='FIBtn FIPlus'
+                                                    onClick={() => btnPlusHandler(rule.limit, label)}
+                                                    disabled={!(info.length < rule.limit)}
+                                                >
+                                                    +
+                                                </button>
+                                            ) : (
+                                                ""
+                                            )}
                                         </div>
                                     </div>
                                 </div>
