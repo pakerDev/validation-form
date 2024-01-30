@@ -178,7 +178,11 @@ const FormItem = (props: IProps) => {
     }, [rerender]);
 
     useEffect(() => {
-        const updatedInfo = { Title: [""], SubTitle: [""], Description: [""] }; // 無效
+        const updatedInfo = { Title: [""], SubTitle: [""], Description: [""] };
+        const boxes = document.getElementsByClassName("FIInput");
+        for (const each of boxes) {
+            each.value = "";
+        }
         setInfo(updatedInfo);
         const updatedSub = { Title: [0], SubTitle: [], Description: [] };
         setSubmitItem(updatedSub);
