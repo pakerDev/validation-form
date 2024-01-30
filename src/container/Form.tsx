@@ -85,9 +85,9 @@ const Form = () => {
     const [data, setData] = useState(formData);
     const [submitInfo, setSubmitInfo] = useState({});
     const [showModal, setShowModal] = useState(false);
-    //const [previewData, setPreviewData] = useState(formData);
     const [canSubmit, setCanSubmit] = useState(false);
     const [rerender, setRerender] = useState(false);
+    const [clear, setClear] = useState(false);
 
     const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
         const newData = data.map((item) => {
@@ -103,7 +103,9 @@ const Form = () => {
         setSubmitInfo(i);
     };
 
-    const btnClearHandler = () => {};
+    const btnClearHandler = () => {
+        setClear((r) => !r);
+    };
 
     const btnSubmitHandler = () => {
         // setPreviewData(data);
@@ -141,7 +143,10 @@ const Form = () => {
     return (
         <div className='formContainer'>
             <div className='fromLeft'>
-                <FormItem formSubmitInfo={(newData) => updateInfo(newData)} rerender={rerender} />
+                <FormItem formSubmitInfo={(newData) => updateInfo(newData)} rerender={rerender} clear={clear} />
+                {`${JSON.stringify(submitInfo)}`.split(`"`)}
+                <hr />
+
                 <span className='FIAlert'> {!canSubmit && "三欄均需有內容"}</span>
                 <div className='FFooter'>
                     <button className='FBtn'>use template</button>
@@ -172,15 +177,12 @@ const Form = () => {
                 <div className='formContainer'>
                     <ConfirmModal
                         visible={showModal}
-                        content='是否確認提交?'
+                        content={`${JSON.stringify(submitInfo)}`}
                         onConfirm={handleConfirm}
                         onCancel={handleCancel}
                     />
                 </div>
-                {`${JSON.stringify(submitInfo)}`.split(`"`)}
-                <hr />
-                <br />
-                <hr />
+
                 {`${localStorage.getItem("mainData")}`}
                 {/* {JSON.parse(localStorage.getItem("mainData") ?? "")} */}
                 {/* {`${JSON.stringify(mainData)}`.split(`"`)} */}

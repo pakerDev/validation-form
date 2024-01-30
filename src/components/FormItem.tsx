@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 interface IProps {
     formSubmitInfo: (info: object) => void;
     rerender: boolean;
+    clear: boolean;
 }
 
 type TLabel = "Title" | "SubTitle" | "Description";
@@ -51,13 +52,13 @@ const initInfo = {
 };
 
 const submitItemInit: ISubmitInfo = {
-    Title: [],
+    Title: [0],
     SubTitle: [],
     Description: [],
 };
 
 const FormItem = (props: IProps) => {
-    const { formSubmitInfo, rerender } = props;
+    const { formSubmitInfo, rerender, clear } = props;
     const [info, setInfo] = useState(initInfo);
     const [submitItem, setSubmitItem] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
@@ -134,14 +135,6 @@ const FormItem = (props: IProps) => {
         }
     };
 
-    const updateInfo = (
-        e:
-            | React.ChangeEvent<HTMLInputElement>
-            | React.ChangeEvent<HTMLTextAreaElement>
-            | React.CompositionEvent<HTMLTextAreaElement>
-            | React.CompositionEvent<HTMLInputElement>
-    ) => {};
-
     const onChangeHandler = (
         e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
         label: TLabel,
@@ -180,9 +173,16 @@ const FormItem = (props: IProps) => {
             }
         }
         setInfo(updatedInfo);
-        setSubmitItem(submitItemInit);
-        // 想把打勾清掉
+        const updatedSub = { Title: [0], SubTitle: [], Description: [] };
+        setSubmitItem(updatedSub);
     }, [rerender]);
+
+    useEffect(() => {
+        const updatedInfo = { Title: [""], SubTitle: [""], Description: [""] }; // 無效
+        setInfo(updatedInfo);
+        const updatedSub = { Title: [0], SubTitle: [], Description: [] };
+        setSubmitItem(updatedSub);
+    }, [clear]);
 
     return (
         <>
@@ -194,6 +194,9 @@ const FormItem = (props: IProps) => {
                                 <div className='FIContainer'>
                                     <p className='FITitle'>{label}</p>
                                     {info.map((each, indexEachInfo) => {
+                                        {
+                                            submitItem[label];
+                                        }
                                         return (
                                             <div key={`${label}${indexEachInfo}`} className='FIMain'>
                                                 {label === rule.label && (
@@ -203,7 +206,9 @@ const FormItem = (props: IProps) => {
                                                             type='checkbox'
                                                             name={label}
                                                             onChange={(e) => checkHandler(e, label, indexEachInfo)}
+                                                            checked={submitItem[label].indexOf(indexEachInfo) > -1}
                                                         />
+
                                                         {label === "Title" ? (
                                                             <input
                                                                 className='FIInput'
