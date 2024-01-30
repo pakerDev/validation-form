@@ -1,86 +1,139 @@
 import { useEffect, useState } from "react";
-import { IFormItemProps, IBaseInfoObj } from "../container/Form";
 
 interface IProps {
-    formSet: (info: IBaseInfoObj[]) => void;
-    item: IFormItemProps;
-    canSubmit: React.Dispatch<React.SetStateAction<boolean>>;
+    formSubmitInfo: (info: object) => void;
 }
 
+type TLabel = "Title" | "SubTitle" | "Description";
+
+interface IFormConfig {
+    label: TLabel;
+    limit: number;
+    maxLength: number;
+    reg: RegExp;
+}
+interface ISubmitInfo {
+    Title: number[];
+    SubTitle: number[];
+    Description: number[];
+}
+
+const titleReg = /[\w\u4e00-\u9fa5\s]/g;
+const subReg = /[\w\u4e00-\u9fa5\s]/g;
+const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\，\,\.\'\"s]/g;
+
+const formConfig: IFormConfig[] = [
+    {
+        label: "Title",
+        limit: 1,
+        maxLength: 15,
+        reg: titleReg,
+    },
+    {
+        label: "SubTitle",
+        limit: 3,
+        maxLength: 30,
+        reg: subReg,
+    },
+    {
+        label: "Description",
+        limit: 5,
+        maxLength: 60,
+        reg: descReg,
+    },
+];
+
+const initInfo = {
+    Title: [""],
+    SubTitle: [""],
+    Description: [""],
+};
+const submitInfoInit: ISubmitInfo = {
+    Title: [""],
+    SubTitle: [""],
+    Description: [""],
+};
+
+const submitItemInit: ISubmitInfo = {
+    Title: [],
+    SubTitle: [],
+    Description: [],
+};
+
 const FormItem = (props: IProps) => {
-    const { item, formSet, canSubmit } = props;
-    const { label, limit, maxLength, info } = { ...item };
-
-    const [itemInfo, setItemInfo] = useState(info);
-    const [canAdd, setCanAdd] = useState(false);
-    const [canDelete, setCanDelete] = useState(false);
+    const { formSubmitInfo } = props;
+    const [info, setInfo] = useState(initInfo);
+    const [submitItem, setSubmitItem] = useState(submitItemInit);
+    // const [submitInfo, setSubmitInfo] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
-    const [alertType, setAlertType] = useState("");
-    const [count, setCount] = useState(0);
-    const [msg, setMsg] = useState("");
 
-    const wordReg = /[\w\u4e00-\u9fa5\s]/g;
-
-    if (itemInfo.length > limit) {
-        setItemInfo(itemInfo.slice(-limit));
-    }
-
-    const baseInfoObj: IBaseInfoObj = {
-        createTime: 0,
-        content: "",
-    };
-
-    const btnPlusHandler = (limit: number) => {
-        if (itemInfo.length < limit) {
-            const newItem = { ...baseInfoObj, createTime: Date.now() };
-            setItemInfo([...itemInfo, newItem]);
+    const checkHandler = (e, label: TLabel, id: number) => {
+        const isChecked = e.target.checked;
+        if (isChecked) {
+            const updatedSubmit = { ...submitItem };
+            if (updatedSubmit[label].indexOf(id) > -1) return;
+            updatedSubmit[label].push(id);
+            setSubmitItem(updatedSubmit);
+        } else {
+            const updatedSubmit = { ...submitItem };
+            let a = updatedSubmit[label].indexOf(id);
+            updatedSubmit[label].splice(a, 1);
+            setSubmitItem(updatedSubmit);
         }
     };
 
-    useEffect(() => {
-        itemInfo.length < limit ? setCanAdd(true) : setCanAdd(false);
-        itemInfo.length > 1 ? setCanDelete(true) : setCanDelete(false);
-        itemInfo.length >= limit
-            ? setAlertType((t) => (t.indexOf("Limit") > -1 ? t : (t += "Limit")))
-            : setAlertType((t) => t.replace("Limit", ""));
-
-        formSet([...itemInfo]);
-    }, [itemInfo]);
-
-    const btnMinusHandler = (n: number) => {
-        if (itemInfo.length < 2) return;
-        setItemInfo(itemInfo.filter((obj) => obj.createTime !== n));
-        setAlertType((t) => t.replace("Limit", ""));
+    const btnPlusHandler = (limit: number, label: TLabel) => {
+        if (info[label].length < limit) {
+            const updatedInfo = { ...info };
+            updatedInfo[label].push("");
+            setInfo(updatedInfo);
+        }
     };
 
-    const auth = (val: string) => {
+    const btnMinusHandler = (label: TLabel, n: number) => {
+        if (info[label].length < 2) return;
+        const updatedInfo = { ...info };
+        updatedInfo[label].splice(n, 1);
+        setInfo(updatedInfo);
+    };
+
+    const authLength = (val: string, max: number) => {
         let res = val;
+
+        if (res.length >= max) {
+            res = res.slice(0, max);
+        }
+        return res;
+    };
+
+    const authRex = (label: TLabel, id: number, reg: RegExp) => {
+        let res = "";
+        let val = info[label][id];
 
         const chk =
             val
-                .match(wordReg)
+                .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
-        chk === res
-            ? setAlertType((t) => t.replace("Reg", ""))
-            : setAlertType((t) => (t.indexOf("Reg") > -1 ? t : (t += "Reg")));
+        chk === val ? "" : (res = "reg");
 
-        if (res.length >= maxLength) {
-            res = res.slice(0, maxLength);
-        }
-        setCount(res.length);
         return res;
     };
 
     const compositionHandler = (
-        e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>
+        e: React.CompositionEvent<HTMLTextAreaElement> | React.CompositionEvent<HTMLInputElement>,
+        label: TLabel,
+        id: number,
+        max: number
     ) => {
         const target = e.target as HTMLInputElement;
         const val = target.value;
         if (e.type === "compositionend") {
             setIsOnComposition(false);
-            target.value = auth(val);
-            updateInfo(e);
+            target.value = authLength(val, max);
+            const updatedInfo = { ...info };
+            updatedInfo[label].splice(id, 1, target.value);
+            setInfo(updatedInfo);
         } else {
             setIsOnComposition(true);
         }
@@ -92,92 +145,150 @@ const FormItem = (props: IProps) => {
             | React.ChangeEvent<HTMLTextAreaElement>
             | React.CompositionEvent<HTMLTextAreaElement>
             | React.CompositionEvent<HTMLInputElement>
+    ) => {};
+
+    const onChangeHandler = (
+        e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+        label: TLabel,
+        id: number,
+        max: number
     ) => {
-        const target = e.target as HTMLInputElement;
-        const index = itemInfo.findIndex((obj) => obj.createTime === +target.placeholder);
-
-        if (index !== -1) {
-            const newItemInfo = [...itemInfo];
-            newItemInfo[index] = {
-                ...newItemInfo[index],
-                content: auth(target.value),
-            };
-            setItemInfo(newItemInfo);
-        }
-    };
-
-    const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         if (isOnComposition) return;
         const val = e.target.value;
-        e.target.value = auth(val);
-        updateInfo(e);
+        e.target.value = authLength(val, max);
+
+        const updatedInfo = { ...info };
+        submitItem[label].indexOf(id);
+        updatedInfo[label].splice(id, 1, e.target.value);
+        setInfo(updatedInfo);
     };
 
     useEffect(() => {
-        count >= maxLength
-            ? setAlertType((t) => (t.indexOf("Max") > -1 ? t : (t += "Max")))
-            : setAlertType((t) => t.replace("Max", ""));
-    }, [count]);
+        let newSubmit = {};
 
-    useEffect(() => {
-        alertType === "" && setMsg("");
-        alertType.indexOf("Limit") > -1 && setMsg((m) => (m.indexOf("欄") > -1 ? m : (m = ` 至多${limit}欄`)));
-        alertType.indexOf("Max") > -1 && setMsg((m) => (m.indexOf("字") > -1 ? m : (m = ` 至多${maxLength}字`)));
-        alertType.indexOf("Reg") > -1 && setMsg((m) => (m.indexOf("限") > -1 ? m : (m = ` 限半形英數及中文`)));
-        alertType.indexOf("Reg") > -1 ? canSubmit(false) : canSubmit(true);
-        true;
-    }, [alertType]);
+        for (const label in info) {
+            newSubmit[label] = submitItem[label]
+                .sort()
+                .map((i) => info[label][i])
+                .filter((item) => item.trim() !== "");
+        }
+        formSubmitInfo(newSubmit);
+    }, [info, submitItem]);
 
     return (
         <>
-            <div className='FIContainer'>
-                <p className='FITitle'>{label}</p>
-                <div className='FIMain'>
-                    {itemInfo.map((each) => {
-                        return (
-                            <div className='FIRow' key={each.createTime}>
-                                {label === "Title" ? (
-                                    <input
-                                        className='FIInput'
-                                        placeholder={`${each.createTime}`}
-                                        onCompositionStart={compositionHandler}
-                                        onCompositionUpdate={compositionHandler}
-                                        onCompositionEnd={compositionHandler}
-                                        onChange={(e) => onChangeHandler(e)}
-                                        type='text'
-                                    />
-                                ) : (
-                                    <textarea
-                                        className='FIInput'
-                                        placeholder={`${each.createTime}`}
-                                        onCompositionStart={compositionHandler}
-                                        onCompositionUpdate={compositionHandler}
-                                        onCompositionEnd={compositionHandler}
-                                        onChange={(e) => onChangeHandler(e)}
-                                    />
-                                )}
+            {Object.entries(info).map(([label, info]) => {
+                return formConfig.map((rule, indexRule) => {
+                    return (
+                        <div key={`${indexRule}`}>
+                            {rule.label === label && (
+                                <div className='FIContainer'>
+                                    <p className='FITitle'>{label}</p>
+                                    {info.map((each, indexEachInfo) => {
+                                        return (
+                                            <div key={`${label}${indexEachInfo}`} className='FIMain'>
+                                                {label === rule.label && (
+                                                    <div className='FIRow'>
+                                                        <input
+                                                            className='FIcheck'
+                                                            type='checkbox'
+                                                            name={label}
+                                                            onChange={(e) => checkHandler(e, label, indexEachInfo)}
+                                                        />
+                                                        {label === "Title" ? (
+                                                            <input
+                                                                className='FIInput'
+                                                                placeholder={`${each}`}
+                                                                onCompositionEnd={(e) =>
+                                                                    compositionHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                onChange={(e) =>
+                                                                    onChangeHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                type='text'
+                                                            />
+                                                        ) : (
+                                                            <textarea
+                                                                className='FIInput'
+                                                                placeholder={`${each}`}
+                                                                onCompositionEnd={(e) =>
+                                                                    compositionHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                                onChange={(e) =>
+                                                                    onChangeHandler(
+                                                                        e,
+                                                                        label,
+                                                                        indexEachInfo,
+                                                                        rule.maxLength
+                                                                    )
+                                                                }
+                                                            />
+                                                        )}
+                                                        <div className='FIInputCtrl'>
+                                                            {info.length > 1 ? (
+                                                                <button
+                                                                    className='FIMinus FIBtn'
+                                                                    onClick={() =>
+                                                                        btnMinusHandler(label, indexEachInfo)
+                                                                    }
+                                                                >
+                                                                    -
+                                                                </button>
+                                                            ) : (
+                                                                <button className='FIMinus FIBtn' disabled></button>
+                                                            )}
 
-                                <button
-                                    className='FIMinus FIBtn'
-                                    disabled={!canDelete}
-                                    onClick={() => btnMinusHandler(each.createTime)}
-                                >
-                                    -
-                                </button>
-                            </div>
-                        );
-                    })}
-                </div>
-                <div className='FIFooter'>
-                    <span className='FIAlert'>{msg}</span>
-                    <div>
-                        <span> {`${count}/${maxLength}`} </span>
-                        <button className='FIBtn FIPlus' onClick={() => btnPlusHandler(limit)} disabled={!canAdd}>
-                            +
-                        </button>
-                    </div>
-                </div>
-            </div>
+                                                            <span className='FIWordCount'>
+                                                                {`${each.length}/${rule.maxLength}`}
+                                                            </span>
+                                                        </div>
+                                                        <span className='FIAlert FIRowAlert'>{`${authRex(
+                                                            label,
+                                                            indexEachInfo,
+                                                            rule.reg
+                                                        )}`}</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                    <div className='FIFooter'>
+                                        <span className='FIAlert'>{""}</span>
+                                        <div>
+                                            {label !== "Title" ? (
+                                                <button
+                                                    className='FIBtn FIPlus'
+                                                    onClick={() => btnPlusHandler(rule.limit, label)}
+                                                    disabled={!(info.length < rule.limit)}
+                                                >
+                                                    +
+                                                </button>
+                                            ) : (
+                                                ""
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    );
+                });
+            })}
         </>
     );
 };

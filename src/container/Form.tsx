@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import FormItem from "../components/FormItem.tsx";
 
 export interface IBaseInfoObj {
@@ -49,10 +50,28 @@ export const formData: IFormItemProps[] = [
     },
 ];
 
+export const mainData = [
+    {
+        info: {},
+        createTime: 0,
+        isCreateNew: true,
+        isDone: false,
+        isTemplate: false,
+    },
+];
+
+const initInfo = {
+    Title: [""],
+    SubTitle: [""],
+    Description: [""],
+};
+
 const Form = () => {
     const [data, setData] = useState(formData);
+    const [submitInfo, setSubmitInfo] = useState({});
+
     const [previewData, setPreviewData] = useState(formData);
-    const [canSubmit, setCanSubmit] = useState(true);
+    const [canSubmit, setCanSubmit] = useState(false);
 
     const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
         const newData = data.map((item) => {
@@ -64,30 +83,44 @@ const Form = () => {
         setData(newData);
     };
 
+    const updateInfo = (i) => {
+        setSubmitInfo(i);
+
+        //驗證內容鎖submit
+    };
+
     const btnSubmitHandler = () => {
         setPreviewData(data);
     };
 
+    useEffect(() => {
+        for (const p in submitInfo) {
+            if (submitInfo[p].length === 0) {
+                setCanSubmit(false);
+                return;
+            }
+        }
+        setCanSubmit(true);
+    }, [submitInfo]);
+
     return (
         <div className='formContainer'>
             <div className='fromLeft'>
-                {data.map((item) => {
-                    return (
-                        <FormItem
-                            key={item.label}
-                            formSet={(updatedInfo) => updateData(item.label, updatedInfo)}
-                            item={item}
-                            canSubmit={setCanSubmit}
-                        />
-                    );
-                })}
+                <FormItem formSubmitInfo={(newData) => updateInfo(newData)} />
                 <div className='FFooter'>
-                    <button className='FBtn' onClick={() => btnSubmitHandler()} disabled={!canSubmit} type='submit'>
+                    <button className='FBtn'>use template</button>
+                    <button className='FBtn'>clear</button>
+                    <button
+                        className='FSubmit FBtn'
+                        onClick={() => btnSubmitHandler()}
+                        disabled={!canSubmit}
+                        type='submit'
+                    >
                         submit
                     </button>
                 </div>
             </div>
-            <div className='formRight'>
+            {/* <div className='formRight'>
                 {previewData.map((i) => {
                     return (
                         <div key={i.label} className='formJson'>
@@ -98,7 +131,7 @@ const Form = () => {
                         </div>
                     );
                 })}
-            </div>
+            </div> */}
         </div>
     );
 };
