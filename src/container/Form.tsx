@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import FormItem from "../components/FormItem.tsx";
+import ConfirmModal from "../components/ConfirmModal.tsx";
 
 export interface IBaseInfoObj {
     createTime: number;
@@ -52,26 +53,41 @@ export const formData: IFormItemProps[] = [
 
 export const mainData = [
     {
-        info: {},
+        info: {
+            Title: ["my template Title"],
+            SubTitle: ["my template SubTitle"],
+            Description: ["my template Description"],
+        },
         createTime: 0,
         isCreateNew: true,
         isDone: false,
-        isTemplate: false,
+        isTemplate: true,
     },
 ];
 
-const initInfo = {
-    Title: [""],
-    SubTitle: [""],
-    Description: [""],
-};
+// const NewMainData = [
+//     {
+//         info: {},
+//         createTime: 0,
+//         isCreateNew: true,
+//         isDone: false,
+//         isTemplate: false,
+//     },
+// ];
+
+// const initInfo = {
+//     Title: [""],
+//     SubTitle: [""],
+//     Description: [""],
+// };
 
 const Form = () => {
     const [data, setData] = useState(formData);
     const [submitInfo, setSubmitInfo] = useState({});
-
-    const [previewData, setPreviewData] = useState(formData);
+    const [showModal, setShowModal] = useState(false);
+    //const [previewData, setPreviewData] = useState(formData);
     const [canSubmit, setCanSubmit] = useState(false);
+    const [rerender, setRerender] = useState(false);
 
     const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
         const newData = data.map((item) => {
@@ -87,8 +103,29 @@ const Form = () => {
         setSubmitInfo(i);
     };
 
+    const btnClearHandler = () => {};
+
     const btnSubmitHandler = () => {
-        setPreviewData(data);
+        // setPreviewData(data);
+        setShowModal(true);
+    };
+
+    const handleConfirm = () => {
+        const newMainData = {
+            info: submitInfo,
+            createTime: Date.now(),
+            isCreateNew: true,
+            isDone: false,
+            isTemplate: false,
+        };
+        mainData.push(newMainData);
+        setShowModal(false);
+        setRerender((r) => !r);
+        localStorage.setItem("mainData", JSON.stringify(mainData));
+    };
+
+    const handleCancel = () => {
+        setShowModal(false);
     };
 
     useEffect(() => {
@@ -104,11 +141,13 @@ const Form = () => {
     return (
         <div className='formContainer'>
             <div className='fromLeft'>
-                <FormItem formSubmitInfo={(newData) => updateInfo(newData)} />
+                <FormItem formSubmitInfo={(newData) => updateInfo(newData)} rerender={rerender} />
                 <span className='FIAlert'> {!canSubmit && "三欄均需有內容"}</span>
                 <div className='FFooter'>
                     <button className='FBtn'>use template</button>
-                    <button className='FBtn'>clear</button>
+                    <button className='FBtn' onClick={() => btnClearHandler()}>
+                        clear
+                    </button>
                     <button
                         className='FSubmit FBtn'
                         onClick={() => btnSubmitHandler()}
@@ -119,8 +158,8 @@ const Form = () => {
                     </button>
                 </div>
             </div>
-            {/* <div className='formRight'>
-                {previewData.map((i) => {
+            <div className='formRight'>
+                {/* {previewData.map((i) => {
                     return (
                         <div key={i.label} className='formJson'>
                             <p>label: {i.label} </p>
@@ -129,8 +168,23 @@ const Form = () => {
                             <p>info: {JSON.stringify(i.info).split(`"`)} </p>
                         </div>
                     );
-                })}
-            </div> */}
+                })} */}
+                <div className='formContainer'>
+                    <ConfirmModal
+                        visible={showModal}
+                        content='是否確認提交?'
+                        onConfirm={handleConfirm}
+                        onCancel={handleCancel}
+                    />
+                </div>
+                {`${JSON.stringify(submitInfo)}`.split(`"`)}
+                <hr />
+                <br />
+                <hr />
+                {`${localStorage.getItem("mainData")}`}
+                {/* {JSON.parse(localStorage.getItem("mainData") ?? "")} */}
+                {/* {`${JSON.stringify(mainData)}`.split(`"`)} */}
+            </div>
         </div>
     );
 };

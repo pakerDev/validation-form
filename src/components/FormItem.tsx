@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 interface IProps {
     formSubmitInfo: (info: object) => void;
+    rerender: boolean;
 }
 
 type TLabel = "Title" | "SubTitle" | "Description";
@@ -48,11 +49,6 @@ const initInfo = {
     SubTitle: [""],
     Description: [""],
 };
-const submitInfoInit: ISubmitInfo = {
-    Title: [""],
-    SubTitle: [""],
-    Description: [""],
-};
 
 const submitItemInit: ISubmitInfo = {
     Title: [],
@@ -61,10 +57,9 @@ const submitItemInit: ISubmitInfo = {
 };
 
 const FormItem = (props: IProps) => {
-    const { formSubmitInfo } = props;
+    const { formSubmitInfo, rerender } = props;
     const [info, setInfo] = useState(initInfo);
     const [submitItem, setSubmitItem] = useState(submitItemInit);
-    // const [submitInfo, setSubmitInfo] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
 
     const checkHandler = (e, label: TLabel, id: number) => {
@@ -166,14 +161,28 @@ const FormItem = (props: IProps) => {
     useEffect(() => {
         let newSubmit = {};
 
-        for (const label in info) {
+        for (const label: TLabel in info) {
             newSubmit[label] = submitItem[label]
                 .sort()
                 .map((i) => info[label][i])
-                .filter((item) => item.trim() !== "");
+                .filter((item) => item !== "");
         }
         formSubmitInfo(newSubmit);
     }, [info, submitItem]);
+
+    useEffect(() => {
+        let updatedInfo = { ...info };
+        for (const label in updatedInfo) {
+            if (info[label].length < 2) {
+                updatedInfo[label] = updatedInfo[label];
+            } else {
+                updatedInfo[label] = updatedInfo[label].filter((item) => item !== "");
+            }
+        }
+        setInfo(updatedInfo);
+        setSubmitItem(submitItemInit);
+        // 想把打勾清掉
+    }, [rerender]);
 
     return (
         <>
