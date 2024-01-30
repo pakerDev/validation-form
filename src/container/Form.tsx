@@ -85,8 +85,6 @@ const Form = () => {
 
     const updateInfo = (i) => {
         setSubmitInfo(i);
-
-        //驗證內容鎖submit
     };
 
     const btnSubmitHandler = () => {
@@ -107,6 +105,7 @@ const Form = () => {
         <div className='formContainer'>
             <div className='fromLeft'>
                 <FormItem formSubmitInfo={(newData) => updateInfo(newData)} />
+                <span className='FIAlert'> {!canSubmit && "三欄均需有內容"}</span>
                 <div className='FFooter'>
                     <button className='FBtn'>use template</button>
                     <button className='FBtn'>clear</button>
