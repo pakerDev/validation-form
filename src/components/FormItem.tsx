@@ -91,6 +91,14 @@ const FormItem = (props: IProps) => {
         const updatedInfo = { ...info };
         updatedInfo[label].splice(n, 1);
         setInfo(updatedInfo);
+
+        const updatedSub = { ...submitItem };
+        let index = updatedSub[label].indexOf(n);
+        if (index > -1) {
+            updatedSub[label].splice(index, 1);
+        }
+        updatedSub[label] = updatedSub[label].map((i) => (i > n ? i - 1 : i));
+        setSubmitItem(updatedSub);
     };
 
     const authLength = (val: string, max: number) => {
