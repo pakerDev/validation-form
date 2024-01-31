@@ -89,8 +89,15 @@ const FormItem = (props: IProps) => {
     const btnMinusHandler = (label: TLabel, n: number) => {
         if (info[label].length < 2) return;
         const updatedInfo = { ...info };
+
         updatedInfo[label].splice(n, 1);
         setInfo(updatedInfo);
+        // // 畫面不對！
+        let boxes = document.getElementsByName(`${label}inp`);
+        for (const [id, each] of updatedInfo[label].entries()) {
+            console.log(id, each);
+            boxes[id].value = each;
+        }
 
         const updatedSub = { ...submitItem };
         let index = updatedSub[label].indexOf(n);
@@ -224,6 +231,7 @@ const FormItem = (props: IProps) => {
                                                         {label === "Title" ? (
                                                             <input
                                                                 className='FIInput'
+                                                                name={`${label}inp`}
                                                                 placeholder={`${each}`}
                                                                 onCompositionEnd={(e) =>
                                                                     compositionHandler(
@@ -246,6 +254,7 @@ const FormItem = (props: IProps) => {
                                                         ) : (
                                                             <textarea
                                                                 className='FIInput'
+                                                                name={`${label}inp`}
                                                                 placeholder={`${each}`}
                                                                 onCompositionEnd={(e) =>
                                                                     compositionHandler(
