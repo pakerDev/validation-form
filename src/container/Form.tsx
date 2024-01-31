@@ -25,6 +25,8 @@ const Form = () => {
     const [canSubmit, setCanSubmit] = useState(false);
     const [rerender, setRerender] = useState(false);
     const [clear, setClear] = useState(false);
+    const [isIncreasing, setIsIncreasing] = useState(false);
+
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
     //setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
     // const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
@@ -66,6 +68,21 @@ const Form = () => {
     const handleCancel = () => {
         setShowModal(false);
     };
+
+    useEffect(() => {
+        const updatedJson = [...savedDataJson];
+        if (isIncreasing) {
+            updatedJson.sort(function (a, b) {
+                return b.createTime - a.createTime;
+            });
+        } else {
+            updatedJson.sort(function (a, b) {
+                return a.createTime - b.createTime;
+            });
+        }
+        localStorage.setItem("mainData", JSON.stringify(updatedJson));
+        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+    }, [isIncreasing]);
 
     const dropHandler = (id: number) => {
         //console.log(savedDataJson[id].info.Title);
@@ -120,7 +137,9 @@ const Form = () => {
                             <input className='formSearchInput' type='text' name='' id='' />
                             <button className='formSearchBtn '>search</button>
                         </div>
-                        <button className='formSortBtn FBtn'>sort</button>
+                        <button className='formSortBtn FBtn' onClick={() => setIsIncreasing((n) => !n)}>
+                            sort
+                        </button>
                     </div>
                     <div className='formRMain'>
                         {savedDataJson.map((eachData, index) => {
