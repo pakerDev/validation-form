@@ -65,17 +65,15 @@ const FormItem = (props: IProps) => {
 
     const checkHandler = (e, label: TLabel, id: number) => {
         const isChecked = e.target.checked;
+        const updatedSubmit = { ...submitItem };
         if (isChecked) {
-            const updatedSubmit = { ...submitItem };
             if (updatedSubmit[label].indexOf(id) > -1) return;
             updatedSubmit[label].push(id);
-            setSubmitItem(updatedSubmit);
         } else {
-            const updatedSubmit = { ...submitItem };
             let a = updatedSubmit[label].indexOf(id);
             updatedSubmit[label].splice(a, 1);
-            setSubmitItem(updatedSubmit);
         }
+        setSubmitItem(updatedSubmit);
     };
 
     const btnPlusHandler = (limit: number, label: TLabel) => {
