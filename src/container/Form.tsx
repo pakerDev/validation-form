@@ -67,6 +67,14 @@ const Form = () => {
         setShowModal(false);
     };
 
+    const dropHandler = (id: number) => {
+        //console.log(savedDataJson[id].info.Title);
+        const updatedJson = [...savedDataJson];
+        updatedJson.splice(id, 1);
+        localStorage.setItem("mainData", JSON.stringify(updatedJson));
+        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+    };
+
     useEffect(() => {
         for (const p in submitInfo) {
             if (submitInfo[p].length === 0) {
@@ -119,17 +127,17 @@ const Form = () => {
                             return (
                                 eachData.isTemplate === false && (
                                     <div className='todoContainer' key={index}>
+                                        {index}
                                         <input className='todoCheck' type='checkbox' />
                                         <Todo data={eachData} />
                                         <div>
                                             <button>edit</button>
-                                            <button>drop</button>
+                                            <button onClick={() => dropHandler(index)}>drop</button>
                                         </div>
                                     </div>
                                 )
                             );
                         })}
-                        main
                         <Todo data={savedDataJson} />
                     </div>
                     <div className='formRFooter'>
