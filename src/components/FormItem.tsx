@@ -22,7 +22,7 @@ interface ISubmitInfo {
 
 const titleReg = /[\w\u4e00-\u9fa5\s]/g;
 const subReg = /[\w\u4e00-\u9fa5\s]/g;
-const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\，\,\.\'\"s]/g;
+const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\，\,\.\'\"\s]/g;
 
 const formConfig: IFormConfig[] = [
     {
