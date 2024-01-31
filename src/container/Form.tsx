@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react";
 
-import FormItem from "../components/FormItem.tsx";
+import FormItem, { IInfo, TLabel } from "../components/FormItem.tsx";
 import ConfirmModal from "../components/ConfirmModal.tsx";
 import Todo from "../components/ToDoItem.tsx";
 
-export const mainData = [
+export interface IMainData {
+    info: IInfo;
+    createTime: number;
+    isCreateNew: boolean;
+    isDone: boolean;
+    isTemplate: boolean;
+}
+
+const mainData = [
     {
         info: {
             Title: ["my template Title"],
@@ -27,12 +35,12 @@ const Form = () => {
     const [clear, setClear] = useState(false);
     const [isIncreasing, setIsIncreasing] = useState(false);
 
+    !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
     //setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
     // const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
-    !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
 
-    const updateInfo = (i) => {
+    const updateInfo = (i: IInfo) => {
         setSubmitInfo(i);
     };
 
@@ -94,7 +102,7 @@ const Form = () => {
 
     useEffect(() => {
         for (const p in submitInfo) {
-            if (submitInfo[p].length === 0) {
+            if (submitInfo[p as TLabel].length === 0) {
                 setCanSubmit(false);
                 return;
             }
@@ -142,7 +150,7 @@ const Form = () => {
                         </button>
                     </div>
                     <div className='formRMain'>
-                        {savedDataJson.map((eachData, index) => {
+                        {savedDataJson.map((eachData: IMainData, index: number) => {
                             return (
                                 eachData.isTemplate === false && (
                                     <div className='todoContainer' key={index}>

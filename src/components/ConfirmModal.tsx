@@ -1,13 +1,13 @@
 import { ISubmitInfo } from "./FormItem";
 
-interface Iprops {
+interface IProps {
     visible: boolean;
     content: ISubmitInfo;
-    onConfirm: void;
-    onCancel: void;
+    onConfirm: () => void;
+    onCancel: () => void;
 }
 
-const ConfirmModal = (props: Iprops) => {
+const ConfirmModal = (props: IProps) => {
     const { visible, content, onConfirm, onCancel } = { ...props };
     if (!visible) return null;
 

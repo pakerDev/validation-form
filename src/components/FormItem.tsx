@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
 interface IProps {
-    formSubmitInfo: (info: ISubmitInfo) => void;
+    formSubmitInfo: (info: IInfo) => void;
     rerender: boolean;
     clear: boolean;
 }
 
-type TLabel = "Title" | "SubTitle" | "Description";
+export type TLabel = "Title" | "SubTitle" | "Description";
 
 interface IFormConfig {
     label: TLabel;
@@ -14,10 +14,16 @@ interface IFormConfig {
     maxLength: number;
     reg: RegExp;
 }
+
 export interface ISubmitInfo {
     Title: number[];
     SubTitle: number[];
     Description: number[];
+}
+export interface IInfo {
+    Title: string[];
+    SubTitle: string[];
+    Description: string[];
 }
 
 const titleReg = /[\w\u4e00-\u9fa5\s]/g;
@@ -63,7 +69,7 @@ const FormItem = (props: IProps) => {
     const [submitItem, setSubmitItem] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
 
-    const checkHandler = (e, label: TLabel, id: number) => {
+    const checkHandler = (e: React.ChangeEvent<HTMLInputElement>, label: TLabel, id: number) => {
         const isChecked = e.target.checked;
         const updatedSubmit = { ...submitItem };
         if (isChecked) {
@@ -78,21 +84,18 @@ const FormItem = (props: IProps) => {
 
     const btnPlusHandler = (limit: number, label: TLabel) => {
         if (info[label].length < limit) {
-            const updatedInfo = { ...info };
-            updatedInfo[label].push("");
-            setInfo(updatedInfo);
+            setInfo({ ...info, [label]: [...info[label], ""] });
         }
     };
 
     const btnMinusHandler = (label: TLabel, n: number) => {
         if (info[label].length < 2) return;
         const updatedInfo = { ...info };
-
         updatedInfo[label].splice(n, 1);
         setInfo(updatedInfo);
-        let boxes = document.getElementsByName(`${label}inp`);
+
+        const boxes = document.getElementsByName(`${label}inp`);
         for (const [id, each] of updatedInfo[label].entries()) {
-            console.log(id, each);
             boxes[id].value = each;
         }
 
@@ -164,13 +167,13 @@ const FormItem = (props: IProps) => {
     };
 
     useEffect(() => {
-        let newSubmit = {};
+        let newSubmit: IInfo = { Title: [""], SubTitle: [""], Description: [""] };
 
-        for (const label: TLabel in info) {
-            newSubmit[label] = submitItem[label]
+        for (const label in info) {
+            newSubmit[label as TLabel] = submitItem[label as TLabel]
                 .sort()
-                .map((i) => info[label][i])
-                .filter((item) => item !== "");
+                .map((i: number) => info[label as TLabel][i])
+                .filter((item: string) => item !== "");
         }
         formSubmitInfo(newSubmit);
     }, [info, submitItem]);
@@ -178,11 +181,8 @@ const FormItem = (props: IProps) => {
     useEffect(() => {
         let updatedInfo = { ...info };
         for (const label in updatedInfo) {
-            if (info[label].length < 2) {
-                updatedInfo[label] = updatedInfo[label];
-            } else {
-                updatedInfo[label] = updatedInfo[label].filter((item) => item !== "");
-            }
+            info[label as TLabel].length >= 2 &&
+                (updatedInfo[label as TLabel] = updatedInfo[label as TLabel].filter((item) => item !== ""));
         }
         setInfo(updatedInfo);
         const updatedSub = { Title: [0], SubTitle: [], Description: [] };
@@ -196,6 +196,7 @@ const FormItem = (props: IProps) => {
             each.value = "";
         }
         setInfo(updatedInfo);
+        console.log("aaa");
         const updatedSub = { Title: [0], SubTitle: [], Description: [] };
         setSubmitItem(updatedSub);
     }, [clear]);

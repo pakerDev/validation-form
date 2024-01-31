@@ -1,3 +1,5 @@
+import { IMainData } from "../container/Form";
+
 const ToDoItem = ({ data }) => {
     return (
         <div className='todoItemCOntainer'>
@@ -7,7 +9,7 @@ const ToDoItem = ({ data }) => {
                         <div key={k} className=''>
                             <span>{k}: </span>
                             <span>
-                                {v.map((i, id) => {
+                                {v.map((i: string, id: number) => {
                                     return <span key={id}> {i} </span>;
                                 })}
                             </span>
