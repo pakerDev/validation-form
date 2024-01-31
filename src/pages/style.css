@@ -4,7 +4,9 @@
     --text0: #fff;
     --text1: #ddd;
     --text2: #aaa;
+    --text3: #777;
     --alert0: #a52a2a;
+    --coot: transparent;
 }
 
 * {
@@ -211,11 +213,82 @@
 }
 
 .formRight {
+    border: 1px red solid;
+
+    padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-left: 1rem;
+}
+
+.todoContainer {
+    display: flex;
+    align-items: center;
+}
+
+.todoCheck {
+    margin-right: 8px;
+}
+
+.todoItemCOntainer {
+    /* border: 1px gold solid; */
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.formRHead {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.formSearchBar {
+    border: 1px var(--text3) solid;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.formSearchInput {
+    width: 320px;
+    border: none;
+    background-color: var(--coot);
+    padding: 4px;
+    font-size: 16px;
+
+    &:focus {
+        border: none;
+    }
+}
+
+.formSearchBtn {
+    width: 80px;
+    margin: 0;
+    padding: 8px 0;
+    background-color: var(--coot);
+    border-left: 1px var(--text3) solid;
+    border-radius: 0;
+
+    &:hover {
+        border: 1px var(--text0) solid;
+        border-radius: 0 4px 4px 0;
+    }
+}
+
+.formRMain {
+    padding: 16px;
+}
+
+.formSortBtn {
+    width: 60px;
+    margin: 0 0 0 8px;
+    padding: 8px;
 }
 
 .formJson {

@@ -2,54 +2,7 @@ import { useEffect, useState } from "react";
 
 import FormItem from "../components/FormItem.tsx";
 import ConfirmModal from "../components/ConfirmModal.tsx";
-
-// export interface IBaseInfoObj {
-//     createTime: number;
-//     content: string;
-// }
-
-// export interface IFormItemProps {
-//     label: string;
-//     limit: number;
-//     maxLength: number;
-//     info: IBaseInfoObj[];
-// }
-
-// export const formData: IFormItemProps[] = [
-//     {
-//         label: "Title",
-//         limit: 1,
-//         maxLength: 15,
-//         info: [
-//             {
-//                 createTime: Date.now(),
-//                 content: "",
-//             },
-//         ],
-//     },
-//     {
-//         label: "SubTitle",
-//         limit: 3,
-//         maxLength: 30,
-//         info: [
-//             {
-//                 createTime: Date.now(),
-//                 content: "",
-//             },
-//         ],
-//     },
-//     {
-//         label: "Description",
-//         limit: 5,
-//         maxLength: 60,
-//         info: [
-//             {
-//                 createTime: Date.now(),
-//                 content: "",
-//             },
-//         ],
-//     },
-// ];
+import Todo from "../components/ToDoItem.tsx";
 
 export const mainData = [
     {
@@ -58,7 +11,7 @@ export const mainData = [
             SubTitle: ["my template SubTitle"],
             Description: ["my template Description"],
         },
-        createTime: 0,
+        createTime: Date.now(),
         isCreateNew: true,
         isDone: false,
         isTemplate: true,
@@ -67,21 +20,15 @@ export const mainData = [
 
 const Form = () => {
     //const [data, setData] = useState(formData);
-    const [submitInfo, setSubmitInfo] = useState({});
+    const [submitInfo, setSubmitInfo] = useState({ Title: [], SubTitle: [], Description: [] });
     const [showModal, setShowModal] = useState(false);
     const [canSubmit, setCanSubmit] = useState(false);
     const [rerender, setRerender] = useState(false);
     const [clear, setClear] = useState(false);
-
-    // const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
-    //     const newData = data.map((item) => {
-    //         if (item.label === label) {
-    //             return { ...item, info: updatedInfo };
-    //         }
-    //         return item;
-    //     });
-    //     setData(newData);
-    // };
+    const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
+    //setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+    // const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
+    !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
 
     const updateInfo = (i) => {
         setSubmitInfo(i);
@@ -92,7 +39,6 @@ const Form = () => {
     };
 
     const btnSubmitHandler = () => {
-        // setPreviewData(data);
         setShowModal(true);
     };
 
@@ -104,10 +50,17 @@ const Form = () => {
             isDone: false,
             isTemplate: false,
         };
-        mainData.push(newMainData);
+
+        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+        if (!!savedDataJson) {
+            const updatedJson = [...savedDataJson];
+            updatedJson.push(newMainData);
+            localStorage.setItem("mainData", JSON.stringify(updatedJson));
+            setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+        }
+
         setShowModal(false);
         setRerender((r) => !r);
-        localStorage.setItem("mainData", JSON.stringify(mainData));
     };
 
     const handleCancel = () => {
@@ -125,59 +78,84 @@ const Form = () => {
     }, [submitInfo]);
 
     return (
-        <div className='formContainer'>
-            <div className='fromLeft'>
-                <FormItem formSubmitInfo={(newData) => updateInfo(newData)} rerender={rerender} clear={clear} />
-                <fieldset className='formPreviewField'>
-                    <legend>preview</legend>
-                    <div className='formPreviewFieldContent'>
-                        {Object.entries(submitInfo).map(([k, v]) => {
-                            return <p>{`${k} : ${v}`}</p>;
-                        })}
-                        {/* <span className='FIAlert'> {!canSubmit && "三欄均需有內容"}</span> */}
-                        {!canSubmit && <p className='FIAlert'>三欄均需有內容</p>}
-                    </div>
-                </fieldset>
-                <div className='FFooter'>
-                    <button className='FBtn'>use template</button>
-                    <button className='FBtn' onClick={() => btnClearHandler()}>
-                        clear
-                    </button>
-                    <button
-                        className='FSubmit FBtn'
-                        onClick={() => btnSubmitHandler()}
-                        disabled={!canSubmit}
-                        type='submit'
-                    >
-                        submit
-                    </button>
-                </div>
-            </div>
-            <div className='formRight'>
-                {/* {previewData.map((i) => {
-                    return (
-                        <div key={i.label} className='formJson'>
-                            <p>label: {i.label} </p>
-                            <p>limit: {i.limit} </p>
-                            <p>maxLength: {i.maxLength} </p>
-                            <p>info: {JSON.stringify(i.info).split(`"`)} </p>
+        <>
+            <div className='formContainer'>
+                <div className='fromLeft'>
+                    <FormItem formSubmitInfo={(newData) => updateInfo(newData)} rerender={rerender} clear={clear} />
+                    <fieldset className='formPreviewField'>
+                        <legend>preview</legend>
+                        <div className='formPreviewFieldContent'>
+                            {Object.entries(submitInfo).map(([k, v]) => {
+                                return <p key={k}>{`${k} : ${v}`}</p>;
+                            })}
+                            {!canSubmit && <p className='FIAlert'>三欄均需有內容</p>}
                         </div>
-                    );
-                })} */}
-                <div className='formContainer'>
-                    <ConfirmModal
-                        visible={showModal}
-                        content={submitInfo}
-                        onConfirm={handleConfirm}
-                        onCancel={handleCancel}
-                    />
+                    </fieldset>
+                    <div className='FFooter'>
+                        <button className='FBtn'>use template</button>
+                        <button className='FBtn' onClick={() => btnClearHandler()}>
+                            clear
+                        </button>
+                        <button
+                            className='FSubmit FBtn'
+                            onClick={() => btnSubmitHandler()}
+                            disabled={!canSubmit}
+                            type='submit'
+                        >
+                            submit
+                        </button>
+                    </div>
                 </div>
+                <div className='formRight'>
+                    <div className='formRHead'>
+                        <div className='formSearchBar'>
+                            <input className='formSearchInput' type='text' name='' id='' />
+                            <button className='formSearchBtn '>search</button>
+                        </div>
+                        <button className='formSortBtn FBtn'>sort</button>
+                    </div>
+                    <div className='formRMain'>
+                        {savedDataJson.map((eachData, index) => {
+                            return (
+                                eachData.isTemplate === false && (
+                                    <div className='todoContainer' key={index}>
+                                        <input className='todoCheck' type='checkbox' />
+                                        <Todo data={eachData} />
+                                        <div>
+                                            <button>edit</button>
+                                            <button>drop</button>
+                                        </div>
+                                    </div>
+                                )
+                            );
+                        })}
+                        main
+                        <Todo data={savedDataJson} />
+                    </div>
+                    <div className='formRFooter'>
+                        <div className='divToggle'>
+                            <label className='labelToggle'>
+                                <input type='checkbox' />
+                                <span className=''>t = detail</span>
+                            </label>
+                        </div>
+                        <button>edit temp</button>
+                    </div>
 
-                {`${localStorage.getItem("mainData")}`}
-                {/* {JSON.parse(localStorage.getItem("mainData") ?? "")} */}
-                {/* {`${JSON.stringify(mainData)}`.split(`"`)} */}
+                    {/* {JSON.parse(localStorage.getItem("mainData") ?? "")} */}
+                    {/* {`${JSON.stringify(mainData)}`.split(`"`)} */}
+                </div>
             </div>
-        </div>
+
+            <div className='formContainer'>
+                <ConfirmModal
+                    visible={showModal}
+                    content={submitInfo}
+                    onConfirm={handleConfirm}
+                    onCancel={handleCancel}
+                />
+            </div>
+        </>
     );
 };
 
