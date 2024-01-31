@@ -4,6 +4,7 @@ interface IProps {
     formSubmitInfo: (info: IInfo) => void;
     rerender: boolean;
     clear: boolean;
+    isUseTemp: boolean;
 }
 
 export type TLabel = "Title" | "SubTitle" | "Description";
@@ -64,7 +65,7 @@ const submitItemInit: ISubmitInfo = {
 };
 
 const FormItem = (props: IProps) => {
-    const { formSubmitInfo, rerender, clear } = props;
+    const { formSubmitInfo, rerender, clear, isUseTemp } = props;
     const [info, setInfo] = useState(initInfo);
     const [submitItem, setSubmitItem] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
@@ -196,17 +197,45 @@ const FormItem = (props: IProps) => {
             each.value = "";
         }
         setInfo(updatedInfo);
-        console.log("aaa");
         const updatedSub = { Title: [0], SubTitle: [], Description: [] };
         setSubmitItem(updatedSub);
     }, [clear]);
+
+    useEffect(() => {
+        const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
+        const temp = savedDataJson.filter((i) => i.isTemplate === true);
+        const boxes = document.getElementsByClassName("FIInput");
+        const a = [...boxes];
+        for (const each of boxes) {
+            //處理個數
+            let boxNum = a.filter((box) => box.name === each.name).length;
+            let tempLength = temp[0].info[each.name].length;
+            console.log(boxNum, tempLength);
+            if (boxNum <= tempLength) {
+                // const add = { ...info };
+                // let k = Array.from({ length: tempLength || 0 }, (_, i) => info[each.name as TLabel][i]).fill("");
+                // console.log(k);
+                // setInfo({
+                //     ...info,
+                //     [each.name]: k,
+                // });
+                // console.log(info);
+                //add[each.name].fill("", boxNum, tempLength + 1);
+                // info[each.name].fill("", boxNum, tempLength);
+                // setInfo({ ...info, [each.name]: [...info[each.name].fill("", boxNum, tempLength)] });
+            }
+
+            //處理值
+            // each.value = temp[0].info[each.name];
+        }
+    }, [isUseTemp]);
 
     return (
         <>
             {Object.entries(info).map(([label, info]) => {
                 return formConfig.map((rule, indexRule) => {
                     return (
-                        <div key={`${indexRule}`}>
+                        <div key={indexRule}>
                             {rule.label === label && (
                                 <div className='FIContainer'>
                                     <p className='FITitle'>{label}</p>
@@ -221,7 +250,6 @@ const FormItem = (props: IProps) => {
                                                         <input
                                                             className='FIcheck'
                                                             type='checkbox'
-                                                            name={label}
                                                             onChange={(e) => checkHandler(e, label, indexEachInfo)}
                                                             checked={submitItem[label].indexOf(indexEachInfo) > -1}
                                                         />
@@ -229,7 +257,7 @@ const FormItem = (props: IProps) => {
                                                         {label === "Title" ? (
                                                             <input
                                                                 className='FIInput'
-                                                                name={`${label}inp`}
+                                                                name={`${label}`}
                                                                 placeholder={`${each}`}
                                                                 onCompositionEnd={(e) =>
                                                                     compositionHandler(
@@ -252,7 +280,7 @@ const FormItem = (props: IProps) => {
                                                         ) : (
                                                             <textarea
                                                                 className='FIInput'
-                                                                name={`${label}inp`}
+                                                                name={`${label}`}
                                                                 placeholder={`${each}`}
                                                                 onCompositionEnd={(e) =>
                                                                     compositionHandler(

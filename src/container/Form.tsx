@@ -16,7 +16,7 @@ const mainData = [
     {
         info: {
             Title: ["my template Title"],
-            SubTitle: ["my template SubTitle"],
+            SubTitle: ["my template SubTitle1", "my template SubTitle2", "my template SubTitle3"],
             Description: ["my template Description"],
         },
         createTime: Date.now(),
@@ -27,21 +27,23 @@ const mainData = [
 ];
 
 const Form = () => {
-    //const [data, setData] = useState(formData);
     const [submitInfo, setSubmitInfo] = useState({ Title: [], SubTitle: [], Description: [] });
     const [showModal, setShowModal] = useState(false);
     const [canSubmit, setCanSubmit] = useState(false);
     const [rerender, setRerender] = useState(false);
     const [clear, setClear] = useState(false);
     const [isIncreasing, setIsIncreasing] = useState(false);
+    const [isUseTemp, setIsUseTemp] = useState(false);
 
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
-    //setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
-    // const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
 
     const updateInfo = (i: IInfo) => {
         setSubmitInfo(i);
+    };
+
+    const btnUseTempHandler = () => {
+        setIsUseTemp((r) => !r);
     };
 
     const btnClearHandler = () => {
@@ -93,7 +95,6 @@ const Form = () => {
     }, [isIncreasing]);
 
     const dropHandler = (id: number) => {
-        //console.log(savedDataJson[id].info.Title);
         const updatedJson = [...savedDataJson];
         updatedJson.splice(id, 1);
         localStorage.setItem("mainData", JSON.stringify(updatedJson));
@@ -114,7 +115,12 @@ const Form = () => {
         <>
             <div className='formContainer'>
                 <div className='fromLeft'>
-                    <FormItem formSubmitInfo={(newData) => updateInfo(newData)} rerender={rerender} clear={clear} />
+                    <FormItem
+                        formSubmitInfo={(newData) => updateInfo(newData)}
+                        rerender={rerender}
+                        clear={clear}
+                        isUseTemp={isUseTemp}
+                    />
                     <fieldset className='formPreviewField'>
                         <legend>preview</legend>
                         <div className='formPreviewFieldContent'>
@@ -125,7 +131,9 @@ const Form = () => {
                         </div>
                     </fieldset>
                     <div className='FFooter'>
-                        <button className='FBtn'>use template</button>
+                        <button className='FBtn' onClick={() => btnUseTempHandler()}>
+                            use template
+                        </button>
                         <button className='FBtn' onClick={() => btnClearHandler()}>
                             clear
                         </button>
@@ -142,7 +150,7 @@ const Form = () => {
                 <div className='formRight'>
                     <div className='formRHead'>
                         <div className='formSearchBar'>
-                            <input className='formSearchInput' type='text' name='' id='' />
+                            <input className='formSearchInput' type='text' />
                             <button className='formSearchBtn '>search</button>
                         </div>
                         <button className='formSortBtn FBtn' onClick={() => setIsIncreasing((n) => !n)}>
@@ -176,9 +184,6 @@ const Form = () => {
                         </div>
                         <button>edit temp</button>
                     </div>
-
-                    {/* {JSON.parse(localStorage.getItem("mainData") ?? "")} */}
-                    {/* {`${JSON.stringify(mainData)}`.split(`"`)} */}
                 </div>
             </div>
 
