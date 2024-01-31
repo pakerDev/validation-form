@@ -130,7 +130,7 @@
 
 .FIPlus {
     border: 2px solid var(--text1);
-    margin-left: 8px;
+    margin: 8px 0 0 8px;
     &:disabled {
         transform: rotate(45deg);
     }
@@ -194,6 +194,20 @@
             border-color: var(--alert0);
         }
     }
+}
+
+.formPreviewField {
+    min-height: 160px;
+    min-width: 100%;
+    padding: 4px;
+}
+
+.formPreviewFieldContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: space-around;
 }
 
 .formRight {

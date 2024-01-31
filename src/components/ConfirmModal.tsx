@@ -1,6 +1,8 @@
+import { ISubmitInfo } from "./FormItem";
+
 interface Iprops {
     visible: boolean;
-    content: string;
+    content: ISubmitInfo;
     onConfirm: void;
     onCancel: void;
 }
@@ -12,7 +14,11 @@ const ConfirmModal = (props: Iprops) => {
     return (
         <div className='modal'>
             <div className='modalContent'>
-                <p>{content}</p>
+                <p>
+                    {Object.entries(content).map(([k, v]) => {
+                        return <p>{`${k} : ${v}`}</p>;
+                    })}
+                </p>
                 <button className='modalBtn' onClick={onCancel}>
                     取消
                 </button>

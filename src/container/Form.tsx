@@ -3,53 +3,53 @@ import { useEffect, useState } from "react";
 import FormItem from "../components/FormItem.tsx";
 import ConfirmModal from "../components/ConfirmModal.tsx";
 
-export interface IBaseInfoObj {
-    createTime: number;
-    content: string;
-}
+// export interface IBaseInfoObj {
+//     createTime: number;
+//     content: string;
+// }
 
-export interface IFormItemProps {
-    label: string;
-    limit: number;
-    maxLength: number;
-    info: IBaseInfoObj[];
-}
+// export interface IFormItemProps {
+//     label: string;
+//     limit: number;
+//     maxLength: number;
+//     info: IBaseInfoObj[];
+// }
 
-export const formData: IFormItemProps[] = [
-    {
-        label: "Title",
-        limit: 1,
-        maxLength: 15,
-        info: [
-            {
-                createTime: Date.now(),
-                content: "",
-            },
-        ],
-    },
-    {
-        label: "SubTitle",
-        limit: 3,
-        maxLength: 30,
-        info: [
-            {
-                createTime: Date.now(),
-                content: "",
-            },
-        ],
-    },
-    {
-        label: "Description",
-        limit: 5,
-        maxLength: 60,
-        info: [
-            {
-                createTime: Date.now(),
-                content: "",
-            },
-        ],
-    },
-];
+// export const formData: IFormItemProps[] = [
+//     {
+//         label: "Title",
+//         limit: 1,
+//         maxLength: 15,
+//         info: [
+//             {
+//                 createTime: Date.now(),
+//                 content: "",
+//             },
+//         ],
+//     },
+//     {
+//         label: "SubTitle",
+//         limit: 3,
+//         maxLength: 30,
+//         info: [
+//             {
+//                 createTime: Date.now(),
+//                 content: "",
+//             },
+//         ],
+//     },
+//     {
+//         label: "Description",
+//         limit: 5,
+//         maxLength: 60,
+//         info: [
+//             {
+//                 createTime: Date.now(),
+//                 content: "",
+//             },
+//         ],
+//     },
+// ];
 
 export const mainData = [
     {
@@ -65,39 +65,23 @@ export const mainData = [
     },
 ];
 
-// const NewMainData = [
-//     {
-//         info: {},
-//         createTime: 0,
-//         isCreateNew: true,
-//         isDone: false,
-//         isTemplate: false,
-//     },
-// ];
-
-// const initInfo = {
-//     Title: [""],
-//     SubTitle: [""],
-//     Description: [""],
-// };
-
 const Form = () => {
-    const [data, setData] = useState(formData);
+    //const [data, setData] = useState(formData);
     const [submitInfo, setSubmitInfo] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [canSubmit, setCanSubmit] = useState(false);
     const [rerender, setRerender] = useState(false);
     const [clear, setClear] = useState(false);
 
-    const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
-        const newData = data.map((item) => {
-            if (item.label === label) {
-                return { ...item, info: updatedInfo };
-            }
-            return item;
-        });
-        setData(newData);
-    };
+    // const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
+    //     const newData = data.map((item) => {
+    //         if (item.label === label) {
+    //             return { ...item, info: updatedInfo };
+    //         }
+    //         return item;
+    //     });
+    //     setData(newData);
+    // };
 
     const updateInfo = (i) => {
         setSubmitInfo(i);
@@ -144,10 +128,16 @@ const Form = () => {
         <div className='formContainer'>
             <div className='fromLeft'>
                 <FormItem formSubmitInfo={(newData) => updateInfo(newData)} rerender={rerender} clear={clear} />
-                {`${JSON.stringify(submitInfo)}`.split(`"`)}
-                <hr />
-
-                <span className='FIAlert'> {!canSubmit && "三欄均需有內容"}</span>
+                <fieldset className='formPreviewField'>
+                    <legend>preview</legend>
+                    <div className='formPreviewFieldContent'>
+                        {Object.entries(submitInfo).map(([k, v]) => {
+                            return <p>{`${k} : ${v}`}</p>;
+                        })}
+                        {/* <span className='FIAlert'> {!canSubmit && "三欄均需有內容"}</span> */}
+                        {!canSubmit && <p className='FIAlert'>三欄均需有內容</p>}
+                    </div>
+                </fieldset>
                 <div className='FFooter'>
                     <button className='FBtn'>use template</button>
                     <button className='FBtn' onClick={() => btnClearHandler()}>
@@ -177,7 +167,7 @@ const Form = () => {
                 <div className='formContainer'>
                     <ConfirmModal
                         visible={showModal}
-                        content={`${JSON.stringify(submitInfo)}`}
+                        content={submitInfo}
                         onConfirm={handleConfirm}
                         onCancel={handleCancel}
                     />

@@ -14,7 +14,7 @@ interface IFormConfig {
     maxLength: number;
     reg: RegExp;
 }
-interface ISubmitInfo {
+export interface ISubmitInfo {
     Title: number[];
     SubTitle: number[];
     Description: number[];
@@ -92,7 +92,6 @@ const FormItem = (props: IProps) => {
 
         updatedInfo[label].splice(n, 1);
         setInfo(updatedInfo);
-        // // 畫面不對！
         let boxes = document.getElementsByName(`${label}inp`);
         for (const [id, each] of updatedInfo[label].entries()) {
             console.log(id, each);
