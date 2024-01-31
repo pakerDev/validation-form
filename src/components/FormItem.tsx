@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 interface IProps {
-    formSubmitInfo: (info: object) => void;
+    formSubmitInfo: (info: ISubmitInfo) => void;
     rerender: boolean;
     clear: boolean;
 }
