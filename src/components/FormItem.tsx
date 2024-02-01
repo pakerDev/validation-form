@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { IMainData } from "../container/Form";
 
 interface IProps {
     formSubmitInfo: (info: IInfo) => void;
@@ -62,6 +61,7 @@ const initInfo = {
 
 const submitItemInit: ISubmitInfo = {
     Title: [0],
+
     SubTitle: [],
     Description: [],
 };
@@ -113,7 +113,6 @@ const FormItem = (props: IProps) => {
 
     const authLength = (val: string, max: number) => {
         let res = val;
-
         if (res.length >= max) {
             res = res.slice(0, max);
         }
@@ -123,14 +122,12 @@ const FormItem = (props: IProps) => {
     const authRex = (label: TLabel, id: number, reg: RegExp) => {
         let res = "";
         let val = info[label][id];
-
         const chk =
             val
                 .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
         chk === val ? "" : (res = "reg");
-
         return res;
     };
 
@@ -145,6 +142,7 @@ const FormItem = (props: IProps) => {
         if (e.type === "compositionend") {
             setIsOnComposition(false);
             target.value = authLength(val, max);
+
             const updatedInfo = { ...info };
             updatedInfo[label].splice(id, 1, target.value);
             setInfo(updatedInfo);
@@ -160,11 +158,13 @@ const FormItem = (props: IProps) => {
         max: number
     ) => {
         if (isOnComposition) return;
+
         const val = e.target.value;
         e.target.value = authLength(val, max);
 
         const updatedInfo = { ...info };
         submitItem[label].indexOf(id);
+
         updatedInfo[label].splice(id, 1, e.target.value);
         setInfo(updatedInfo);
     };
@@ -257,7 +257,7 @@ const FormItem = (props: IProps) => {
                                                 {label === rule.label && (
                                                     <div className='FIRow'>
                                                         <input
-                                                            className='FIcheck'
+                                                            className='FIcheck myCheckBox'
                                                             type='checkbox'
                                                             onChange={(e) => checkHandler(e, label, indexEachInfo)}
                                                             checked={submitItem[label].indexOf(indexEachInfo) > -1}
