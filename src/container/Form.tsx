@@ -37,7 +37,6 @@ const Form = () => {
 
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
-    const [todoList, setTodoList] = useState(savedDataJson);
 
     const updateInfo = (i: IInfo) => {
         setSubmitInfo(i);
@@ -58,12 +57,13 @@ const Form = () => {
     const searchHandler = () => {
         const searchInput = document.getElementById("searchKeyWord");
         const keyWord = searchInput.value;
-        setTodoList(savedDataJson.filter((i) => i.info["Title"][0].includes(keyWord) && i));
+        const allData = JSON.parse(localStorage.getItem("mainData") ?? "");
+        setSavedDataJson(allData.filter((i) => i.info["Title"][0].includes(keyWord) && i));
         searchInput.value = "";
     };
 
     useEffect(() => {
-        setTodoList(savedDataJson);
+        //setTodoList(savedDataJson);
     }, [savedDataJson]);
 
     const handleConfirm = () => {
@@ -172,7 +172,7 @@ const Form = () => {
                         </button>
                     </div>
                     <div className='formRMain'>
-                        {todoList.map((eachData: IMainData, index: number) => {
+                        {savedDataJson.map((eachData: IMainData, index: number) => {
                             return (
                                 eachData.isTemplate === false && (
                                     <div className='todoContainer' key={index}>
