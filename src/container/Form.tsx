@@ -57,6 +57,7 @@ export const mainData = [
             Title: ["my template Title"],
             SubTitle: ["my template SubTitle"],
             Description: ["my template Description"],
+
         },
         createTime: 0,
         isCreateNew: true,
@@ -85,9 +86,11 @@ const Form = () => {
     const [data, setData] = useState(formData);
     const [submitInfo, setSubmitInfo] = useState({});
     const [showModal, setShowModal] = useState(false);
+
     const [canSubmit, setCanSubmit] = useState(false);
     const [rerender, setRerender] = useState(false);
     const [clear, setClear] = useState(false);
+
 
     const updateData = (label: string, updatedInfo: IBaseInfoObj[]) => {
         const newData = data.map((item) => {
@@ -106,6 +109,7 @@ const Form = () => {
     const btnClearHandler = () => {
         setClear((r) => !r);
     };
+
 
     const btnSubmitHandler = () => {
         // setPreviewData(data);
@@ -153,6 +157,7 @@ const Form = () => {
                     <button className='FBtn' onClick={() => btnClearHandler()}>
                         clear
                     </button>
+
                     <button
                         className='FSubmit FBtn'
                         onClick={() => btnSubmitHandler()}
@@ -163,6 +168,7 @@ const Form = () => {
                     </button>
                 </div>
             </div>
+
             <div className='formRight'>
                 {/* {previewData.map((i) => {
                     return (
@@ -178,10 +184,12 @@ const Form = () => {
                     <ConfirmModal
                         visible={showModal}
                         content={`${JSON.stringify(submitInfo)}`}
+
                         onConfirm={handleConfirm}
                         onCancel={handleCancel}
                     />
                 </div>
+
 
                 {`${localStorage.getItem("mainData")}`}
                 {/* {JSON.parse(localStorage.getItem("mainData") ?? "")} */}
