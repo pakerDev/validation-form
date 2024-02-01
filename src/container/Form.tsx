@@ -57,10 +57,11 @@ const Form = () => {
     };
 
     const searchHandler = () => {
-        const searchInput = document.getElementById("searchKeyWord");
-        const keyWord = searchInput.value;
+        const searchInput: HTMLInputElement = document.getElementById("searchKeyWord");
+        searchInput as HTMLInputElement;
+        const keyWord = searchInput.value ?? "";
         const allData = JSON.parse(localStorage.getItem("mainData") ?? "");
-        setSavedDataJson(allData.filter((i) => i.info["Title"][0].includes(keyWord) && i));
+        setSavedDataJson(allData.filter((i: IMainData) => i.info["Title"][0].includes(keyWord) && i));
         searchInput.value = "";
     };
 
@@ -110,11 +111,10 @@ const Form = () => {
         setSavedDataJson(updatedJson);
     }, [isIncreasing]);
 
-    const isDoneHandler = (e, id: number) => {
+    const isDoneHandler = (e: React.ChangeEvent<HTMLInputElement>, id: number) => {
         const isCheck = e.target.checked;
         const updatedJson = JSON.parse(localStorage.getItem("mainData") ?? "");
-
-        const index = updatedJson.findIndex((data) => data.createTime === id);
+        const index = updatedJson.findIndex((data: IMainData) => data.createTime === id);
         if (index !== -1) {
             updatedJson[index] = { ...updatedJson[index], isDone: isCheck };
         }
@@ -126,17 +126,17 @@ const Form = () => {
     const editHandler = (id: number) => {
         const json = JSON.parse(localStorage.getItem("mainData") ?? "");
         if (id === 0) {
-            const index = json.findIndex((data) => data.isTemplate === true);
+            const index = json.findIndex((data: IMainData) => data.isTemplate === true);
             setEdit(index);
         } else {
-            const index = json.findIndex((data) => data.createTime === id);
+            const index = json.findIndex((data: IMainData) => data.createTime === id);
             setEdit(index);
         }
     };
 
     const dropHandler = (id: number) => {
         const json = JSON.parse(localStorage.getItem("mainData") ?? "");
-        const index = json.findIndex((data) => data.createTime === id);
+        const index = json.findIndex((data: IMainData) => data.createTime === id);
 
         json.splice(index, 1);
         localStorage.setItem("mainData", JSON.stringify(json));
@@ -155,7 +155,7 @@ const Form = () => {
 
     const toggleHandler = (id: number) => {
         const json = JSON.parse(localStorage.getItem("mainData") ?? "");
-        const index = json.findIndex((data) => data.createTime === id);
+        const index = json.findIndex((data: IMainData) => data.createTime === id);
 
         json.splice(index, 1);
         localStorage.setItem("mainData", JSON.stringify(json));

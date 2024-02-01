@@ -29,7 +29,7 @@ export interface IInfo {
 }
 
 const titleReg = /[\w\u4e00-\u9fa5\s]/g;
-const subReg = /[\w\u4e00-\u9fa5\s]/g;
+const subReg = /[\w\u4e00-\u9fa5\s]\-/g;
 const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\，\,\.\'\"\s]/g;
 
 const formConfig: IFormConfig[] = [
@@ -97,7 +97,7 @@ const FormItem = (props: IProps) => {
         updatedInfo[label].splice(n, 1);
         setInfo(updatedInfo);
 
-        const boxes = document.getElementsByName(`${label}inp`);
+        const boxes: NodeListOf<HTMLInputElement> = document.getElementsByName(`${label}inp`);
         for (const [id, each] of updatedInfo[label].entries()) {
             boxes[id].value = each;
         }
@@ -202,10 +202,11 @@ const FormItem = (props: IProps) => {
         const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
         const temp = savedDataJson.filter((i) => i.isTemplate === true);
         const boxes = document.getElementsByClassName("FIInput");
-        const a = [...boxes];
+        const allInputBox = [...boxes];
         for (const each of boxes) {
+            each as HTMLInputElement;
             //處理個數
-            const boxNum = a.filter((box) => box.name === each.name).length ?? 3;
+            const boxNum = allInputBox.filter((box) => box.name === each.name).length ?? 3;
             const tempLength = temp[0].info[each.name].length ?? 3;
             if (boxNum <= tempLength) {
                 // const add = { ...info };
@@ -235,6 +236,7 @@ const FormItem = (props: IProps) => {
 
         const boxes = document.getElementsByClassName("FIInput");
         for (const each of boxes) {
+            each as HTMLInputElement;
             each.value = "";
         }
         setInfo(updatedInfo);

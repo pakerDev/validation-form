@@ -1,5 +1,3 @@
-import { IMainData } from "../container/Form";
-
 const ToDoItem = ({ data }) => {
     return (
         <div className='todoItemCOntainer'>
