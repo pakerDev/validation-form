@@ -142,6 +142,7 @@ const FormItem = (props: IProps) => {
         max: number
     ) => {
         if (isOnComposition) return;
+
         const val = e.target.value;
         e.target.value = authLength(val, max);
 
