@@ -1,26 +1,31 @@
 import { useEffect, useState } from "react";
-import { IFormItemProps, IBaseInfoObj } from "../container/Form";
 
 interface IProps {
-    formSet: (info: IBaseInfoObj[]) => void;
-    item: IFormItemProps;
-    canSubmit: React.Dispatch<React.SetStateAction<boolean>>;
+    formSubmitInfo: (info: object) => void;
+    rerender: boolean;
 }
 
 type TLabel = "Title" | "SubTitle" | "Description";
 
-interface IInitInfo {
+
+interface IFormConfig {
     label: TLabel;
     limit: number;
     maxLength: number;
     reg: RegExp;
 }
 
+interface ISubmitInfo {
+    Title: number[];
+    SubTitle: number[];
+    Description: number[];
+}
+
 const titleReg = /[\w\u4e00-\u9fa5\s]/g;
 const subReg = /[\w\u4e00-\u9fa5\s]/g;
-const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\,\.\'\"s]/g;
+const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\，\,\.\'\"s]/g;
 
-const formConfig: IInitInfo[] = [
+const formConfig: IFormConfig[] = [
     {
         label: "Title",
         limit: 1,
@@ -47,35 +52,30 @@ const initInfo = {
     Description: [""],
 };
 
-interface IsubmitInfo {
-    Title: number[];
-    SubTitle: number[];
-    Description: number[];
-}
 
-const submitInit: IsubmitInfo = {
+const submitItemInit: ISubmitInfo = {
     Title: [],
     SubTitle: [],
     Description: [],
 };
 
-const FormItem = () => {
+const FormItem = (props: IProps) => {
+    const { formSubmitInfo, rerender } = props;
     const [info, setInfo] = useState(initInfo);
-    const [submitInfo, setSubmitInfo] = useState(submitInit);
+    const [submitItem, setSubmitItem] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
-
     const checkHandler = (e, label: TLabel, id: number) => {
         const isChecked = e.target.checked;
         if (isChecked) {
-            const updatedSubmit = { ...submitInfo };
+            const updatedSubmit = { ...submitItem };
             if (updatedSubmit[label].indexOf(id) > -1) return;
             updatedSubmit[label].push(id);
-            setSubmitInfo(updatedSubmit);
+            setSubmitItem(updatedSubmit);
         } else {
-            const updatedSubmit = { ...submitInfo };
+            const updatedSubmit = { ...submitItem };
             let a = updatedSubmit[label].indexOf(id);
             updatedSubmit[label].splice(a, 1);
-            setSubmitInfo(updatedSubmit);
+            setSubmitItem(updatedSubmit);
         }
     };
 
@@ -94,9 +94,8 @@ const FormItem = () => {
         setInfo(updatedInfo);
     };
 
-    const auth = (val: string, max: number) => {
+    const authLength = (val: string, max: number) => {
         let res = val;
-
         if (res.length >= max) {
             res = res.slice(0, max);
         }
@@ -106,14 +105,12 @@ const FormItem = () => {
     const authRex = (label: TLabel, id: number, reg: RegExp) => {
         let res = "";
         let val = info[label][id];
-
         const chk =
             val
                 .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
         chk === val ? "" : (res = "reg");
-
         return res;
     };
 
@@ -127,7 +124,8 @@ const FormItem = () => {
         const val = target.value;
         if (e.type === "compositionend") {
             setIsOnComposition(false);
-            target.value = auth(val, max);
+            target.value = authLength(val, max);
+
             const updatedInfo = { ...info };
             updatedInfo[label].splice(id, 1, target.value);
             setInfo(updatedInfo);
@@ -153,11 +151,41 @@ const FormItem = () => {
         if (isOnComposition) return;
 
         const val = e.target.value;
-        e.target.value = auth(val, max);
+        e.target.value = authLength(val, max);
+
         const updatedInfo = { ...info };
+        submitItem[label].indexOf(id);
+
         updatedInfo[label].splice(id, 1, e.target.value);
         setInfo(updatedInfo);
     };
+
+    useEffect(() => {
+        let newSubmit = {};
+
+        for (const label: TLabel in info) {
+            newSubmit[label] = submitItem[label]
+                .sort()
+                .map((i) => info[label][i])
+                .filter((item) => item !== "");
+        }
+        formSubmitInfo(newSubmit);
+    }, [info, submitItem]);
+
+    useEffect(() => {
+        let updatedInfo = { ...info };
+        for (const label in updatedInfo) {
+            if (info[label].length < 2) {
+                updatedInfo[label] = updatedInfo[label];
+            } else {
+                updatedInfo[label] = updatedInfo[label].filter((item) => item !== "");
+            }
+        }
+        setInfo(updatedInfo);
+        setSubmitItem(submitItemInit);
+        // 想把打勾清掉
+    }, [rerender]);
+
 
     return (
         <>
@@ -183,22 +211,7 @@ const FormItem = () => {
                                                             <input
                                                                 className='FIInput'
                                                                 placeholder={`${each}`}
-                                                                onCompositionStart={(e) =>
-                                                                    compositionHandler(
-                                                                        e,
-                                                                        label,
-                                                                        indexEachInfo,
-                                                                        rule.maxLength
-                                                                    )
-                                                                }
-                                                                onCompositionUpdate={(e) =>
-                                                                    compositionHandler(
-                                                                        e,
-                                                                        label,
-                                                                        indexEachInfo,
-                                                                        rule.maxLength
-                                                                    )
-                                                                }
+
                                                                 onCompositionEnd={(e) =>
                                                                     compositionHandler(
                                                                         e,
@@ -221,22 +234,7 @@ const FormItem = () => {
                                                             <textarea
                                                                 className='FIInput'
                                                                 placeholder={`${each}`}
-                                                                onCompositionStart={(e) =>
-                                                                    compositionHandler(
-                                                                        e,
-                                                                        label,
-                                                                        indexEachInfo,
-                                                                        rule.maxLength
-                                                                    )
-                                                                }
-                                                                onCompositionUpdate={(e) =>
-                                                                    compositionHandler(
-                                                                        e,
-                                                                        label,
-                                                                        indexEachInfo,
-                                                                        rule.maxLength
-                                                                    )
-                                                                }
+
                                                                 onCompositionEnd={(e) =>
                                                                     compositionHandler(
                                                                         e,
