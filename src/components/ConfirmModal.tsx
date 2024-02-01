@@ -15,8 +15,8 @@ const ConfirmModal = (props: IProps) => {
         <div className='modal'>
             <div className='modalContent'>
                 <p>
-                    {Object.entries(content).map(([k, v]) => {
-                        return <p>{`${k} : ${v}`}</p>;
+                    {Object.entries(content).map(([k, v], index) => {
+                        return <p key={index}>{`${k} : ${v}`}</p>;
                     })}
                 </p>
                 <button className='modalBtn' onClick={onCancel}>
