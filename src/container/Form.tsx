@@ -57,6 +57,7 @@ export const mainData = [
             Title: ["my template Title"],
             SubTitle: ["my template SubTitle"],
             Description: ["my template Description"],
+
         },
         createTime: 0,
         isCreateNew: true,
@@ -64,22 +65,6 @@ export const mainData = [
         isTemplate: true,
     },
 ];
-
-// const NewMainData = [
-//     {
-//         info: {},
-//         createTime: 0,
-//         isCreateNew: true,
-//         isDone: false,
-//         isTemplate: false,
-//     },
-// ];
-
-// const initInfo = {
-//     Title: [""],
-//     SubTitle: [""],
-//     Description: [""],
-// };
 
 const Form = () => {
     const [data, setData] = useState(formData);
@@ -148,6 +133,7 @@ const Form = () => {
                     <button className='FBtn' onClick={() => btnClearHandler()}>
                         clear
                     </button>
+
                     <button
                         className='FSubmit FBtn'
                         onClick={() => btnSubmitHandler()}
@@ -158,6 +144,7 @@ const Form = () => {
                     </button>
                 </div>
             </div>
+
             <div className='formRight'>
                 {/* {previewData.map((i) => {
                     return (
@@ -185,6 +172,7 @@ const Form = () => {
                 {/* {JSON.parse(localStorage.getItem("mainData") ?? "")} */}
                 {/* {`${JSON.stringify(mainData)}`.split(`"`)} */}
             </div>
+
         </div>
     );
 };
