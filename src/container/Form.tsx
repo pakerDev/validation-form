@@ -35,7 +35,7 @@ const Form = () => {
     const [isIncreasing, setIsIncreasing] = useState(false);
     const [isUseTemp, setIsUseTemp] = useState(false);
     const [edit, setEdit] = useState(-1);
-    const [toggle, setToggle] = useState(false);
+    const [toggle, setToggle] = useState(true);
 
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
@@ -164,7 +164,7 @@ const Form = () => {
     return (
         <>
             <div className='formContainer'>
-                <div className='fromLeft'>
+                <div className='formLeft'>
                     <FormItem
                         formSubmitInfo={(newData) => updateInfo(newData)}
                         rerender={rerender}
@@ -175,11 +175,12 @@ const Form = () => {
                     <fieldset className='formPreviewField'>
                         <legend>preview</legend>
                         <div className='formPreviewFieldContent'>
-                            {Object.entries(submitInfo).map(([k, v]) => {
-                                return <p key={k}>{`${k} : ${v}`}</p>;
-                            })}
-
-                            {!canSubmit && <p className='FIAlert'>三欄均需有內容</p>}
+                            <div>
+                                {Object.entries(submitInfo).map(([k, v]) => {
+                                    return <p key={k}>{`${k} : ${v}`}</p>;
+                                })}
+                            </div>
+                            <div>{!canSubmit && <p className='FIAlert'>三欄均需有內容</p>}</div>
                         </div>
                     </fieldset>
                     <div className='FFooter'>
@@ -201,7 +202,7 @@ const Form = () => {
                 </div>
                 <div className='formRight'>
                     {toggle ? (
-                        <>
+                        <div className=''>
                             <div className='formRHead'>
                                 <div className='formSearchBar'>
                                     <input className='formSearchInput' type='text' id='searchKeyWord' />
@@ -213,24 +214,29 @@ const Form = () => {
                                     sort
                                 </button>
                             </div>
-                            <div className='formRMain'>
+                            <div className='formRMain todoView'>
                                 {savedDataJson.map((eachData: IMainData, index: number) => {
                                     return (
                                         eachData.isTemplate === false && (
                                             <div className='todoContainer' key={index}>
-                                                {index}
                                                 <input
-                                                    className='todoCheck'
+                                                    className='myCheckBox'
                                                     type='checkbox'
                                                     onChange={(e) => isDoneHandler(e, eachData.createTime)}
                                                     checked={eachData.isDone}
                                                 />
                                                 <Todo data={eachData} />
                                                 <div>
-                                                    <button onClick={() => editHandler(eachData.createTime)}>
+                                                    <button
+                                                        className='todoBtn FBtn'
+                                                        onClick={() => editHandler(eachData.createTime)}
+                                                    >
                                                         edit
                                                     </button>
-                                                    <button onClick={() => dropHandler(eachData.createTime)}>
+                                                    <button
+                                                        className='todoBtn FBtn'
+                                                        onClick={() => dropHandler(eachData.createTime)}
+                                                    >
                                                         drop
                                                     </button>
                                                 </div>
@@ -240,24 +246,27 @@ const Form = () => {
                                 })}
                                 <Todo data={savedDataJson} />
                             </div>
-                        </>
+                        </div>
                     ) : (
-                        <div>{<pre>{JSON.stringify(savedDataJson, null, 2)}</pre>}</div>
+                        <div className='formDetail'>{<pre>{JSON.stringify(savedDataJson, null, 2)}</pre>}</div>
                     )}
 
                     <div className='formRFooter'>
                         <div className='divToggle'>
                             <label className='labelToggle'>
+                                {"..."}
                                 <input
                                     type='checkbox'
                                     onChange={() => {
                                         setToggle((i) => !i);
                                     }}
                                 />
-                                <span className=''>t = detail</span>
+                                <span className=''></span>
                             </label>
                         </div>
-                        <button onClick={() => editHandler(0)}>edit temp</button>
+                        <button className='formEditTemp FBtn' onClick={() => editHandler(0)}>
+                            edit temp
+                        </button>
                     </div>
                 </div>
             </div>
