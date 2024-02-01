@@ -64,8 +64,7 @@ const Form = () => {
     };
 
     const handleConfirm = () => {
-        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
-        const updatedJson = [...savedDataJson];
+        const updatedJson = JSON.parse(localStorage.getItem("mainData") ?? "");
 
         if (edit < 0) {
             const newMainData = {
@@ -85,7 +84,7 @@ const Form = () => {
             updatedJson.splice(edit, 1);
 
             setSavedDataJson([...updatedJson, editItem]);
-            localStorage.setItem("mainData", JSON.stringify(savedDataJson));
+            localStorage.setItem("mainData", JSON.stringify([...updatedJson, editItem]));
             setEdit(-1);
         }
         setShowModal(false);
@@ -123,10 +122,15 @@ const Form = () => {
         localStorage.setItem("mainData", JSON.stringify(updatedJson));
     };
 
-    const editHandler = (id) => {
+    const editHandler = (id: number) => {
         const json = JSON.parse(localStorage.getItem("mainData") ?? "");
-        const index = json.findIndex((data) => data.createTime === id);
-        setEdit(index);
+        if (id === 0) {
+            const index = json.findIndex((data) => data.isTemplate === true);
+            setEdit(index);
+        } else {
+            const index = json.findIndex((data) => data.createTime === id);
+            setEdit(index);
+        }
     };
 
     const dropHandler = (id: number) => {
@@ -134,9 +138,9 @@ const Form = () => {
         const index = json.findIndex((data) => data.createTime === id);
         console.log(index);
 
-        // json.splice(index, 1);
-        // localStorage.setItem("mainData", JSON.stringify(json));
-        // setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+        json.splice(index, 1);
+        localStorage.setItem("mainData", JSON.stringify(json));
+        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
     };
 
     useEffect(() => {
@@ -230,7 +234,7 @@ const Form = () => {
                                 <span className=''>t = detail</span>
                             </label>
                         </div>
-                        <button>edit temp</button>
+                        <button onClick={() => editHandler(0)}>edit temp</button>
                     </div>
                 </div>
             </div>
