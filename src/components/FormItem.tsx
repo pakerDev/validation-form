@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { IMainData } from "../container/Form";
 
 interface IProps {
     formSubmitInfo: (info: IInfo) => void;
     rerender: boolean;
     clear: boolean;
     isUseTemp: boolean;
+    editData: number;
 }
 
 export type TLabel = "Title" | "SubTitle" | "Description";
@@ -65,7 +67,7 @@ const submitItemInit: ISubmitInfo = {
 };
 
 const FormItem = (props: IProps) => {
-    const { formSubmitInfo, rerender, clear, isUseTemp } = props;
+    const { formSubmitInfo, rerender, clear, isUseTemp, editData } = props;
     const [info, setInfo] = useState(initInfo);
     const [submitItem, setSubmitItem] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
@@ -180,26 +182,21 @@ const FormItem = (props: IProps) => {
     }, [info, submitItem]);
 
     useEffect(() => {
-        let updatedInfo = { ...info };
-        for (const label in updatedInfo) {
-            info[label as TLabel].length >= 2 &&
-                (updatedInfo[label as TLabel] = updatedInfo[label as TLabel].filter((item) => item !== ""));
-        }
-        setInfo(updatedInfo);
-        const updatedSub = { Title: [0], SubTitle: [], Description: [] };
-        setSubmitItem(updatedSub);
-    }, [rerender]);
+        if (editData < 0) {
+            let updatedInfo = { ...info };
+            for (const label in updatedInfo) {
+                info[label as TLabel].length >= 2 &&
+                    (updatedInfo[label as TLabel] = updatedInfo[label as TLabel].filter((item) => item !== ""));
+            }
+            setInfo(updatedInfo);
 
-    useEffect(() => {
-        const updatedInfo = { Title: [""], SubTitle: [""], Description: [""] };
-        const boxes = document.getElementsByClassName("FIInput");
-        for (const each of boxes) {
-            each.value = "";
+            const updatedSub = { Title: [0], SubTitle: [], Description: [] };
+            setSubmitItem(updatedSub);
+        } else {
+            const updatedJson = JSON.parse(localStorage.getItem("mainData") ?? "");
+            setInfo(updatedJson[editData].info);
         }
-        setInfo(updatedInfo);
-        const updatedSub = { Title: [0], SubTitle: [], Description: [] };
-        setSubmitItem(updatedSub);
-    }, [clear]);
+    }, [rerender, editData]);
 
     useEffect(() => {
         const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
@@ -208,8 +205,8 @@ const FormItem = (props: IProps) => {
         const a = [...boxes];
         for (const each of boxes) {
             //處理個數
-            const boxNum = a.filter((box) => box.name === each.name).length;
-            const tempLength = temp[0].info[each.name].length;
+            const boxNum = a.filter((box) => box.name === each.name).length ?? 3;
+            const tempLength = temp[0].info[each.name].length ?? 3;
             if (boxNum <= tempLength) {
                 // const add = { ...info };
                 // let k = Array.from({ length: tempLength || 0 }, (_, i) => info[each.name as TLabel][i]).fill("");
@@ -233,6 +230,18 @@ const FormItem = (props: IProps) => {
         }
     }, [isUseTemp]);
 
+    useEffect(() => {
+        const updatedInfo = { Title: [""], SubTitle: [""], Description: [""] };
+
+        const boxes = document.getElementsByClassName("FIInput");
+        for (const each of boxes) {
+            each.value = "";
+        }
+        setInfo(updatedInfo);
+        const updatedSub = { Title: [0], SubTitle: [], Description: [] };
+        setSubmitItem(updatedSub);
+    }, [clear]);
+
     return (
         <>
             {Object.entries(info).map(([label, info]) => {
@@ -243,9 +252,6 @@ const FormItem = (props: IProps) => {
                                 <div className='FIContainer'>
                                     <p className='FITitle'>{label}</p>
                                     {info.map((each, indexEachInfo) => {
-                                        {
-                                            submitItem[label];
-                                        }
                                         return (
                                             <div key={`${label}${indexEachInfo}`} className='FIMain'>
                                                 {label === rule.label && (
@@ -256,8 +262,10 @@ const FormItem = (props: IProps) => {
                                                             onChange={(e) => checkHandler(e, label, indexEachInfo)}
                                                             checked={submitItem[label].indexOf(indexEachInfo) > -1}
                                                         />
+
                                                         {label === "Title" ? (
                                                             <input
+                                                                value={each}
                                                                 className='FIInput'
                                                                 name={`${label}`}
                                                                 placeholder={`${each}`}
@@ -281,6 +289,7 @@ const FormItem = (props: IProps) => {
                                                             />
                                                         ) : (
                                                             <textarea
+                                                                value={each}
                                                                 className='FIInput'
                                                                 name={`${label}`}
                                                                 placeholder={`${each}`}

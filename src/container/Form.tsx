@@ -34,6 +34,7 @@ const Form = () => {
     const [clear, setClear] = useState(false);
     const [isIncreasing, setIsIncreasing] = useState(false);
     const [isUseTemp, setIsUseTemp] = useState(false);
+    const [edit, setEdit] = useState(-1);
 
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
@@ -62,27 +63,31 @@ const Form = () => {
         searchInput.value = "";
     };
 
-    useEffect(() => {
-        //setTodoList(savedDataJson);
-    }, [savedDataJson]);
-
     const handleConfirm = () => {
-        const newMainData = {
-            info: submitInfo,
-            createTime: Date.now(),
-            isCreateNew: true,
-            isDone: false,
-            isTemplate: false,
-        };
-
         setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
-        if (!!savedDataJson) {
-            const updatedJson = [...savedDataJson];
-            updatedJson.push(newMainData);
-            localStorage.setItem("mainData", JSON.stringify(updatedJson));
-            setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
-        }
+        const updatedJson = [...savedDataJson];
 
+        if (edit < 0) {
+            const newMainData = {
+                info: submitInfo,
+                createTime: Date.now(),
+                isCreateNew: true,
+                isDone: false,
+                isTemplate: false,
+            };
+            if (!!savedDataJson) {
+                updatedJson.push(newMainData);
+                localStorage.setItem("mainData", JSON.stringify(updatedJson));
+                setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+            }
+        } else {
+            let editItem = { ...updatedJson[edit], ["info"]: submitInfo, createTime: Date.now(), isCreateNew: false };
+            updatedJson.splice(edit, 1);
+
+            setSavedDataJson([...updatedJson, editItem]);
+            localStorage.setItem("mainData", JSON.stringify(savedDataJson));
+            setEdit(-1);
+        }
         setShowModal(false);
         setRerender((r) => !r);
     };
@@ -102,15 +107,36 @@ const Form = () => {
                 return a.createTime - b.createTime;
             });
         }
-        localStorage.setItem("mainData", JSON.stringify(updatedJson));
-        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+        setSavedDataJson(updatedJson);
     }, [isIncreasing]);
 
-    const dropHandler = (id: number) => {
-        const updatedJson = [...savedDataJson];
-        updatedJson.splice(id, 1);
+    const isDoneHandler = (e, id: number) => {
+        const isCheck = e.target.checked;
+        const updatedJson = JSON.parse(localStorage.getItem("mainData") ?? "");
+
+        const index = updatedJson.findIndex((data) => data.createTime === id);
+        if (index !== -1) {
+            updatedJson[index] = { ...updatedJson[index], isDone: isCheck };
+        }
+
+        setSavedDataJson(updatedJson);
         localStorage.setItem("mainData", JSON.stringify(updatedJson));
-        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+    };
+
+    const editHandler = (id) => {
+        const json = JSON.parse(localStorage.getItem("mainData") ?? "");
+        const index = json.findIndex((data) => data.createTime === id);
+        setEdit(index);
+    };
+
+    const dropHandler = (id: number) => {
+        const json = JSON.parse(localStorage.getItem("mainData") ?? "");
+        const index = json.findIndex((data) => data.createTime === id);
+        console.log(index);
+
+        // json.splice(index, 1);
+        // localStorage.setItem("mainData", JSON.stringify(json));
+        // setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
     };
 
     useEffect(() => {
@@ -132,13 +158,16 @@ const Form = () => {
                         rerender={rerender}
                         clear={clear}
                         isUseTemp={isUseTemp}
+                        editData={edit}
                     />
                     <fieldset className='formPreviewField'>
                         <legend>preview</legend>
+                        {/* <pre>{JSON.stringify(submitInfo, null, 2)}</pre> */}
                         <div className='formPreviewFieldContent'>
                             {Object.entries(submitInfo).map(([k, v]) => {
                                 return <p key={k}>{`${k} : ${v}`}</p>;
                             })}
+
                             {!canSubmit && <p className='FIAlert'>三欄均需有內容</p>}
                         </div>
                     </fieldset>
@@ -177,11 +206,16 @@ const Form = () => {
                                 eachData.isTemplate === false && (
                                     <div className='todoContainer' key={index}>
                                         {index}
-                                        <input className='todoCheck' type='checkbox' />
+                                        <input
+                                            className='todoCheck'
+                                            type='checkbox'
+                                            onChange={(e) => isDoneHandler(e, eachData.createTime)}
+                                            checked={eachData.isDone}
+                                        />
                                         <Todo data={eachData} />
                                         <div>
-                                            <button>edit</button>
-                                            <button onClick={() => dropHandler(index)}>drop</button>
+                                            <button onClick={() => editHandler(eachData.createTime)}>edit</button>
+                                            <button onClick={() => dropHandler(eachData.createTime)}>drop</button>
                                         </div>
                                     </div>
                                 )
