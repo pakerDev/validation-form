@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { IMainData } from "../container/Form";
 
 interface IProps {
     formSubmitInfo: (info: IInfo) => void;
@@ -97,7 +98,7 @@ const FormItem = (props: IProps) => {
         updatedInfo[label].splice(n, 1);
         setInfo(updatedInfo);
 
-        const boxes: NodeListOf<HTMLInputElement> = document.getElementsByName(`${label}inp`);
+        const boxes = document.getElementsByName(`${label}inp`) as NodeListOf<HTMLInputElement>;
         for (const [id, each] of updatedInfo[label].entries()) {
             boxes[id].value = each;
         }
@@ -200,11 +201,10 @@ const FormItem = (props: IProps) => {
 
     useEffect(() => {
         const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
-        const temp = savedDataJson.filter((i) => i.isTemplate === true);
-        const boxes = document.getElementsByClassName("FIInput");
+        const temp = savedDataJson.filter((i: IMainData) => i.isTemplate === true);
+        const boxes = document.getElementsByClassName("FIInput") as HTMLCollectionOf<HTMLInputElement>;
         const allInputBox = [...boxes];
         for (const each of boxes) {
-            each as HTMLInputElement;
             //處理個數
             const boxNum = allInputBox.filter((box) => box.name === each.name).length ?? 3;
             const tempLength = temp[0].info[each.name].length ?? 3;
@@ -234,9 +234,8 @@ const FormItem = (props: IProps) => {
     useEffect(() => {
         const updatedInfo = { Title: [""], SubTitle: [""], Description: [""] };
 
-        const boxes = document.getElementsByClassName("FIInput");
+        const boxes = document.getElementsByClassName("FIInput") as HTMLCollectionOf<HTMLInputElement>;
         for (const each of boxes) {
-            each as HTMLInputElement;
             each.value = "";
         }
         setInfo(updatedInfo);

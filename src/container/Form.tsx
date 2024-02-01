@@ -27,7 +27,7 @@ const mainData = [
 ];
 
 const Form = () => {
-    const [submitInfo, setSubmitInfo] = useState({ Title: [], SubTitle: [], Description: [] });
+    const [submitInfo, setSubmitInfo] = useState<IInfo>({ Title: [], SubTitle: [], Description: [] });
     const [showModal, setShowModal] = useState(false);
     const [canSubmit, setCanSubmit] = useState(false);
     const [rerender, setRerender] = useState(false);
@@ -57,8 +57,7 @@ const Form = () => {
     };
 
     const searchHandler = () => {
-        const searchInput: HTMLInputElement = document.getElementById("searchKeyWord");
-        searchInput as HTMLInputElement;
+        const searchInput = document.getElementById("searchKeyWord") as HTMLInputElement;
         const keyWord = searchInput.value ?? "";
         const allData = JSON.parse(localStorage.getItem("mainData") ?? "");
         setSavedDataJson(allData.filter((i: IMainData) => i.info["Title"][0].includes(keyWord) && i));

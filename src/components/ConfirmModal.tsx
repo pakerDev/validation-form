@@ -1,8 +1,8 @@
-import { ISubmitInfo } from "./FormItem";
+import { IInfo } from "./FormItem";
 
 interface IProps {
     visible: boolean;
-    content: ISubmitInfo;
+    content: IInfo;
     onConfirm: () => void;
     onCancel: () => void;
 }
