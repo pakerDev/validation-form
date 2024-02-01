@@ -153,14 +153,6 @@ const Form = () => {
         setCanSubmit(true);
     }, [submitInfo]);
 
-    const toggleHandler = (id: number) => {
-        const json = JSON.parse(localStorage.getItem("mainData") ?? "");
-        const index = json.findIndex((data: IMainData) => data.createTime === id);
-
-        json.splice(index, 1);
-        localStorage.setItem("mainData", JSON.stringify(json));
-        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
-    };
     return (
         <>
             <div className='formContainer'>
