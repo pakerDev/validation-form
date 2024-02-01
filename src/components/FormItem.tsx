@@ -8,13 +8,16 @@ interface IProps {
 
 type TLabel = "Title" | "SubTitle" | "Description";
 
+
 interface IFormConfig {
     label: TLabel;
     limit: number;
     maxLength: number;
     reg: RegExp;
 }
+
 export interface ISubmitInfo {
+
     Title: number[];
     SubTitle: number[];
     Description: number[];
@@ -51,6 +54,7 @@ const initInfo = {
     Description: [""],
 };
 
+
 const submitItemInit: ISubmitInfo = {
     Title: [0],
     SubTitle: [],
@@ -62,7 +66,6 @@ const FormItem = (props: IProps) => {
     const [info, setInfo] = useState(initInfo);
     const [submitItem, setSubmitItem] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
-
     const checkHandler = (e, label: TLabel, id: number) => {
         const isChecked = e.target.checked;
         if (isChecked) {
@@ -109,7 +112,6 @@ const FormItem = (props: IProps) => {
 
     const authLength = (val: string, max: number) => {
         let res = val;
-
         if (res.length >= max) {
             res = res.slice(0, max);
         }
@@ -119,14 +121,12 @@ const FormItem = (props: IProps) => {
     const authRex = (label: TLabel, id: number, reg: RegExp) => {
         let res = "";
         let val = info[label][id];
-
         const chk =
             val
                 .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
         chk === val ? "" : (res = "reg");
-
         return res;
     };
 
@@ -141,6 +141,7 @@ const FormItem = (props: IProps) => {
         if (e.type === "compositionend") {
             setIsOnComposition(false);
             target.value = authLength(val, max);
+
             const updatedInfo = { ...info };
             updatedInfo[label].splice(id, 1, target.value);
             setInfo(updatedInfo);
@@ -156,11 +157,13 @@ const FormItem = (props: IProps) => {
         max: number
     ) => {
         if (isOnComposition) return;
+
         const val = e.target.value;
         e.target.value = authLength(val, max);
 
         const updatedInfo = { ...info };
         submitItem[label].indexOf(id);
+
         updatedInfo[label].splice(id, 1, e.target.value);
         setInfo(updatedInfo);
     };
@@ -232,6 +235,7 @@ const FormItem = (props: IProps) => {
                                                                 className='FIInput'
                                                                 name={`${label}inp`}
                                                                 placeholder={`${each}`}
+
                                                                 onCompositionEnd={(e) =>
                                                                     compositionHandler(
                                                                         e,
@@ -255,6 +259,7 @@ const FormItem = (props: IProps) => {
                                                                 className='FIInput'
                                                                 name={`${label}inp`}
                                                                 placeholder={`${each}`}
+
                                                                 onCompositionEnd={(e) =>
                                                                     compositionHandler(
                                                                         e,
