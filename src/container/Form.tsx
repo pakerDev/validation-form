@@ -44,6 +44,10 @@ const Form = () => {
         setSubmitInfo(i);
     };
 
+    const isSubmitHandler = (i: boolean) => {
+        setCanSubmit((curr) => curr && i);
+    };
+
     const btnUseTempHandler = () => {
         setIsUseTemp((r) => !r);
     };
@@ -158,6 +162,7 @@ const Form = () => {
                 <div className='formLeft'>
                     <FormItem
                         formSubmitInfo={(newData) => updateInfo(newData)}
+                        formIsMatchReg={(isMatch) => isSubmitHandler(isMatch)}
                         rerender={rerender}
                         clear={clear}
                         isUseTemp={isUseTemp}

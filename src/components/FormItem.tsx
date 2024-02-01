@@ -3,6 +3,7 @@ import { IMainData } from "../container/Form";
 
 interface IProps {
     formSubmitInfo: (info: IInfo) => void;
+    formIsMatchReg: (isMatch: boolean) => void;
     rerender: boolean;
     clear: boolean;
     isUseTemp: boolean;
@@ -68,7 +69,7 @@ const submitItemInit: ISubmitInfo = {
 };
 
 const FormItem = (props: IProps) => {
-    const { formSubmitInfo, rerender, clear, isUseTemp, editData } = props;
+    const { formSubmitInfo, formIsMatchReg, rerender, clear, isUseTemp, editData } = props;
     const [info, setInfo] = useState(initInfo);
     const [submitItem, setSubmitItem] = useState(submitItemInit);
     const [isOnComposition, setIsOnComposition] = useState(false);
@@ -128,7 +129,8 @@ const FormItem = (props: IProps) => {
                 .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
-        chk === val ? "" : (res = "reg");
+        chk === val ? "" : (res = "僅半形英數中字");
+        chk === val ? formIsMatchReg(true) : formIsMatchReg(false);
         return res;
     };
 
