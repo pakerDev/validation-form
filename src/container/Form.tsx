@@ -81,7 +81,7 @@ const Form = () => {
                 setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
             }
         } else {
-            let editItem = { ...updatedJson[edit], ["info"]: submitInfo, createTime: Date.now(), isCreateNew: false };
+            let editItem = { ...updatedJson[edit], ["info"]: submitInfo, isCreateNew: false };
             updatedJson.splice(edit, 1);
 
             setSavedDataJson([...updatedJson, editItem]);
