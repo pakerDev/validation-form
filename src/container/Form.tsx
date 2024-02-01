@@ -18,6 +18,7 @@ const mainData = [
             Title: ["my template Title"],
             SubTitle: ["my template SubTitle1", "my template SubTitle2", "my template SubTitle3"],
             Description: ["my template Description"],
+
         },
         createTime: Date.now(),
         isCreateNew: true,
@@ -112,6 +113,7 @@ const Form = () => {
     }, [submitInfo]);
 
     return (
+
         <>
             <div className='formContainer'>
                 <div className='fromLeft'>
@@ -152,6 +154,7 @@ const Form = () => {
                         <div className='formSearchBar'>
                             <input className='formSearchInput' type='text' />
                             <button className='formSearchBtn '>search</button>
+
                         </div>
                         <button className='formSortBtn FBtn' onClick={() => setIsIncreasing((n) => !n)}>
                             sort
@@ -196,6 +199,7 @@ const Form = () => {
                 />
             </div>
         </>
+
     );
 };
 
