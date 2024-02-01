@@ -35,6 +35,7 @@ const Form = () => {
     const [isIncreasing, setIsIncreasing] = useState(false);
     const [isUseTemp, setIsUseTemp] = useState(false);
     const [edit, setEdit] = useState(-1);
+    const [toggle, setToggle] = useState(false);
 
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
@@ -136,7 +137,6 @@ const Form = () => {
     const dropHandler = (id: number) => {
         const json = JSON.parse(localStorage.getItem("mainData") ?? "");
         const index = json.findIndex((data) => data.createTime === id);
-        console.log(index);
 
         json.splice(index, 1);
         localStorage.setItem("mainData", JSON.stringify(json));
@@ -153,6 +153,14 @@ const Form = () => {
         setCanSubmit(true);
     }, [submitInfo]);
 
+    const toggleHandler = (id: number) => {
+        const json = JSON.parse(localStorage.getItem("mainData") ?? "");
+        const index = json.findIndex((data) => data.createTime === id);
+
+        json.splice(index, 1);
+        localStorage.setItem("mainData", JSON.stringify(json));
+        setSavedDataJson(JSON.parse(localStorage.getItem("mainData") ?? ""));
+    };
     return (
         <>
             <div className='formContainer'>
@@ -166,7 +174,6 @@ const Form = () => {
                     />
                     <fieldset className='formPreviewField'>
                         <legend>preview</legend>
-                        {/* <pre>{JSON.stringify(submitInfo, null, 2)}</pre> */}
                         <div className='formPreviewFieldContent'>
                             {Object.entries(submitInfo).map(([k, v]) => {
                                 return <p key={k}>{`${k} : ${v}`}</p>;
@@ -193,44 +200,60 @@ const Form = () => {
                     </div>
                 </div>
                 <div className='formRight'>
-                    <div className='formRHead'>
-                        <div className='formSearchBar'>
-                            <input className='formSearchInput' type='text' id='searchKeyWord' />
-                            <button className='formSearchBtn' onClick={() => searchHandler()}>
-                                search
-                            </button>
-                        </div>
-                        <button className='formSortBtn FBtn' onClick={() => setIsIncreasing((n) => !n)}>
-                            sort
-                        </button>
-                    </div>
-                    <div className='formRMain'>
-                        {savedDataJson.map((eachData: IMainData, index: number) => {
-                            return (
-                                eachData.isTemplate === false && (
-                                    <div className='todoContainer' key={index}>
-                                        {index}
-                                        <input
-                                            className='todoCheck'
-                                            type='checkbox'
-                                            onChange={(e) => isDoneHandler(e, eachData.createTime)}
-                                            checked={eachData.isDone}
-                                        />
-                                        <Todo data={eachData} />
-                                        <div>
-                                            <button onClick={() => editHandler(eachData.createTime)}>edit</button>
-                                            <button onClick={() => dropHandler(eachData.createTime)}>drop</button>
-                                        </div>
-                                    </div>
-                                )
-                            );
-                        })}
-                        <Todo data={savedDataJson} />
-                    </div>
+                    {toggle ? (
+                        <>
+                            <div className='formRHead'>
+                                <div className='formSearchBar'>
+                                    <input className='formSearchInput' type='text' id='searchKeyWord' />
+                                    <button className='formSearchBtn' onClick={() => searchHandler()}>
+                                        search
+                                    </button>
+                                </div>
+                                <button className='formSortBtn FBtn' onClick={() => setIsIncreasing((n) => !n)}>
+                                    sort
+                                </button>
+                            </div>
+                            <div className='formRMain'>
+                                {savedDataJson.map((eachData: IMainData, index: number) => {
+                                    return (
+                                        eachData.isTemplate === false && (
+                                            <div className='todoContainer' key={index}>
+                                                {index}
+                                                <input
+                                                    className='todoCheck'
+                                                    type='checkbox'
+                                                    onChange={(e) => isDoneHandler(e, eachData.createTime)}
+                                                    checked={eachData.isDone}
+                                                />
+                                                <Todo data={eachData} />
+                                                <div>
+                                                    <button onClick={() => editHandler(eachData.createTime)}>
+                                                        edit
+                                                    </button>
+                                                    <button onClick={() => dropHandler(eachData.createTime)}>
+                                                        drop
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )
+                                    );
+                                })}
+                                <Todo data={savedDataJson} />
+                            </div>
+                        </>
+                    ) : (
+                        <div>{<pre>{JSON.stringify(savedDataJson, null, 2)}</pre>}</div>
+                    )}
+
                     <div className='formRFooter'>
                         <div className='divToggle'>
                             <label className='labelToggle'>
-                                <input type='checkbox' />
+                                <input
+                                    type='checkbox'
+                                    onChange={() => {
+                                        setToggle((i) => !i);
+                                    }}
+                                />
                                 <span className=''>t = detail</span>
                             </label>
                         </div>
