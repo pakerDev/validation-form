@@ -208,9 +208,8 @@ const FormItem = (props: IProps) => {
         const a = [...boxes];
         for (const each of boxes) {
             //處理個數
-            let boxNum = a.filter((box) => box.name === each.name).length;
-            let tempLength = temp[0].info[each.name].length;
-            console.log(boxNum, tempLength);
+            const boxNum = a.filter((box) => box.name === each.name).length;
+            const tempLength = temp[0].info[each.name].length;
             if (boxNum <= tempLength) {
                 // const add = { ...info };
                 // let k = Array.from({ length: tempLength || 0 }, (_, i) => info[each.name as TLabel][i]).fill("");
@@ -226,7 +225,11 @@ const FormItem = (props: IProps) => {
             }
 
             //處理值
-            // each.value = temp[0].info[each.name];
+            each.value = temp[0].info[each.name];
+            setInfo(temp[0].info);
+
+            //處理勾
+            setSubmitItem({ Title: [0], SubTitle: [0], Description: [0] });
         }
     }, [isUseTemp]);
 
@@ -253,7 +256,6 @@ const FormItem = (props: IProps) => {
                                                             onChange={(e) => checkHandler(e, label, indexEachInfo)}
                                                             checked={submitItem[label].indexOf(indexEachInfo) > -1}
                                                         />
-
                                                         {label === "Title" ? (
                                                             <input
                                                                 className='FIInput'
