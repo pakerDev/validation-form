@@ -16,7 +16,7 @@ const mainData = [
     {
         info: {
             Title: ["my template Title"],
-            SubTitle: ["my template SubTitle1", "my template SubTitle2", "my template SubTitle3"],
+            SubTitle: ["my template SubTitle1"],
             Description: ["my template Description"],
         },
         createTime: Date.now(),
@@ -37,6 +37,7 @@ const Form = () => {
 
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
+    const [todoList, setTodoList] = useState(savedDataJson);
 
     const updateInfo = (i: IInfo) => {
         setSubmitInfo(i);
@@ -53,6 +54,17 @@ const Form = () => {
     const btnSubmitHandler = () => {
         setShowModal(true);
     };
+
+    const searchHandler = () => {
+        const searchInput = document.getElementById("searchKeyWord");
+        const keyWord = searchInput.value;
+        setTodoList(savedDataJson.filter((i) => i.info["Title"][0].includes(keyWord) && i));
+        searchInput.value = "";
+    };
+
+    useEffect(() => {
+        setTodoList(savedDataJson);
+    }, [savedDataJson]);
 
     const handleConfirm = () => {
         const newMainData = {
@@ -150,15 +162,17 @@ const Form = () => {
                 <div className='formRight'>
                     <div className='formRHead'>
                         <div className='formSearchBar'>
-                            <input className='formSearchInput' type='text' />
-                            <button className='formSearchBtn '>search</button>
+                            <input className='formSearchInput' type='text' id='searchKeyWord' />
+                            <button className='formSearchBtn' onClick={() => searchHandler()}>
+                                search
+                            </button>
                         </div>
                         <button className='formSortBtn FBtn' onClick={() => setIsIncreasing((n) => !n)}>
                             sort
                         </button>
                     </div>
                     <div className='formRMain'>
-                        {savedDataJson.map((eachData: IMainData, index: number) => {
+                        {todoList.map((eachData: IMainData, index: number) => {
                             return (
                                 eachData.isTemplate === false && (
                                     <div className='todoContainer' key={index}>
