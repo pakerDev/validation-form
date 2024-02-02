@@ -129,7 +129,8 @@ const FormItem = (props: IProps) => {
                 .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
-        chk === val ? "" : (res = "reg");
+        chk === val ? "" : (res = "半形英數中字");
+        chk === val ? formIsMatchReg(true) : formIsMatchReg(false);
         return res;
     };
 
@@ -204,25 +205,7 @@ const FormItem = (props: IProps) => {
         const savedDataJson = JSON.parse(localStorage.getItem("mainData") ?? "");
         const temp = savedDataJson.filter((i: IMainData) => i.isTemplate === true);
         const boxes = document.getElementsByClassName("FIInput") as HTMLCollectionOf<HTMLInputElement>;
-        const allInputBox = [...boxes];
         for (const each of boxes) {
-            //處理個數
-            const boxNum = allInputBox.filter((box) => box.name === each.name).length ?? 3;
-            const tempLength = temp[0].info[each.name].length ?? 3;
-            if (boxNum <= tempLength) {
-                // const add = { ...info };
-                // let k = Array.from({ length: tempLength || 0 }, (_, i) => info[each.name as TLabel][i]).fill("");
-                // console.log(k);
-                // setInfo({
-                //     ...info,
-                //     [each.name]: k,
-                // });
-                // console.log(info);
-                //add[each.name].fill("", boxNum, tempLength + 1);
-                // info[each.name].fill("", boxNum, tempLength);
-                // setInfo({ ...info, [each.name]: [...info[each.name].fill("", boxNum, tempLength)] });
-            }
-
             //處理值
             each.value = temp[0].info[each.name];
             setInfo(temp[0].info);
