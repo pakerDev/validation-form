@@ -129,7 +129,8 @@ const FormItem = (props: IProps) => {
                 .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
-        chk === val ? "" : (res = "reg");
+        chk === val ? "" : (res = "半形英數中字");
+        chk === val ? formIsMatchReg(true) : formIsMatchReg(false);
         return res;
     };
 
