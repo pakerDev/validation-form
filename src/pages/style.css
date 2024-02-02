@@ -258,7 +258,7 @@
     background-color: var(--coot);
 }
 
-.todoItemCOntainer {
+.todoItemContainer {
     width: 100%;
     display: flex;
     flex-direction: column;
