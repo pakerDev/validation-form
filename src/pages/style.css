@@ -4,7 +4,9 @@
     --text0: #fff;
     --text1: #ddd;
     --text2: #aaa;
+    --text3: #777;
     --alert0: #a52a2a;
+    --coot: transparent;
 }
 
 * {
@@ -95,6 +97,7 @@
 }
 
 .FIRowAlert {
+    width: 32px;
     margin-left: 8px;
 }
 
@@ -130,7 +133,7 @@
 
 .FIPlus {
     border: 2px solid var(--text1);
-    margin-left: 8px;
+    margin: 8px 0 0 8px;
     &:disabled {
         transform: rotate(45deg);
     }
@@ -166,6 +169,10 @@
     display: flex;
 }
 
+.formLeft {
+    width: 50%;
+}
+
 .FFooter {
     display: flex;
     justify-content: end;
@@ -173,7 +180,7 @@
 
 .FBtn {
     margin-top: 2rem;
-    padding: 4px 8px;
+    padding: 8px;
     font-weight: 700;
     border: var(--theme1) 2px solid;
     border-radius: 0.5rem;
@@ -196,12 +203,132 @@
     }
 }
 
-.formRight {
+.formPreviewField {
+    height: 160px;
+    width: 90%;
+    padding: 4px 8px;
+    text-align: left;
+    overflow-y: auto;
+    word-break: break-word;
+}
+
+.formPreviewFieldContent {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-evenly;
+}
+
+.previewAlert {
+    width: 100%;
+    text-align: center;
+}
+
+.formRight {
+    width: 50%;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: space-between;
+    justify-content: space-between;
     margin-left: 1rem;
+}
+
+.toggleSearchView {
+    height: 80vh;
+}
+
+.todoContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    border-bottom: var(--text3) 2px solid;
+    padding-bottom: 8px;
+
+    &:last-child {
+        border: none;
+    }
+}
+
+.todoBtn {
+    margin: 2px;
+    padding: 4px;
+    width: 60px;
+    background-color: var(--coot);
+}
+
+.todoItemContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    text-align: left;
+}
+
+.todoView {
+    padding: 16px;
+    margin-bottom: 16px;
+    width: 100%;
+    max-height: 600px;
+    overflow-x: auto;
+    overflow-y: auto;
+    word-break: break-all;
+    text-align: left;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.formRHead {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.formSearchBar {
+    width: 100%;
+    border: 1px var(--text3) solid;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.formSearchInput {
+    width: 80%;
+    border: none;
+    background-color: var(--coot);
+    padding: 4px;
+    font-size: 16px;
+
+    &:focus {
+        border: none;
+    }
+}
+
+.formSearchBtn {
+    width: 80px;
+    margin: 0;
+    padding: 8px 0;
+    background-color: var(--coot);
+    border-left: 1px var(--text3) solid;
+    border-radius: 0;
+
+    &:hover {
+        border: 1px var(--text0) solid;
+        border-radius: 0 4px 4px 0;
+    }
+}
+
+.formRMain {
+    padding: 16px;
+    height: 100%;
+}
+
+.formSortBtn {
+    width: 60px;
+    margin: 0 0 0 8px;
+    padding: 8px;
 }
 
 .formJson {
@@ -211,6 +338,68 @@
     border-bottom: 2px solid var(--text1);
     text-align: left;
     word-break: break-word;
+}
+
+.formRFooter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.divToggle {
+    height: 32px;
+    position: absolute;
+}
+
+.labelToggle span:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 64px;
+    height: 32px;
+    background-color: var(--theme0);
+    border-radius: 20px;
+    transition: 0.4s;
+}
+
+.labelToggle span:after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 6px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+.labelToggle input:checked + span:before {
+    background-color: var(--theme1);
+}
+
+.labelToggle input:checked + span:after {
+    transform: translateX(36px);
+}
+
+.formEditTemp {
+    position: relative;
+    left: 80px;
+    margin: 0;
+}
+
+.formDetail {
+    padding: 16px;
+    margin-bottom: 16px;
+    width: 420px;
+    height: 80vh;
+    overflow-x: auto;
+    overflow-y: auto;
+    text-align: left;
+    border: 1px solid var(--theme0);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .modal {
@@ -255,4 +444,11 @@
 
 .modalContent button:hover {
     opacity: 0.9;
+}
+
+.myCheckBox {
+    border: pink 2px solid;
+    height: 16px;
+    width: 16px;
+    margin-right: 16px;
 }

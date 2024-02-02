@@ -1,18 +1,24 @@
-interface Iprops {
+import { IInfo } from "./FormItem";
+
+interface IProps {
     visible: boolean;
-    content: string;
-    onConfirm: void;
-    onCancel: void;
+    content: IInfo;
+    onConfirm: () => void;
+    onCancel: () => void;
 }
 
-const ConfirmModal = (props: Iprops) => {
+const ConfirmModal = (props: IProps) => {
     const { visible, content, onConfirm, onCancel } = { ...props };
     if (!visible) return null;
 
     return (
         <div className='modal'>
             <div className='modalContent'>
-                <p>{content}</p>
+                <p>
+                    {Object.entries(content).map(([k, v], index) => {
+                        return <p key={index}>{`${k} : ${v}`}</p>;
+                    })}
+                </p>
                 <button className='modalBtn' onClick={onCancel}>
                     取消
                 </button>
