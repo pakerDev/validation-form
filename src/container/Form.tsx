@@ -176,7 +176,7 @@ const Form = () => {
                                     return <p key={k}>{`${k} : ${v}`}</p>;
                                 })}
                             </div>
-                            <div>{!canSubmit && <p className='FIAlert'>三欄均需有內容</p>}</div>
+                            <div>{!canSubmit && <p className='previewAlert FIAlert'>三欄均需有內容</p>}</div>
                         </div>
                     </fieldset>
                     <div className='FFooter'>
@@ -198,7 +198,7 @@ const Form = () => {
                 </div>
                 <div className='formRight'>
                     {toggle ? (
-                        <div className=''>
+                        <div className='toggleSearchView'>
                             <div className='formRHead'>
                                 <div className='formSearchBar'>
                                     <input className='formSearchInput' type='text' id='searchKeyWord' />

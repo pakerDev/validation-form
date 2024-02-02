@@ -30,9 +30,9 @@ export interface IInfo {
     Description: string[];
 }
 
-const titleReg = /[\w\u4e00-\u9fa5\s]/g;
-const subReg = /[\w\u4e00-\u9fa5\s\-]/g;
-const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\，\,\.\'\"\s]/g;
+const titleReg = /[\w\u4e00-\u9fa5\s\,\:\.\(\)\-]/g;
+const subReg = /[\w\u4e00-\u9fa5\s\,\:\.\(\)\-]/g;
+const descReg = /[\w\u4e00-\u9fa5\u3001-\u3017\，\。\,\.\'\"\s]/g;
 
 const formConfig: IFormConfig[] = [
     {
@@ -129,7 +129,7 @@ const FormItem = (props: IProps) => {
                 .match(reg)
                 ?.filter((char) => char !== "_")
                 .join("") ?? "";
-        chk === val ? "" : (res = "僅半形英數中字");
+        chk === val ? "　　　　　　" : (res = "格式有誤");
         chk === val ? formIsMatchReg(true) : formIsMatchReg(false);
         return res;
     };
