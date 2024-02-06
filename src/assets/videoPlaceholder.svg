@@ -1,0 +1,21 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 167.3714038971566 123.94384393795004" width="502.1142116914698" height="371.8315318138501">
+  <!-- svg-source:excalidraw -->
+  
+  <defs>
+    <style class="style-fonts">
+      @font-face {
+        font-family: "Virgil";
+        src: url("https://excalidraw.com/Virgil.woff2");
+      }
+      @font-face {
+        font-family: "Cascadia";
+        src: url("https://excalidraw.com/Cascadia.woff2");
+      }
+      @font-face {
+        font-family: "Assistant";
+        src: url("https://excalidraw.com/Assistant-Regular.woff2");
+      }
+    </style>
+    
+  </defs>
+  <g stroke-linecap="round" transform="translate(10 10) rotate(0 73.6857019485783 51.97192196897502)"><path d="M25.99 0 C63.02 -1.54, 103.29 1.28, 121.39 0 C135.91 -2.62, 145.12 8.71, 147.37 25.99 C150.35 40.6, 146.67 59.19, 147.37 77.96 C145.85 96.5, 139.46 100.74, 121.39 103.94 C85.11 104.37, 55.1 105.95, 25.99 103.94 C7.96 100.56, -2.21 98.3, 0 77.96 C0.49 59.5, 1.33 43.84, 0 25.99 C1.47 6.28, 5.39 -1.21, 25.99 0" stroke="none" stroke-width="0" fill="#f8f9fa"></path><path d="M25.99 0 C49.38 0.26, 73.52 -0.07, 121.39 0 M25.99 0 C53.4 -1.68, 81.62 -0.15, 121.39 0 M121.39 0 C138.3 -0.77, 148.02 10.38, 147.37 25.99 M121.39 0 C139.69 0.66, 146.33 6.87, 147.37 25.99 M147.37 25.99 C148.38 35.12, 146.98 48.75, 147.37 77.96 M147.37 25.99 C147.44 39.75, 147.02 51.74, 147.37 77.96 M147.37 77.96 C148.07 94.61, 140 105.43, 121.39 103.94 M147.37 77.96 C147.79 94.15, 139.91 103.31, 121.39 103.94 M121.39 103.94 C82.45 104.53, 44.92 106.09, 25.99 103.94 M121.39 103.94 C96.34 103.9, 72.11 104.57, 25.99 103.94 M25.99 103.94 C8.08 103.29, 1 94.6, 0 77.96 M25.99 103.94 C10.35 105.08, 1.68 94.68, 0 77.96 M0 77.96 C1.26 61.56, 1.82 42.28, 0 25.99 M0 77.96 C0.47 62.36, -0.13 48.94, 0 25.99 M0 25.99 C1.67 10.38, 7.05 1.1, 25.99 0 M0 25.99 C1.43 6.39, 10.52 2.3, 25.99 0" stroke="#1e1e1e" stroke-width="1" fill="none"></path></g><g transform="translate(64.38971195834392 51.971921968975025) rotate(0 19.295989990234375 10)"><text x="19.295989990234375" y="0" font-family="Virgil, Segoe UI Emoji" font-size="16px" fill="#1e1e1e" text-anchor="middle" style="white-space: pre;" direction="ltr" dominant-baseline="text-before-edge">video</text></g></svg>
