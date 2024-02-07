@@ -3,20 +3,20 @@ import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import { Checkbox } from "@mui/material";
 
 interface IBookmarkProp {
-    isLiked: boolean;
-    bookmarkClickHandler: React.MouseEventHandler<HTMLButtonElement>;
+    isChecked: boolean;
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 const Bookmark = (props: IBookmarkProp) => {
-    const { isLiked, bookmarkClickHandler } = { ...props };
+    const { isChecked, onClick } = { ...props };
 
     return (
         <div className='bookmark'>
             <Checkbox
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
-                checked={isLiked}
-                onClick={() => bookmarkClickHandler}
+                checked={isChecked}
+                onClick={() => onClick}
                 color='warning'
             />
         </div>
