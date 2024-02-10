@@ -1,13 +1,5 @@
 import { Checkbox } from "@mui/material";
-import {
-    Input,
-    InputLabel,
-    FormControl,
-    FormHelperText,
-    TextField,
-    TextFieldPropsSizeOverrides,
-    TextFieldProps,
-} from "@mui/material";
+import { FormControl, FormHelperText, TextField } from "@mui/material";
 import { useState } from "react";
 
 interface ICustomInput {
@@ -18,6 +10,7 @@ interface ICustomInput {
     required?: boolean;
     error?: boolean;
     fullWidth?: boolean;
+    defaultValue?: unknown;
     value?: unknown;
     isSmall?: boolean;
     isShowCheckBox?: boolean;
@@ -44,7 +37,7 @@ const CustomInput = (prop: ICustomInput) => {
         onChange,
         onBlur,
         onClick,
-    } = { ...prop };
+    } = prop;
 
     const [count, setCount] = useState(0);
 
@@ -55,13 +48,14 @@ const CustomInput = (prop: ICustomInput) => {
         onChange && onChange(e);
         setCount(e.target.value.length);
     };
+
     return (
         <div className='row customInputRow'>
             {isShowCheckBox && <Checkbox id={id} onClick={onClick} checked={isChecked} />}
             <FormControl>
                 <TextField
                     label={inputLabel}
-                    defaultValue={value}
+                    value={value}
                     required={required}
                     id={id}
                     fullWidth={fullWidth}
