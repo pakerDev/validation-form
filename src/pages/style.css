@@ -27,6 +27,10 @@
     flex-direction: column;
 }
 
+.fullWidth {
+    width: 100%;
+}
+
 /* ConfirmModal */
 
 .modal {
@@ -85,7 +89,6 @@
 
 /* todo 不能這樣做placeholder */
 .uploadModalPreImage {
-    background: no-repeat center/100% url("../assets/imagePlaceholder.svg");
     height: 80px;
     width: 120px;
     border: none;
@@ -125,5 +128,39 @@
 }
 
 /* CustomPreviewPro */
-.CustomPreviewProImage {
+.CustomPreviewProContainer {
+    width: 100%;
+    display: flex;
+}
+
+.CustomPreviewProRight {
+    margin-left: 8px;
+}
+
+.CustomPreviewProTitle {
+    font-weight: 700;
+}
+
+.CustomPreviewProTag {
+    height: 24px;
+}
+
+.CustomPreviewProDesc {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.CustomPreviewProDescText {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--text3);
+    background-color: var(--text0);
+    border-radius: 8px;
+    height: 24px;
+    margin: 0 2px;
+    padding: 0 4px;
+    max-width: 260px;
 }
