@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import ImagePlaceholder from "../assets/imagePlaceholder.svg";
+import Placeholder from "../assets/Placeholder.svg";
+import YellowTagCover from "../assets/YellowTagCover.svg";
 
 interface IProps {
     className?: string;
@@ -16,10 +17,10 @@ const CustomImage = (props: IProps) => {
     useEffect(() => {
         const img = new Image();
         img.onload = () => setImageSrc(url);
-        img.onerror = () => setImageSrc(ImagePlaceholder);
+        img.onerror = () => setImageSrc(Placeholder);
 
         if (isYellow) {
-            setImageSrc(ImagePlaceholder);
+            setImageSrc(YellowTagCover);
         } else {
             img.src = url;
         }
