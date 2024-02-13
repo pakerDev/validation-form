@@ -19,12 +19,14 @@ const CustomSingleTag = (props: ICustomTagProp) => {
     return (
         <div className='row'>
             <Checkbox
+                className='CustomIconBtnIcon'
                 icon={icon}
                 checkedIcon={checkedIcon}
                 checked={isChecked}
                 color={color}
                 id={type}
                 onClick={onClick}
+                size='small'
             />
             {isShowLabel && (
                 <label className='CustomIconBtnLabel' htmlFor={type} color={color}>
