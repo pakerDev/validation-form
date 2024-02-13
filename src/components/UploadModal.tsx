@@ -1,8 +1,7 @@
 import { useState } from "react";
 import CustomInput from "./CustomInput";
 import CustomAllTags from "../components/CustomAllTags";
-import CustomVideo from "./CustomVideo";
-import { youtubeURLRegex, imgURLRegex, titleRegex, descRegex, IMainData } from "../constant/types";
+import { youtubeURLRegex, imgURLRegex, titleRegex, descRegex, IMainData } from "../constant/types.ts";
 import { Button, IconButton, Link } from "@mui/material";
 import CustomSwitch from "./CustomSwitch";
 import CustomPreviewPro from "./CustomPreviewPro";
