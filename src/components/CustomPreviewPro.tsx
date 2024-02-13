@@ -8,7 +8,7 @@ interface ICustomPreviewPro {
 
 const CustomPreviewPro = (props: ICustomPreviewPro) => {
     const { data } = props;
-    const { imgURL = "@/asset/imagePlaceholder.svg", info } = data;
+    const { imgURL = "@/asset/imagePlaceholder.svg", title, tag, desc } = data;
 
     return (
         <div className='CustomPreviewProContainer row'>
@@ -16,21 +16,32 @@ const CustomPreviewPro = (props: ICustomPreviewPro) => {
                 className='CustomPreviewProImage'
                 url={imgURL}
                 width={160}
-                height={120}
-                isYellow={data.info.tag.includes("yellow")}
+                height={80}
+                isYellow={tag.includes("yellow")}
             />
-            <div className='column'>
-                {info.title === "" ? "title" : info.title}
-                <div className='row'>
-                    {info.tag.length !== 0 &&
-                        info.tag.map((i: allTagsType) => {
+            <div className='column fullWidth CustomPreviewProRight'>
+                {<div className='CustomPreviewProTitle'>{title === "" ? "title" : title}</div>}
+                <div className='row CustomPreviewProTag'>
+                    {tag.length !== 0 &&
+                        tag.map((i: allTagsType) => {
                             return <CustomSingleTag type={i} key={i} />;
                         })}
                 </div>
 
-                {info.desc.map((i: string, idx: number) => {
-                    return <div key={idx}>{i}</div>;
-                })}
+                <div className='row CustomPreviewProDesc'>
+                    {/* {desc.map((i: string, idx: number) => {
+                        return (
+                            <>
+                                {i !== "" && (
+                                    <div className='CustomPreviewProDescText' key={idx}>
+                                        {i}
+                                    </div>
+                                )}
+                            </>
+                        );
+                    })} */}
+                    {<div className='CustomPreviewProDescText'>{desc[0]}</div>}
+                </div>
             </div>
         </div>
     );
