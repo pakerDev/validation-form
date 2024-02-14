@@ -4,11 +4,12 @@ import { Checkbox } from "@mui/material";
 
 interface IBookmarkProp {
     isChecked: boolean;
+    iconSize?: number;
     onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Bookmark = (props: IBookmarkProp) => {
-    const { isChecked, onClick } = { ...props };
+const CustomBookmark = (props: IBookmarkProp) => {
+    const { isChecked, iconSize = 20, onClick } = { ...props };
 
     return (
         <div className='bookmark'>
@@ -16,11 +17,12 @@ const Bookmark = (props: IBookmarkProp) => {
                 icon={<FavoriteBorder />}
                 checkedIcon={<Favorite />}
                 checked={isChecked}
-                onClick={() => onClick}
+                onClick={onClick}
                 color='warning'
+                sx={{ "& .MuiSvgIcon-root": { fontSize: iconSize }, "&": { padding: 0 } }}
             />
         </div>
     );
 };
 
-export default Bookmark;
+export default CustomBookmark;
