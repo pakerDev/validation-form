@@ -1,7 +1,6 @@
 import { IconButton, InputBase, Menu, MenuItem, Fade } from "@mui/material";
 import React, { useState } from "react";
-import { Search } from "@mui/icons-material/";
-import MenuIcon from "@mui/icons-material/Menu";
+import { Search, KeyboardArrowDown } from "@mui/icons-material/";
 
 const CustomSearch = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -23,7 +22,7 @@ const CustomSearch = () => {
                 aria-expanded={open ? "true" : undefined}
                 onClick={handleClick}
             >
-                <MenuIcon />
+                <KeyboardArrowDown />
             </IconButton>
             <Menu
                 id='fadeMenu'
@@ -38,11 +37,7 @@ const CustomSearch = () => {
                 <MenuItem onClick={handleClose}>依標題</MenuItem>
                 <MenuItem onClick={handleClose}>依內容</MenuItem>
             </Menu>
-            <InputBase
-                sx={{ ml: 1, flex: 1 }}
-                placeholder='輸入搜尋內容'
-                inputProps={{ "aria-label": "輸入搜尋內容" }}
-            />
+            <InputBase sx={{ ml: 1, flex: 1 }} placeholder='輸入搜尋關鍵字' />
             <IconButton type='button' aria-label='search'>
                 <Search />
             </IconButton>

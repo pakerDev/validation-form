@@ -47,6 +47,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1000;
+    background-color: #faefefa9;
 }
 
 .modalWrapper {
@@ -57,6 +58,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: #fff;
 }
 
 .modalHeader {
@@ -118,6 +120,10 @@
 }
 
 /* CustomIconBtn */
+.customIconBtnIcon {
+    cursor: default;
+}
+
 .customIconBtnLabel {
     margin-left: -8px;
     color: var(--text3);
@@ -188,4 +194,23 @@
     border-radius: 8px;
     height: 24px;
     padding: 0 4px;
+}
+
+/* customStudioItem */
+.customStudioItem {
+    margin: 0 8px;
+}
+
+.customStudioItemContainer {
+    align-items: start;
+    margin-bottom: 16px;
+}
+
+.customStudioItemTitle {
+    width: 120px;
+    font-weight: 500;
+}
+
+.customStudioItemTag {
+    width: 120px;
 }
