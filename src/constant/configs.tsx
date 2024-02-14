@@ -69,49 +69,46 @@ export const tempData: IMainData = {
     createTime: Date.now(),
     title: "Mui for figma",
     tag: ["news", "others"],
-    desc: [
-        "Material UI is an open-source React component library.",
-        `It's comprehensive and can be used in production out of the box`,
-    ],
+    desc: ["Material UI is an open-source React component library."],
 };
 
-export const mainData: IMainData = [
+export const mainData: IMainData[] = [
     {
         videoURL: "https://www.youtube.com/watch?v=8vgHesaY3y8",
-        imgURL: "https://i.ytimg.com/an_webp/8vgHesaY3y8/mqdefault_6s.webp?du=3000&sqp=CO2rqK4G&rs=AOn4CLBlofgWQdUaN9kFgNk-0u4GKgJYgA",
+        imgURL: "https://images.unsplash.com/photo-1588514024543-d17d1724de49?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fG11aXxlbnwwfHwwfHx8MA%3D%3D",
         isLiked: false,
         isUploaded: true,
-        createTime: Date.now(),
+        createTime: 1707600742963,
         title: "Updating Lib",
         tag: ["music"],
         desc: ["Text fields allow users to enter text into a UI."],
     },
     {
         videoURL: "https://www.youtube.com/watch?v=hCGiyI_NmRY",
-        imgURL: "https://i.ytimg.com/an_webp/hCGiyI_NmRY/mqdefault_6s.webp?du=3000&sqp=COigqK4G&rs=AOn4CLAIlFpsnXTiECVgWphDWeZ_cL8Kww",
-        isLiked: false,
+        imgURL: "https://plus.unsplash.com/premium_photo-1706382043366-94f5ff009e15?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw3fHx8ZW58MHx8fHx8",
+        isLiked: true,
         isUploaded: true,
-        createTime: Date.now(),
+        createTime: 1707600742963,
         title: "Design Tutorial",
         tag: ["food", "others"],
         desc: ["Checkboxes can be used to turn an option on or off."],
     },
     {
         videoURL: "https://www.youtube.com/watch?v=ObVSC-kTR6g",
-        imgURL: "https://i.ytimg.com/an_webp/ObVSC-kTR6g/mqdefault_6s.webp?du=3000&sqp=CKCoqK4G&rs=AOn4CLC9F3frhObOdLEgLIfu_FHeezxWVQ",
+        imgURL: "https://images.unsplash.com/photo-1705917674111-50bfa2607d05?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNXx8fGVufDB8fHx8fA%3D%3D",
         isLiked: false,
         isUploaded: true,
-        createTime: Date.now(),
+        createTime: 1707700742963,
         title: "Getting Start",
         tag: ["yellow", "others"],
         desc: ["Sliders allow users to make selections from a range of value"],
     },
     {
         videoURL: "https://youtu.be/dz84BX13LDo?si=DtDlF2_FnosDnrFk",
-        imgURL: "https://i.ytimg.com/an_webp/dz84BX13LDo/mqdefault_6s.webp?du=3000&sqp=CI6jqK4G&rs=AOn4CLA5cMO9Ikrt5rcZiOAXJqPx68BvXA",
+        imgURL: "https://plus.unsplash.com/premium_photo-1707241901869-56a54b8314ee?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMnx8fGVufDB8fHx8fA%3D%3D",
         isLiked: false,
         isUploaded: true,
-        createTime: Date.now(),
+        createTime: 1707800742963,
         title: "Something New",
         tag: ["news"],
         desc: ["The Radio Group allows the user to select one option."],
@@ -121,9 +118,41 @@ export const mainData: IMainData = [
         imgURL: "https://images.unsplash.com/photo-1706378396388-03713938c8bc?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         isLiked: true,
         isUploaded: true,
-        createTime: Date.now(),
+        createTime: 1707800742963,
         title: "TitleTitle",
-        tag: ["tag"],
+        tag: ["music", "food"],
         desc: ["desc", "a", "b"],
     },
 ];
+
+export const initData: IMainData = {
+    videoURL: "",
+    imgURL: "",
+    isLiked: false,
+    isUploaded: true,
+    createTime: Date.now(),
+    title: "",
+    tag: [],
+    desc: [""],
+};
+
+const youtubeURLRegex = /^(https:\/\/www\.youtube\.com\/watch\?v*)|(https:\/\/youtu\.be\/[\w-]+\?si=*)/;
+const imgURLRegex = /^(https\:\/\/)|(http\:\/\/*)|(image)/;
+const titleRegex = /[\w\u4e00-\u9fa5\s\,\:\.\(\)\-]/g;
+const descRegex = /[\w\u4e00-\u9fa5\u3001-\u3017\，\。\,\.\'\"]/g;
+
+export const uploadConfig = {
+    videoURL: { limit: 1, regex: youtubeURLRegex },
+    imgURL: { limit: 1, regex: imgURLRegex },
+    title: {
+        limit: 1,
+        maxLength: 15,
+        regex: titleRegex,
+    },
+    tag: { limit: 5 },
+    desc: {
+        limit: 3,
+        maxLength: 60,
+        regex: descRegex,
+    },
+};
