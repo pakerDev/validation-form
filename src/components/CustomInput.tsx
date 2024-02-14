@@ -50,7 +50,7 @@ const CustomInput = (prop: ICustomInput) => {
     };
 
     return (
-        <div className='row customInputRow'>
+        <div className='row customInputRow fullWidth'>
             {isShowCheckBox && <Checkbox id={id} onClick={onClick} checked={isChecked} />}
             <FormControl className='fullWidth'>
                 <TextField
@@ -67,7 +67,6 @@ const CustomInput = (prop: ICustomInput) => {
                     error={error}
                     multiline
                     maxRows={3}
-                    // sx={{ "& .MuiFormControl-root": {width:100%} }}
                 />
                 <FormHelperText>{helperText}</FormHelperText>
             </FormControl>

@@ -8,28 +8,29 @@ interface ICustomTagProp {
     isChecked?: boolean;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
     isShowLabel?: boolean;
+    iconSize?: number;
 }
 
 const CustomSingleTag = (props: ICustomTagProp) => {
-    const { type, isChecked = true, onClick, isShowLabel = false } = props;
+    const { type, isChecked = true, onClick, isShowLabel = false, iconSize = 20 } = props;
     const { icon, checkedIcon, color, label } = tagIconConfig[type];
 
     // todo label color
 
     return (
-        <div className='row'>
+        <div className='row customSingleTagContainer'>
             <Checkbox
-                className='CustomIconBtnIcon'
+                className='customIconBtnIcon'
                 icon={icon}
                 checkedIcon={checkedIcon}
                 checked={isChecked}
                 color={color}
                 id={type}
                 onClick={onClick}
-                size='small'
+                sx={{ "& .MuiSvgIcon-root": { fontSize: iconSize }, "&": { padding: 0 } }}
             />
             {isShowLabel && (
-                <label className='CustomIconBtnLabel' htmlFor={type} color={color}>
+                <label className='customIconBtnLabel' htmlFor={type} color={color}>
                     {label}
                 </label>
             )}
