@@ -1,11 +1,13 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { IconButton, Button, Box } from "@mui/material";
-import UploadModal from "../components/UploadModal";
-import { IMainData, IEditorModal } from "../constant/types";
+import UploadModal from "../components/UploadModal.tsx";
+import { IMainData, IEditorModal, TModal } from "../constant/types.ts";
 import { tempData } from "../constant/configs";
+import { checkCanSubmit } from "../constant/main";
+import { useState } from "react";
 
 interface IProps {
-    type: "WARNING" | "EDITOR" | "UPLOAD" | "PREVIEW";
+    type: TModal;
     closePopupHandler: () => void;
     confirmPopupHandler: () => void;
     data: IMainData;
@@ -31,10 +33,14 @@ const render: {
 localStorage.setItem("tempData", JSON.stringify(tempData));
 
 const EditorModal = (props: IProps) => {
-    const { closePopupHandler, confirmPopupHandler, type, data } = { ...props };
+    const { closePopupHandler, confirmPopupHandler, type, data } = props;
+    if (type === null || type === "" || type === undefined) return;
     const { Content, BtnCancel, BtnConfirm } = render[type];
+    const [canSubmit, setCanSubmit] = useState(false);
 
-    //todo temp模板塞這裡
+    const contentDataHandler = (data: IMainData) => {
+        setCanSubmit(checkCanSubmit(data));
+    };
 
     return (
         <div className='modal'>
@@ -47,7 +53,12 @@ const EditorModal = (props: IProps) => {
                     </IconButton>
                 </div>
                 <div className='modalBody'>
-                    <Content data={data} />
+                    <Content
+                        data={data}
+                        modelData={(contentData) => {
+                            contentDataHandler(contentData);
+                        }}
+                    />
                 </div>
                 <div className='modalFooter'>
                     <Button className='modalBtn' onClick={closePopupHandler}>
@@ -55,7 +66,7 @@ const EditorModal = (props: IProps) => {
                     </Button>
 
                     {/* todo 鎖submit */}
-                    <Button className='modalBtn' onClick={confirmPopupHandler}>
+                    <Button className='modalBtn' onClick={confirmPopupHandler} disabled={!canSubmit}>
                         {BtnConfirm}
                     </Button>
                 </div>
