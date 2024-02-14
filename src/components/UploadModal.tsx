@@ -1,44 +1,26 @@
 import { useState } from "react";
 import CustomInput from "./CustomInput";
 import CustomAllTags from "../components/CustomAllTags";
-import { youtubeURLRegex, imgURLRegex, titleRegex, descRegex, IMainData } from "../constant/types.ts";
+import { IMainData } from "../constant/types.ts";
 import { Button, IconButton, Link } from "@mui/material";
 import CustomSwitch from "./CustomSwitch";
 import CustomPreviewPro from "./CustomPreviewPro";
 import CustomSingleTag from "./CustomSingleTag";
 import { AddCircleOutline, RemoveCircleOutline, SmartDisplay, Photo } from "@mui/icons-material";
+import { initData, uploadConfig } from "../constant/configs.tsx";
+import CustomVideo from "./CustomVideo.tsx";
 
-const uploadConfig = {
-    videoURL: { limit: 1, regex: youtubeURLRegex },
-    imgURL: { limit: 1, regex: imgURLRegex },
-    title: {
-        limit: 1,
-        maxLength: 15,
-        regex: titleRegex,
-    },
-    tag: { limit: 5 },
-    desc: {
-        limit: 3,
-        maxLength: 60,
-        regex: descRegex,
-    },
-};
-
-const UploadModal = () => {
-    const initData: IMainData = {
-        videoURL: "",
-        imgURL: "",
-        isLiked: false,
-        isUploaded: true,
-        createTime: Date.now(),
-        title: "",
-        tag: [],
-        desc: [""],
-    };
-
+const UploadModal = ({ modelData }) => {
     const [data, setData] = useState(initData);
+    const [previewMode, setPreviewMode] = useState(false);
     const [error, setError] = useState<string[]>([]);
-    const [checkedState, setCheckedState] = useState(["desc[0]"]);
+    const [checkedState, setCheckedState] = useState([""]);
+
+    modelData(data);
+
+    const PreviewSwitchChangeHandler = (val: boolean) => {
+        setPreviewMode(val);
+    };
 
     const tempHandler = () => {
         const tempDataJson = JSON.parse(localStorage.getItem("tempData") ?? "");
@@ -47,10 +29,8 @@ const UploadModal = () => {
 
     const clearHandler = () => {
         setData(initData);
-        console.log(data);
-
         setError([]);
-        setCheckedState(["desc[0]"]);
+        setCheckedState([""]);
     };
 
     const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -58,7 +38,7 @@ const UploadModal = () => {
         if (id.includes("URL")) {
             setData({ ...data, [id]: value });
         } else if (id.includes("desc")) {
-            const index = parseInt(id.split("[")[1]);
+            const index = parseInt(id.match(/\d+/)[0]);
             const newDesc = [...data.desc];
             newDesc[index] = value;
             setData({ ...data, desc: newDesc });
@@ -68,16 +48,11 @@ const UploadModal = () => {
     };
 
     const inputBlurHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        // todo error
         const { id, value } = e.target;
+        const newId = id.split("[")[0];
 
-        //  if (id.includes("URL")) {
-        //  } else if (id === "title") {
-        //  } else if (id.includes("desc")) {
-        //  } else {
-        //  }
-
-        //todo desc Reg
-        const isMatchRegex = !!value && !!uploadConfig[id].regex && value.match(uploadConfig[id].regex);
+        const isMatchRegex = !!value && value.match(uploadConfig[newId].regex);
         !isMatchRegex && !error.includes(id) && setError([...error, id]);
 
         if (isMatchRegex) {
@@ -93,11 +68,10 @@ const UploadModal = () => {
         const target = e.target as HTMLInputElement;
         const id = target.id;
 
-        if (id === "desc[0]") return;
-        const chooseTagIndex = checkedState.indexOf(id);
-        const newState = checkedState;
+        const chooseDescIndex = checkedState.indexOf(id);
+        const newState = [...checkedState];
 
-        if (chooseTagIndex > -1) {
+        if (chooseDescIndex > -1) {
             setCheckedState(newState.filter((i) => i !== id));
         } else {
             setCheckedState([...checkedState, id]);
@@ -170,17 +144,26 @@ const UploadModal = () => {
     return (
         <div className='uploadModalContainer'>
             <>
-                {/* todo 兩種預覽 */}
-                {/* <pre>{JSON.stringify(data, null, 4)}</pre> */}
-                {/* <CustomVideo url={data.videoURL} /> */}
-                <CustomPreviewPro data={data} />
-                {data.tag.map((i) => {
-                    <CustomSingleTag key={i} type={i} />;
-                })}
-                <CustomSwitch leftString='schema' rightString='preview' />
+                <div>
+                    {!previewMode ? (
+                        <>
+                            <CustomPreviewPro data={data} />
+                            {!!data.videoURL && <CustomVideo url={data.videoURL} height={200} width={400} />}
+                        </>
+                    ) : (
+                        <pre>{JSON.stringify(data, null, 4)}</pre>
+                    )}
+                </div>
+
+                <CustomSwitch
+                    leftString='preview'
+                    rightString='schema'
+                    switchStatus={(previewMode) => {
+                        PreviewSwitchChangeHandler(previewMode);
+                    }}
+                />
             </>
 
-            {/* todo 兩個按鈕 */}
             <div className=''>
                 <Button className='' onClick={tempHandler}>
                     template
@@ -226,7 +209,7 @@ const UploadModal = () => {
                             inputLabel={"desc"}
                             required={index === 0 ? true : false}
                             isChecked={checkedState.includes(`desc[${index}]`)}
-                            isShowCheckBox={true}
+                            isShowCheckBox={index === 0 ? false : true}
                             maxLength={60}
                             onChange={(e) => inputChangeHandler(e)}
                             onClick={(e) => checkboxClickHandler(e)}
