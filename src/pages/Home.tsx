@@ -6,10 +6,7 @@ import CustomPreview from "../components/CustomPreview";
 import CustomPreviewPro from "../components/CustomPreviewPro";
 import { IMainData, ISearchInfo, allTagsType } from "../constant/types";
 import Studio from "../components/CustomStudioContainer";
-import VideoPage from "./VideoPage";
 import CustomNav from "../components/CustomNav";
-import CustomEditorModal from "../container/CustomEditorModal";
-import WarningModal from "../components/WarningModal";
 
 const Home = () => {
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
@@ -115,17 +112,15 @@ const Home = () => {
                 {savedDataJson.map((data: IMainData) => {
                     return isHomePage ? (
                         isCardMode ? (
-                            <CustomPreview data={data} />
+                            <CustomPreview key={data.videoURL} data={data} />
                         ) : (
-                            <CustomPreviewPro data={data} />
+                            <CustomPreviewPro key={data.videoURL} data={data} />
                         )
                     ) : (
                         <Studio />
                     );
                 })}
-                {/* <CustomEditorModal type='' data={mainData[0]} /> */}
             </div>
-            {/* <WarningModal handleConfirmClick={() => {}} closePopupHandler={() => {}} /> */}
         </>
     );
 };
