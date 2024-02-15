@@ -1,4 +1,4 @@
-import { uploadConfig } from "./configs";
+import { mainData, uploadConfig } from "./configs";
 import { IMainData } from "./types";
 
 export const getVideoCode = (url: string) => {
@@ -43,4 +43,8 @@ export const getTime = (timeStamp: number) => {
     var date = new Date(timeStamp);
     const time = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
     return time;
+};
+
+export const fetchData = () => {
+    return JSON.parse(localStorage.getItem("mainData") ?? "") || mainData;
 };
