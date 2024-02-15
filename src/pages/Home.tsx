@@ -9,8 +9,6 @@ import Studio from "../components/CustomStudioContainer";
 import CustomNav from "../components/CustomNav";
 import { fetchData } from "../constant/main";
 import CustomEditorModal from "../container/CustomEditorModal";
-import VideoPage from "./VideoPage";
-import WarningModal from "../components/WarningModal";
 
 const Home = () => {
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
