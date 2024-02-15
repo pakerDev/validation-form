@@ -1,5 +1,7 @@
+import CustomEditorModal from "../container/CustomEditorModal";
+
 const Home = () => {
-    return <h1>home</h1>;
+    return <CustomEditorModal type='UPLOAD' closePopupHandler={() => {}} />;
 };
 
 export default Home;
