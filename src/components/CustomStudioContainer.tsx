@@ -22,6 +22,11 @@ const CustomStudioContainer = () => {
         }
     };
 
+    const editTempClickHandler = () => {
+        const tempDataJson = JSON.parse(localStorage.getItem("tempData") ?? "");
+        setEditorModalProp({ type: "EDITOR", data: tempDataJson });
+    };
+
     const editClickHandler = (code: string) => {
         const thisIndex = savedDataJson.findIndex((i: IMainData) => i.videoURL === code);
         if (thisIndex !== -1) {
@@ -44,6 +49,9 @@ const CustomStudioContainer = () => {
 
     return (
         <div>
+            <Button variant='outlined' startIcon={<Edit />} onClick={() => editTempClickHandler()}>
+                編輯模板
+            </Button>
             {savedDataJson.map((data: IMainData) => {
                 return (
                     <div className='row'>
