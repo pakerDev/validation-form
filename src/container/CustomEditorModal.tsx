@@ -4,7 +4,7 @@ import UploadModal from "../components/UploadModal.tsx";
 import EditModal from "../components/EditModal.tsx";
 import { IMainData, IEditorModal, TModal } from "../constant/types.ts";
 import { tempData } from "../constant/configs.tsx";
-import { checkCanSubmit } from "../constant/main.ts";
+import { checkCanSubmit, fetchData } from "../constant/main.ts";
 import { useState } from "react";
 
 interface IProps {
@@ -45,9 +45,13 @@ const CustomEditorModal = (props: IProps) => {
     };
 
     const handleConfirmClick = () => {
-        let mainDataArray: IMainData[] = JSON.parse(localStorage.getItem("mainData") ?? "[]");
+        let mainDataArray: IMainData[] = fetchData();
         if (type === "EDITOR") {
-            mainDataArray = mainDataArray.map((item) => (item.videoURL === formData?.videoURL ? formData : item));
+            if (formData?.videoURL === "https://youtu.be/ObVSC-kTR6g?si=bIcS231uMsFCAtmu") {
+                localStorage.setItem("tempData", JSON.stringify(formData));
+            } else {
+                mainDataArray = mainDataArray.map((item) => (item.videoURL === formData?.videoURL ? formData : item));
+            }
         } else if (type === "UPLOAD") {
             !!formData && mainDataArray.push(formData);
         }

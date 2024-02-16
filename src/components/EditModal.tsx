@@ -28,11 +28,6 @@ const EditModal = (props: IPops) => {
         setPreviewMode(val);
     };
 
-    const tempHandler = () => {
-        const tempDataJson = JSON.parse(localStorage.getItem("tempData") ?? "");
-        setData(tempDataJson);
-    };
-
     const clearHandler = () => {
         setData(initData);
         setError([]);
@@ -171,10 +166,7 @@ const EditModal = (props: IPops) => {
             </>
 
             <div className=''>
-                <Button className='' onClick={tempHandler}>
-                    template
-                </Button>
-                <Button className='' onClick={clearHandler}>
+                <Button className='' onClick={clearHandler} variant='outlined'>
                     clear
                 </Button>
             </div>
