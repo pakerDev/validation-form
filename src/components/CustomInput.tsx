@@ -1,6 +1,7 @@
 import { Checkbox } from "@mui/material";
 import { FormControl, FormHelperText, TextField } from "@mui/material";
 import { useState } from "react";
+import { allTagsType } from "../constant/types";
 
 interface ICustomInput {
     className?: string;
@@ -12,7 +13,7 @@ interface ICustomInput {
     error?: boolean;
     fullWidth?: boolean;
     defaultValue?: unknown;
-    value?: unknown;
+    value?: string | allTagsType;
     isSmall?: boolean;
     isShowCheckBox?: boolean;
     isChecked?: boolean;
@@ -40,7 +41,7 @@ const CustomInput = (prop: ICustomInput) => {
         onClick,
     } = prop;
 
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState(value?.length ?? 0);
 
     const handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement> = (e) => {
         if (!!maxLength && e.target.value.length >= maxLength) {
