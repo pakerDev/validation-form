@@ -45,6 +45,9 @@ const CustomDropDown = ({ homeViewMode }: { homeViewMode: (arg: string) => void 
                 <MenuItem id='upload' onClick={(e) => handleClose(e)}>
                     上傳新影片
                 </MenuItem>
+                <MenuItem id='video' onClick={(e) => handleClose(e)}>
+                    {"(開發中)影片頁面"}
+                </MenuItem>
             </Menu>
         </div>
     );

@@ -19,7 +19,7 @@ const VideoPage = ({ data }: { data: IMainData }) => {
     return (
         <div className='playerContainer row'>
             <div>
-                <CustomVideo width={800} height={450} url={videoURL} />
+                <CustomVideo width={480} height={270} url={videoURL} />
                 <div className='playerTitleRow row'>
                     <div className='playerTitle'>{title}</div>
                     <CustomBookmark code={videoURL} iconSize={24} />

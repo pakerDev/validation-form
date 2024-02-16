@@ -55,6 +55,7 @@ const CustomStudioContainer = () => {
                                         startIcon={<CloudDownload />}
                                         onClick={() => uploadClickHandler(data.videoURL)}
                                         variant='outlined'
+                                        color='error'
                                     >
                                         下架影片
                                     </Button>
@@ -62,18 +63,14 @@ const CustomStudioContainer = () => {
                                     <Button
                                         startIcon={<CloudUpload />}
                                         onClick={() => uploadClickHandler(data.videoURL)}
-                                        variant='outlined'
+                                        variant='contained'
+                                        color='success'
                                     >
                                         上架影片
                                     </Button>
                                 )}
                             </div>
-                            <Button
-                                startIcon={<Edit />}
-                                onClick={() => editClickHandler(data.videoURL)}
-                                size='small'
-                                color='success'
-                            >
+                            <Button startIcon={<Edit />} onClick={() => editClickHandler(data.videoURL)} size='small'>
                                 編輯
                             </Button>
                             <Button

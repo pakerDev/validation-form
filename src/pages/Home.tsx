@@ -9,6 +9,7 @@ import Studio from "../components/CustomStudioContainer";
 import CustomNav from "../components/CustomNav";
 import { fetchData } from "../constant/main";
 import CustomEditorModal from "../container/CustomEditorModal";
+import VideoPage from "../pages/VideoPage";
 
 const Home = () => {
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
@@ -16,6 +17,7 @@ const Home = () => {
     const [isCardMode, setIsCardMode] = useState(true);
     const [isHomePage, setIsHomePage] = useState(true);
     const [isUpload, setIsUpload] = useState(false);
+    const [isVideoPage, setIsVideoPage] = useState(false);
     const [category, setCategory] = useState<allTagsType>("all");
     const [searchInfo, setSearchInfo] = useState<ISearchInfo>({ by: "title", keyWord: "" });
 
@@ -29,6 +31,9 @@ const Home = () => {
         }
         if (mode === "upload") {
             setIsUpload(true);
+        }
+        if (mode === "video") {
+            setIsVideoPage((i) => !i);
         }
     };
 
@@ -119,20 +124,27 @@ const Home = () => {
                 </div>
             )}
             <div className='viewContainer'>
-                {isHomePage ? (
-                    <>
-                        {savedDataJson.map((data: IMainData) => {
-                            return isCardMode ? (
-                                <CustomPreview key={data.videoURL} data={data} />
-                            ) : (
-                                <CustomPreviewPro key={data.videoURL} data={data} />
-                            );
-                        })}
-                    </>
+                {isVideoPage ? (
+                    <VideoPage data={savedDataJson[0]} />
                 ) : (
-                    <Studio />
+                    <>
+                        {isHomePage ? (
+                            <>
+                                {savedDataJson.map((data: IMainData) => {
+                                    return isCardMode ? (
+                                        <CustomPreview key={data.videoURL} data={data} />
+                                    ) : (
+                                        <CustomPreviewPro key={data.videoURL} data={data} />
+                                    );
+                                })}
+                            </>
+                        ) : (
+                            <Studio />
+                        )}
+                    </>
                 )}
             </div>
+
             {isUpload && <CustomEditorModal type='UPLOAD' closePopupHandler={closePopupHandler} />}
         </>
     );
