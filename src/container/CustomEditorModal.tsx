@@ -29,7 +29,7 @@ const render: {
     },
 };
 
-localStorage.setItem("tempData", JSON.stringify(tempData));
+!localStorage.getItem("tempData") && localStorage.setItem("tempData", JSON.stringify(tempData));
 
 const CustomEditorModal = (props: IProps) => {
     const { closePopupHandler, type, data } = props;
