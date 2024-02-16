@@ -6,7 +6,7 @@ import CustomBookmark from "./CustomBookmark";
 interface ICustomPreview {
     data: IMainData;
     toVideo?: boolean;
-    homeToVideo;
+    homeToVideo: (into: IMainData) => void;
 }
 
 const CustomPreview = (props: ICustomPreview) => {
@@ -14,7 +14,6 @@ const CustomPreview = (props: ICustomPreview) => {
     const { title, tag, desc } = data;
 
     const videoPlayHandler = (info: IMainData) => {
-        // console.log(info);
         homeToVideo(info);
     };
 

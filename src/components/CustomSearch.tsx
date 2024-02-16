@@ -1,7 +1,7 @@
 import { IconButton, InputBase, Menu, MenuItem, Fade } from "@mui/material";
 import React, { useState } from "react";
 import { Search, KeyboardArrowDown } from "@mui/icons-material/";
-import { ISearchInfo } from "../constant/types";
+import { IMainData, ISearchInfo } from "../constant/types";
 
 interface ICustomSearchProps {
     homeSearch: ({ by, keyWord }: ISearchInfo) => void;
@@ -19,7 +19,7 @@ const CustomSearch = (props: ICustomSearchProps) => {
     };
     const handleClose = (e: React.MouseEvent<HTMLLIElement>) => {
         const target = e.target as HTMLButtonElement;
-        setHomeSearchArg({ ...homeSearchArg, by: target.id });
+        setHomeSearchArg({ ...homeSearchArg, by: target.id as keyof IMainData });
         setAnchorEl(null);
     };
 

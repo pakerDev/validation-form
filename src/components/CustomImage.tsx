@@ -10,7 +10,7 @@ interface IProps {
     height?: number;
     data: IMainData;
     toVideo?: boolean;
-    handleToVideo;
+    handleToVideo: (into: IMainData) => void;
 }
 
 const CustomImage = (props: IProps) => {
@@ -26,10 +26,7 @@ const CustomImage = (props: IProps) => {
         img.src = imgURL;
     };
 
-    const imgClickHandler = (e) => {
-        // to video player
-
-        // console.log(e.currentTarget.id);
+    const imgClickHandler = () => {
         handleToVideo(data);
     };
 
