@@ -3,22 +3,29 @@ import CustomImage from "./CustomImage";
 import CustomSingleTag from "./CustomSingleTag";
 import CustomBookmark from "./CustomBookmark";
 
-interface ICustomPreviewPro {
+interface ICustomPreview {
     data: IMainData;
+    toVideo?: boolean;
+    homeToVideo: (into: IMainData) => void;
 }
 
-const CustomPreviewPro = (props: ICustomPreviewPro) => {
-    const { data } = props;
-    const { imgURL = "@/asset/imagePlaceholder.svg", title, tag, desc } = data;
+const CustomPreview = (props: ICustomPreview) => {
+    const { data, toVideo = true, homeToVideo } = props;
+    const { title, tag, desc } = data;
+
+    const videoPlayHandler = (info: IMainData) => {
+        homeToVideo(info);
+    };
 
     return (
         <div className='customPreviewContainer column'>
             <CustomImage
                 className='customPreviewProImage'
-                url={imgURL}
                 width={240}
                 height={120}
-                isYellow={tag.includes("yellow")}
+                data={data}
+                toVideo={toVideo}
+                handleToVideo={(info) => videoPlayHandler(info)}
             />
             <div className='column fullWidth'>
                 <div className='customPreviewHead row'>
@@ -39,4 +46,4 @@ const CustomPreviewPro = (props: ICustomPreviewPro) => {
     );
 };
 
-export default CustomPreviewPro;
+export default CustomPreview;

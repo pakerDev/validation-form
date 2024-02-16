@@ -184,7 +184,7 @@ export const initData: IMainData = {
     desc: [""],
 };
 
-const youtubeURLRegex = /^(https:\/\/www\.youtube\.com\/watch\?v*)|(https:\/\/youtu\.be\/[\w-]+\?si=*)/;
+const youtubeURLRegex = /^(https:\/\/www\.youtube\.com\/watch\?v*)|(https:\/\/youtu\.be\/[\w-]*)/;
 const imgURLRegex = /^(https\:\/\/)|(http\:\/\/*)|(image)/;
 const titleRegex = /[\w\u4e00-\u9fa5\s\,\:\.\(\)\-]/g;
 const descRegex = /[\w\u4e00-\u9fa5\u3001-\u3017\，\。\,\.\'\"]/g;

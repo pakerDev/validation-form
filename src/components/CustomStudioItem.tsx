@@ -13,11 +13,11 @@ interface ICustomStudioItem {
 
 const CustomStudioItem = (prop: ICustomStudioItem) => {
     const { data } = prop;
-    const { imgURL, title, tag, isUploaded, createTime } = data;
+    const { title, tag, isUploaded, createTime } = data;
 
     return (
         <div className='customStudioItemContainer row'>
-            <CustomImage className='' url={imgURL} width={160} height={80} isYellow={data.tag.includes("yellow")} />
+            <CustomImage className='' width={160} height={80} data={data} />
             <div className='customStudioItemTitle customStudioItem'>{title}</div>
             <div className='customStudioItemTag customStudioItem row'>
                 {tag.length !== 0 &&
