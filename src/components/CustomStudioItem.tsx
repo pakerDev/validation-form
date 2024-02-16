@@ -31,7 +31,7 @@ const CustomStudioItem = (prop: ICustomStudioItem) => {
             {isUploaded ? (
                 <div className='column customStudioItem'>已上架</div>
             ) : (
-                <div className='column customStudioItem'>未上架</div>
+                <div className='column customStudioItem red'>未上架</div>
             )}
             <div className='customStudioItem'>{getTime(createTime)}</div>
         </div>
