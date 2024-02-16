@@ -1,31 +1,47 @@
 import { useState, useEffect } from "react";
 import Placeholder from "../assets/Placeholder.svg";
 import YellowTagCover from "../assets/YellowTagCover.svg";
+import { IMainData } from "../constant/types";
+import { Button } from "@mui/material";
 
 interface IProps {
     className?: string;
     width?: number;
     height?: number;
-    url: string;
-    isYellow?: boolean;
+    data: IMainData;
+    toVideo?: boolean;
+    handleToVideo;
 }
 
 const CustomImage = (props: IProps) => {
-    const { width = 160, height = 120, url, isYellow = false, className } = props;
-    const [imageSrc, setImageSrc] = useState(url);
+    const { width = 160, height = 120, className, data, toVideo = true, handleToVideo } = props;
+    const { videoURL, imgURL, tag } = data;
+    const isYellow = tag.includes("yellow");
+    const [imageSrc, setImageSrc] = useState(imgURL);
 
     const imageValidate = () => {
         const img = new Image();
-        img.onload = () => setImageSrc(isYellow ? YellowTagCover : url);
+        img.onload = () => setImageSrc(isYellow ? YellowTagCover : imgURL);
         img.onerror = () => setImageSrc(Placeholder);
-        img.src = url;
+        img.src = imgURL;
+    };
+
+    const imgClickHandler = (e) => {
+        // to video player
+
+        // console.log(e.currentTarget.id);
+        handleToVideo(data);
     };
 
     useEffect(() => {
         imageValidate();
-    }, [url, isYellow]);
+    }, [imgURL, isYellow]);
 
-    return <img className={className} width={width} height={height} src={imageSrc} alt='Custom' />;
+    return (
+        <Button disabled={!toVideo} onClick={imgClickHandler} id={videoURL}>
+            <img className={className} width={width} height={height} src={imageSrc} alt='Custom' />
+        </Button>
+    );
 };
 
 export default CustomImage;

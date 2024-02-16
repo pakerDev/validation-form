@@ -9,17 +9,11 @@ interface ICustomPreviewPro {
 
 const CustomPreviewPro = (props: ICustomPreviewPro) => {
     const { data } = props;
-    const { imgURL = "@/asset/imagePlaceholder.svg", videoURL, title, tag, desc } = data;
+    const { videoURL, title, tag, desc } = data;
 
     return (
         <div className='customPreviewProContainer row'>
-            <CustomImage
-                className='customPreviewProImage'
-                url={imgURL}
-                width={240}
-                height={120}
-                isYellow={tag.includes("yellow")}
-            />
+            <CustomImage className='customPreviewProImage' width={240} height={120} data={data} />
             <div className='column fullWidth customPreviewProRight'>
                 <div className='customPreviewProTitleRow row'>
                     <div className='customPreviewProTitle'>{title === "" ? "title" : title}</div>

@@ -18,6 +18,7 @@ const Home = () => {
     const [isHomePage, setIsHomePage] = useState(true);
     const [isUpload, setIsUpload] = useState(false);
     const [isVideoPage, setIsVideoPage] = useState(false);
+    const [isVideoData, setIsVideoData] = useState(savedDataJson[0]);
     const [category, setCategory] = useState<allTagsType>("all");
     const [searchInfo, setSearchInfo] = useState<ISearchInfo>({ by: "title", keyWord: "" });
 
@@ -42,6 +43,7 @@ const Home = () => {
     };
 
     const searchBarHandler = ({ by, keyWord }: ISearchInfo) => {
+        setIsVideoPage(false);
         setSearchInfo({ by: by, keyWord: keyWord });
     };
 
@@ -98,6 +100,11 @@ const Home = () => {
         setSavedDataJson(fetchData());
     };
 
+    const videoPlayHandler = (info) => {
+        setIsVideoPage(true);
+        setIsVideoData(info);
+    };
+
     return (
         <>
             {isHomePage ? (
@@ -125,14 +132,18 @@ const Home = () => {
             )}
             <div className='viewContainer'>
                 {isVideoPage ? (
-                    <VideoPage data={savedDataJson[0]} />
+                    <VideoPage data={isVideoData} />
                 ) : (
                     <>
                         {isHomePage ? (
                             <>
                                 {savedDataJson.map((data: IMainData) => {
                                     return isCardMode ? (
-                                        <CustomPreview key={data.videoURL} data={data} />
+                                        <CustomPreview
+                                            key={data.videoURL}
+                                            data={data}
+                                            homeToVideo={(info) => videoPlayHandler(info)}
+                                        />
                                     ) : (
                                         <CustomPreviewPro key={data.videoURL} data={data} />
                                     );
