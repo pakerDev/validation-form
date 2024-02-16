@@ -42,6 +42,9 @@ const CustomDropDown = ({ homeViewMode }: { homeViewMode: (arg: string) => void 
                 <MenuItem id='cardMode' onClick={(e) => handleClose(e)}>
                     切換瀏覽模式
                 </MenuItem>
+                <MenuItem id='upload' onClick={(e) => handleClose(e)}>
+                    上傳新影片
+                </MenuItem>
             </Menu>
         </div>
     );

@@ -7,12 +7,15 @@ import CustomPreviewPro from "../components/CustomPreviewPro";
 import { IMainData, ISearchInfo, allTagsType } from "../constant/types";
 import Studio from "../components/CustomStudioContainer";
 import CustomNav from "../components/CustomNav";
+import { fetchData } from "../constant/main";
+import CustomEditorModal from "../container/CustomEditorModal";
 
 const Home = () => {
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
     const [isCardMode, setIsCardMode] = useState(true);
     const [isHomePage, setIsHomePage] = useState(true);
+    const [isUpload, setIsUpload] = useState(false);
     const [category, setCategory] = useState<allTagsType>("all");
     const [searchInfo, setSearchInfo] = useState<ISearchInfo>({ by: "title", keyWord: "" });
 
@@ -22,6 +25,10 @@ const Home = () => {
         }
         if (mode === "studio") {
             setIsHomePage((i) => !i);
+            setSavedDataJson(fetchData().filter((i: IMainData) => i.isUploaded === true));
+        }
+        if (mode === "upload") {
+            setIsUpload(true);
         }
     };
 
@@ -34,9 +41,7 @@ const Home = () => {
     };
 
     useEffect(() => {
-        const allUploadedData = JSON.parse(localStorage.getItem("mainData") ?? "").filter(
-            (i: IMainData) => i.isUploaded === true
-        );
+        const allUploadedData = fetchData().filter((i: IMainData) => i.isUploaded === true);
 
         let filteredData;
         if (searchInfo.by === "desc") {
@@ -83,6 +88,11 @@ const Home = () => {
         }
     }, [category, searchInfo]);
 
+    const closePopupHandler = () => {
+        setIsUpload(false);
+        setSavedDataJson(fetchData());
+    };
+
     return (
         <>
             {isHomePage ? (
@@ -109,18 +119,21 @@ const Home = () => {
                 </div>
             )}
             <div className='viewContainer'>
-                {savedDataJson.map((data: IMainData) => {
-                    return isHomePage ? (
-                        isCardMode ? (
-                            <CustomPreview key={data.videoURL} data={data} />
-                        ) : (
-                            <CustomPreviewPro key={data.videoURL} data={data} />
-                        )
-                    ) : (
-                        <Studio />
-                    );
-                })}
+                {isHomePage ? (
+                    <>
+                        {savedDataJson.map((data: IMainData) => {
+                            return isCardMode ? (
+                                <CustomPreview key={data.videoURL} data={data} />
+                            ) : (
+                                <CustomPreviewPro key={data.videoURL} data={data} />
+                            );
+                        })}
+                    </>
+                ) : (
+                    <Studio />
+                )}
             </div>
+            {isUpload && <CustomEditorModal type='UPLOAD' closePopupHandler={closePopupHandler} />}
         </>
     );
 };
