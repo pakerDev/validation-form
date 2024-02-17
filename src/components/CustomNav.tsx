@@ -1,5 +1,5 @@
 import React from "react";
-import { allTagsType, bookmarkType } from "../constant/types";
+import { allTagsType, navType } from "../constant/types";
 import { Button } from "@mui/material";
 import { tagIconConfig } from "../constant/configs";
 
@@ -16,7 +16,7 @@ const CustomNav = (props: ICustomNavProps) => {
 
     return (
         <div className='row CustomNavContainer'>
-            {bookmarkType.map((i, idx) => {
+            {navType.map((i, idx) => {
                 return (
                     <Button
                         key={idx}
