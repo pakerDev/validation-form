@@ -14,11 +14,11 @@ const routes = [
         path: "/dashboard",
         Component: Dashboard,
     },
-    // {
-    //     name: "video",
-    //     path: "/video/:code",
-    //     Component: VideoPage,
-    // },
+    {
+        name: "video",
+        path: "/video/:code",
+        Component: VideoPage,
+    },
 ];
 
 const Router = () => {

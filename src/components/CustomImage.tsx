@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import Placeholder from "../assets/Placeholder.svg";
 import YellowTagCover from "../assets/YellowTagCover.svg";
 import { IMainData } from "../constant/types";
-import { Button } from "@mui/material";
+import { Link } from "react-router-dom";
+import { getVideoCode } from "../constant/main";
 
 interface IProps {
     className?: string;
@@ -10,11 +11,10 @@ interface IProps {
     height?: number;
     data: IMainData;
     toVideo?: boolean;
-    handleToVideo: (into: IMainData) => void;
 }
 
 const CustomImage = (props: IProps) => {
-    const { width = 160, height = 120, className, data, toVideo = true, handleToVideo } = props;
+    const { width = 160, height = 120, className, data } = props;
     const { videoURL, imgURL, tag } = data;
     const isYellow = tag.includes("yellow");
     const [imageSrc, setImageSrc] = useState(imgURL);
@@ -26,18 +26,14 @@ const CustomImage = (props: IProps) => {
         img.src = imgURL;
     };
 
-    const imgClickHandler = () => {
-        handleToVideo(data);
-    };
-
     useEffect(() => {
         imageValidate();
     }, [imgURL, isYellow]);
 
     return (
-        <Button disabled={!toVideo} onClick={imgClickHandler} id={videoURL}>
+        <Link to={`/video/${getVideoCode(videoURL)}`}>
             <img className={className} width={width} height={height} src={imageSrc} alt='Custom' />
-        </Button>
+        </Link>
     );
 };
 

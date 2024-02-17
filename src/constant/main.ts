@@ -48,3 +48,10 @@ export const getTime = (timeStamp: number) => {
 export const fetchData = () => {
     return JSON.parse(localStorage.getItem("mainData") ?? "") || mainData;
 };
+
+export const findData = (videoCode: string) => {
+    const savedDataJson = fetchData();
+    const dataIndex = savedDataJson.findIndex((i: IMainData) => getVideoCode(i.videoURL) === videoCode);
+    const data = savedDataJson[dataIndex];
+    return { dataIndex, data };
+};
