@@ -54,7 +54,7 @@ const CustomStudioContainer = () => {
             </Button>
             {savedDataJson.map((data: IMainData) => {
                 return (
-                    <div className='row'>
+                    <div className='row' key={data.videoURL}>
                         <CustomStudioItem data={data} />
                         <div className='customStudioItem'>
                             <div className='column customStudioItem'>

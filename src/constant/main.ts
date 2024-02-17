@@ -31,11 +31,11 @@ export const getVideoCode = (url: string) => {
 
 export const checkCanSubmit = (data: IMainData) => {
     let canSubmit =
-        !!data.videoURL.match(uploadConfig["videoURL"].regex) &&
-        !!data.imgURL.match(uploadConfig["imgURL"].regex) &&
+        !!data.videoURL.match(uploadConfig["videoURL"].regex as RegExp) &&
+        !!data.imgURL.match(uploadConfig["imgURL"].regex as RegExp) &&
         data.tag.length > 0 &&
-        !!data.title.match(uploadConfig["title"].regex) &&
-        !!data.desc[0].match(uploadConfig["desc"].regex);
+        !!data.title.match(uploadConfig["title"].regex as RegExp) &&
+        !!data.desc[0].match(uploadConfig["desc"].regex as RegExp);
     return canSubmit;
 };
 
@@ -49,8 +49,9 @@ export const fetchData = () => {
     return JSON.parse(localStorage.getItem("mainData") ?? "") || mainData;
 };
 
-export const findData = (videoCode: string) => {
+export const findData = (videoInfo: string) => {
     const savedDataJson = fetchData();
+    const videoCode = videoInfo.match(uploadConfig["videoURL"].regex as RegExp) ? getVideoCode(videoInfo) : videoInfo;
     const dataIndex = savedDataJson.findIndex((i: IMainData) => getVideoCode(i.videoURL) === videoCode);
     const data = savedDataJson[dataIndex];
     return { dataIndex, data };
