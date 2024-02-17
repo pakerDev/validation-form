@@ -1,8 +1,11 @@
 import { IconButton, Menu, MenuItem, Fade } from "@mui/material";
 import React, { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Link, useLocation } from "react-router-dom";
 
 const CustomDropDown = ({ homeViewMode }: { homeViewMode: (arg: string) => void }) => {
+    const location = useLocation().pathname;
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -36,12 +39,16 @@ const CustomDropDown = ({ homeViewMode }: { homeViewMode: (arg: string) => void 
                 onClose={handleClose}
                 TransitionComponent={Fade}
             >
-                <MenuItem id='studio' onClick={(e) => handleClose(e)}>
-                    切換前後台
-                </MenuItem>
-                <MenuItem id='cardMode' onClick={(e) => handleClose(e)}>
-                    切換瀏覽模式
-                </MenuItem>
+                <Link to={location === "/" ? "/dashboard" : "/"}>
+                    <MenuItem id='studio' onClick={(e) => handleClose(e)}>
+                        {location === "/" ? "後台" : "首頁"}
+                    </MenuItem>
+                </Link>
+                {location === "/" && (
+                    <MenuItem id='cardMode' onClick={(e) => handleClose(e)}>
+                        切換瀏覽模式
+                    </MenuItem>
+                )}
                 <MenuItem id='upload' onClick={(e) => handleClose(e)}>
                     上傳新影片
                 </MenuItem>
