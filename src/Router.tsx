@@ -1,7 +1,7 @@
 import Home from "./pages/Home";
 import VideoPage from "./pages/VideoPage";
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./components/CustomStudioContainer";
+import Dashboard from "./pages/Dashboard";
 
 const routes = [
     {
