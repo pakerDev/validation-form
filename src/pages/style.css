@@ -17,6 +17,11 @@
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .row {
     display: flex;
     flex-direction: row;
@@ -283,7 +288,7 @@
 }
 
 .CustomNavContainer {
-    width: 40%;
+    width: auto;
     justify-content: space-between;
 }
 
