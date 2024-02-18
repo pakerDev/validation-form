@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomInput from "./CustomInput";
 import CustomAllTags from "../components/CustomAllTags.tsx";
 import { Button, IconButton, Link } from "@mui/material";
@@ -14,7 +14,10 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
     const [previewMode, setPreviewMode] = useState(false);
     const [error, setError] = useState<string[]>([]);
     const [checkedState, setCheckedState] = useState([""]);
-    modelData(data);
+
+    useEffect(() => {
+        modelData(data);
+    }, [data, modelData]);
 
     const PreviewSwitchChangeHandler = (val: boolean) => {
         setPreviewMode(val);
@@ -50,7 +53,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
         // todo error
         const { id, value } = e.target;
         const newId = id.split("[")[0];
-        const isMatchRegex = !!value && value.match(uploadConfig[newId].regex);
+        const isMatchRegex = !!value && value.match(uploadConfig[newId].regex as RegExp);
         !isMatchRegex && !error.includes(id) && setError([...error, id]);
 
         if (isMatchRegex) {
@@ -146,6 +149,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
                     {!previewMode ? (
                         <>
                             <div className='uploadModalPreviewPro'>
+                                <div className='imgCover'></div>
                                 <CustomPreviewPro data={data} />
                             </div>
                             {!!data.videoURL && <CustomVideo url={data.videoURL} height={200} width={400} />}
@@ -203,7 +207,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
             />
             {data.desc.map((each: string, index: number) => {
                 return (
-                    <div className='row'>
+                    <div className='row' key={index}>
                         <CustomInput
                             key={index}
                             id={`desc[${index}]`}

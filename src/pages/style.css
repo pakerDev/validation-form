@@ -105,6 +105,13 @@ a {
     margin-left: -16px;
 }
 
+.imgCover {
+    width: 420px;
+    height: 140px;
+    position: absolute;
+    z-index: 2;
+}
+
 .uploadModalSchema {
     width: 400px;
     white-space: wrap;
