@@ -45,7 +45,7 @@ const customVideo = (props: IProps) => {
             title='YouTube video player'
             frameorder='0'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-            allowfullscreen
+            allowFullScreen
         ></iframe>
     );
 };
