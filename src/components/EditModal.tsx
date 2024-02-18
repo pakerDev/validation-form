@@ -150,6 +150,7 @@ const EditModal = (props: IPops) => {
                 <div>
                     {!previewMode ? (
                         <>
+                            <div className='imgCover'></div>
                             <CustomPreviewPro data={data} />
                             {!!data.videoURL && <CustomVideo url={data.videoURL} height={200} width={400} />}
                         </>
