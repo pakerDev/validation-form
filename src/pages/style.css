@@ -105,18 +105,18 @@ a {
     margin-left: -16px;
 }
 
-.imgCover {
-    width: 420px;
-    height: 140px;
-    position: absolute;
-    z-index: 2;
-}
-
 .uploadModalSchema {
     width: 400px;
     white-space: wrap;
     overflow-x: auto;
     word-break: break-all;
+}
+
+.customAllTagsAlert {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.6);
+    margin-top: 4px;
+    margin-left: 14px;
 }
 
 .uploadModalPreImage {
@@ -303,4 +303,10 @@ a {
 .customSearchContainer {
     border: var(--text1) 1px solid;
     border-radius: 8px;
+}
+
+/* emptyResult */
+.emptyResultContainer {
+    height: 180px;
+    text-align: center;
 }
