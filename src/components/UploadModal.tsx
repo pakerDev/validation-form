@@ -79,7 +79,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
         }
     };
 
-    const tagClickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const tagClickHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         const id = e.currentTarget.id as allTagsType;
         const tagArray = data.tag;
         let newTagArray = [];
@@ -124,6 +124,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
             helperText: "僅接受youtube連結",
             error: error.includes("videoURL"),
             required: true,
+            errorMessage: uploadConfig.videoURL.errorMessage,
         },
         imgURL: {
             value: data.imgURL,
@@ -131,6 +132,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
             inputLabel: "圖片連結",
             error: error.includes("imgURL"),
             required: true,
+            errorMessage: uploadConfig.imgURL.errorMessage,
         },
         title: {
             value: data.title,
@@ -139,6 +141,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
             error: error.includes("title"),
             required: true,
             maxLength: 15,
+            errorMessage: uploadConfig.title.errorMessage,
         },
     };
 
@@ -149,8 +152,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
                     {!previewMode ? (
                         <>
                             <div className='uploadModalPreviewPro'>
-                                <div className='imgCover'></div>
-                                <CustomPreviewPro data={data} />
+                                <CustomPreviewPro data={data} isClickable={false} />
                             </div>
                             {!!data.videoURL && <CustomVideo url={data.videoURL} height={200} width={400} />}
                         </>
@@ -172,10 +174,10 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
 
             <div className=''>
                 <Button className='' onClick={tempHandler}>
-                    template
+                    套用模板
                 </Button>
                 <Button className='' onClick={clearHandler}>
-                    clear
+                    一鍵清除
                 </Button>
             </div>
             <div className='row'>
@@ -200,6 +202,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
             </div>
 
             <CustomAllTags data={data.tag} isShowLabel={true} onClick={(e) => tagClickHandler(e)} />
+            {data.tag.length === 0 && <p className='customAllTagsAlert'>請至少選擇一個標籤</p>}
             <CustomInput
                 {...inputProps.title}
                 onChange={(e) => inputChangeHandler(e)}
@@ -217,6 +220,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
                             isChecked={checkedState.includes(`desc[${index}]`)}
                             isShowCheckBox={index === 0 ? false : true}
                             maxLength={60}
+                            helperText={uploadConfig.title.errorMessage}
                             onChange={(e) => inputChangeHandler(e)}
                             onClick={(e) => checkboxClickHandler(e)}
                             onBlur={(e) => inputBlurHandler(e)}
