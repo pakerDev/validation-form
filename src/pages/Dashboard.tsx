@@ -6,9 +6,11 @@ import CustomStudioContainer from "../components/CustomStudioContainer";
 import CustomEditorModal from "../container/CustomEditorModal";
 import { IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
+import { fetchData } from "../constant/main";
 
 const Dashboard = () => {
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
+    const [savedDataJson, setSavedDataJson] = useState(fetchData());
     const [isUpload, setIsUpload] = useState(false);
 
     const dropDownHandler = (mode: string) => {
@@ -19,6 +21,7 @@ const Dashboard = () => {
 
     const closePopupHandler = () => {
         setIsUpload(false);
+        setSavedDataJson(fetchData());
     };
 
     return (
@@ -32,7 +35,7 @@ const Dashboard = () => {
                 <CustomDropDown homeViewMode={(mode: string) => dropDownHandler(mode)} />
             </div>
             <div className='viewContainer'>
-                <CustomStudioContainer />
+                <CustomStudioContainer data={savedDataJson} />
             </div>
             {isUpload && <CustomEditorModal type='UPLOAD' closePopupHandler={closePopupHandler} />}
         </>

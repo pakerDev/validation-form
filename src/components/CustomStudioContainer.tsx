@@ -4,19 +4,19 @@ import { CloudDownload, CloudUpload, Edit, Delete } from "@mui/icons-material";
 import { IMainData, TModal } from "../constant/types";
 import CustomEditorModal from "../container/CustomEditorModal";
 import CustomStudioItem from "./CustomStudioItem";
-import { fetchData } from "../constant/main";
+import { fetchData, findData } from "../constant/main";
 
-const CustomStudioContainer = () => {
-    const [savedDataJson, setSavedDataJson] = useState(fetchData());
+const CustomStudioContainer = ({ data }: { data: IMainData[] }) => {
+    const [savedDataJson, setSavedDataJson] = useState(data);
     const [editorModalProp, setEditorModalProp] = useState<{ type: TModal; data: IMainData | undefined }>({
         type: "",
         data: undefined,
     });
 
     const uploadClickHandler = (code: string) => {
-        const thisIndex = savedDataJson.findIndex((i: IMainData) => i.videoURL === code);
-        if (thisIndex !== -1) {
-            savedDataJson[thisIndex].isUploaded = !savedDataJson[thisIndex].isUploaded;
+        const { dataIndex } = findData(code);
+        if (dataIndex !== -1) {
+            savedDataJson[dataIndex].isUploaded = !savedDataJson[dataIndex].isUploaded;
             localStorage.setItem("mainData", JSON.stringify(savedDataJson));
             setSavedDataJson(fetchData());
         }
@@ -28,16 +28,16 @@ const CustomStudioContainer = () => {
     };
 
     const editClickHandler = (code: string) => {
-        const thisIndex = savedDataJson.findIndex((i: IMainData) => i.videoURL === code);
-        if (thisIndex !== -1) {
-            setEditorModalProp({ type: "EDITOR", data: savedDataJson[thisIndex] });
+        const { dataIndex } = findData(code);
+        if (dataIndex !== -1) {
+            setEditorModalProp({ type: "EDITOR", data: savedDataJson[dataIndex] });
         }
     };
 
     const dropClickHandler = (code: string) => {
-        const thisIndex = savedDataJson.findIndex((i: IMainData) => i.videoURL === code);
-        if (thisIndex !== -1) {
-            savedDataJson.splice(thisIndex, 1);
+        const { dataIndex } = findData(code);
+        if (dataIndex !== -1) {
+            savedDataJson.splice(dataIndex, 1);
             localStorage.setItem("mainData", JSON.stringify(savedDataJson));
             setSavedDataJson(fetchData());
         }
@@ -45,7 +45,7 @@ const CustomStudioContainer = () => {
 
     useEffect(() => {
         setSavedDataJson(fetchData());
-    }, [editorModalProp.type]);
+    }, [editorModalProp.type, data]);
 
     return (
         <div>
@@ -56,6 +56,7 @@ const CustomStudioContainer = () => {
                 return (
                     <div className='row' key={data.videoURL}>
                         <CustomStudioItem data={data} />
+
                         <div className='customStudioItem'>
                             <div className='column customStudioItem'>
                                 {data.isUploaded ? (
