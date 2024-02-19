@@ -4,7 +4,7 @@ const EmptyResult = () => {
     return (
         <div className='emptyResultContainer'>
             <ErrorOutlineIcon fontSize='large' color='error' />
-            <p>查無資料</p>
+            <p>尚無符合條件的影片</p>
         </div>
     );
 };
