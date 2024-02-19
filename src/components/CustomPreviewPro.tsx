@@ -5,15 +5,22 @@ import CustomSingleTag from "./CustomSingleTag";
 
 interface ICustomPreviewPro {
     data: IMainData;
+    isClickable?: boolean;
 }
 
 const CustomPreviewPro = (props: ICustomPreviewPro) => {
-    const { data } = props;
+    const { data, isClickable: isClickAble = true } = props;
     const { videoURL, title, tag, desc } = data;
 
     return (
         <div className='customPreviewProContainer row'>
-            <CustomImage className='customPreviewProImage' width={240} height={120} data={data} />
+            <CustomImage
+                className='customPreviewProImage'
+                width={240}
+                height={120}
+                data={data}
+                isClickable={isClickAble}
+            />
             <div className='column fullWidth customPreviewProRight'>
                 <div className='customPreviewProTitleRow row'>
                     <div className='customPreviewProTitle'>{title === "" ? "title" : title}</div>

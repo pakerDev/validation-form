@@ -31,7 +31,7 @@ const EditModal = (props: IPops) => {
     };
 
     const clearHandler = () => {
-        setData(initData);
+        setData({ ...initData, ["videoURL"]: data.videoURL });
         setError([]);
         setCheckedState([""]);
     };
@@ -126,6 +126,7 @@ const EditModal = (props: IPops) => {
             helperText: "僅接受youtube連結",
             error: error.includes("videoURL"),
             required: true,
+            errorMessage: uploadConfig.videoURL.errorMessage,
         },
         imgURL: {
             value: data.imgURL,
@@ -133,6 +134,7 @@ const EditModal = (props: IPops) => {
             inputLabel: "圖片連結",
             error: error.includes("imgURL"),
             required: true,
+            errorMessage: uploadConfig.imgURL.errorMessage,
         },
         title: {
             value: data.title,
@@ -141,6 +143,7 @@ const EditModal = (props: IPops) => {
             error: error.includes("title"),
             required: true,
             maxLength: 15,
+            errorMessage: uploadConfig.title.errorMessage,
         },
     };
 
@@ -150,8 +153,7 @@ const EditModal = (props: IPops) => {
                 <div>
                     {!previewMode ? (
                         <>
-                            <div className='imgCover'></div>
-                            <CustomPreviewPro data={data} />
+                            <CustomPreviewPro data={data} isClickable={false} />
                             {!!data.videoURL && <CustomVideo url={data.videoURL} height={200} width={400} />}
                         </>
                     ) : (
@@ -170,7 +172,7 @@ const EditModal = (props: IPops) => {
 
             <div className=''>
                 <Button className='' onClick={clearHandler} variant='outlined'>
-                    clear
+                    一鍵清除
                 </Button>
             </div>
             <div className='row'>
@@ -196,6 +198,7 @@ const EditModal = (props: IPops) => {
             </div>
 
             <CustomAllTags data={data.tag} isShowLabel={true} onClick={(e) => tagClickHandler(e)} />
+            {data.tag.length === 0 && <p className='customAllTagsAlert'>請至少選擇一個標籤</p>}
             <CustomInput
                 {...inputProps.title}
                 onChange={(e) => inputChangeHandler(e)}
@@ -213,6 +216,7 @@ const EditModal = (props: IPops) => {
                             isChecked={checkedState.includes(`desc[${index}]`)}
                             isShowCheckBox={index === 0 ? false : true}
                             maxLength={60}
+                            helperText={uploadConfig.title.errorMessage}
                             onChange={(e) => inputChangeHandler(e)}
                             onClick={(e) => checkboxClickHandler(e)}
                             onBlur={(e) => inputBlurHandler(e)}
