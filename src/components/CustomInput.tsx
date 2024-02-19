@@ -1,6 +1,6 @@
 import { Checkbox } from "@mui/material";
 import { FormControl, FormHelperText, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { allTagsType } from "../constant/types";
 
 interface ICustomInput {
@@ -50,6 +50,10 @@ const CustomInput = (prop: ICustomInput) => {
         onChange && onChange(e);
         setCount(e.target.value.length);
     };
+
+    useEffect(() => {
+        setCount(value?.length ?? 0);
+    }, [value]);
 
     return (
         <div className='row customInputRow fullWidth'>
