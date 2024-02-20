@@ -49,6 +49,11 @@ const CustomDropDown = ({ homeViewMode }: { homeViewMode: (arg: string) => void 
                         切換瀏覽模式
                     </MenuItem>
                 )}
+                {location === "/dashboard" && (
+                    <MenuItem id='editTemp' onClick={(e) => handleClose(e)}>
+                        編輯我的模板
+                    </MenuItem>
+                )}
                 <MenuItem id='upload' onClick={(e) => handleClose(e)}>
                     上傳新影片
                 </MenuItem>

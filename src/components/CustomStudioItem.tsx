@@ -4,6 +4,7 @@ import CustomImage from "./CustomImage";
 import CustomSingleTag from "./CustomSingleTag";
 import CustomBookmark from "./CustomBookmark";
 import { getTime } from "../constant/main";
+import { TableCell } from "@mui/material";
 
 interface ICustomStudioItem {
     className?: string;
@@ -16,25 +17,31 @@ const CustomStudioItem = (prop: ICustomStudioItem) => {
     const { title, tag, isUploaded, createTime } = data;
 
     return (
-        <div className='customStudioItemContainer row'>
-            <CustomImage className='' width={160} height={80} data={data} />
-            <div className='customStudioItemTitle customStudioItem'>{title}</div>
-            <div className='customStudioItemTag customStudioItem row'>
-                {tag.length !== 0 &&
-                    tag.map((i: allTagsType) => {
-                        return <CustomSingleTag type={i} key={i} />;
-                    })}
-            </div>
-            <div className='customStudioItemLike customStudioItem'>
-                <CustomBookmark code={data.videoURL} />
-            </div>
-            {isUploaded ? (
-                <div className='column customStudioItem'>已上架</div>
-            ) : (
-                <div className='column customStudioItem red'>未上架</div>
-            )}
-            <div className='customStudioItem'>{getTime(createTime)}</div>
-        </div>
+        <>
+            <TableCell align='right' sx={{ width: 200 }}>
+                {<CustomImage className='' width={160} height={80} data={data} />}
+            </TableCell>
+            <TableCell align='left' sx={{ width: 120 }}>
+                {title}
+            </TableCell>
+            <TableCell align='left' sx={{ width: 120 }}>
+                <div className='row'>
+                    {tag.length !== 0 &&
+                        tag.map((i: allTagsType) => {
+                            return <CustomSingleTag type={i} key={i} />;
+                        })}
+                </div>
+            </TableCell>
+            <TableCell align='left' sx={{ width: 40 }}>
+                {<CustomBookmark code={data.videoURL} />}
+            </TableCell>
+            <TableCell align='right' sx={{ width: 120 }}>
+                {isUploaded ? "已上架" : "未上架"}
+            </TableCell>
+            <TableCell align='right' sx={{ width: 160 }}>
+                {getTime(createTime)}
+            </TableCell>
+        </>
     );
 };
 
