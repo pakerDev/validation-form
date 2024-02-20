@@ -41,7 +41,7 @@ const EditModal = (props: IPops) => {
         if (id.includes("URL")) {
             setData({ ...data, [id]: value });
         } else if (id.includes("desc")) {
-            const index = parseInt(id.match(/\d+/)[0]);
+            const index = parseInt(id.split("")[5]);
             const newDesc = [...data.desc];
             newDesc[index] = value;
             setData({ ...data, desc: newDesc });
@@ -51,7 +51,6 @@ const EditModal = (props: IPops) => {
     };
 
     const inputBlurHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // todo error
         const { id, value } = e.target;
         const newId = id.split("[")[0];
 
@@ -206,7 +205,7 @@ const EditModal = (props: IPops) => {
             />
             {data.desc.map((each, index) => {
                 return (
-                    <div className='row'>
+                    <div className='row' key={index}>
                         <CustomInput
                             key={index}
                             id={`desc[${index}]`}
