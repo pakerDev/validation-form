@@ -1,6 +1,6 @@
 import React from "react";
 import { allTagsType, allType } from "../constant/types.ts";
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import { tagIconConfig } from "../constant/configs.tsx";
 
 interface ICustomAllTagsProps {
@@ -22,7 +22,7 @@ const CustomAllTags = (props: ICustomAllTagsProps) => {
                         variant={data.includes(i) ? "contained" : "outlined"}
                         onClick={onClick}
                         size='small'
-                        color={tagIconConfig[i].color}
+                        color={tagIconConfig[i].color as ButtonProps["color"]}
                         startIcon={data.includes(i) ? tagIconConfig[i].checkedIcon : tagIconConfig[i].icon}
                     >
                         {isShowLabel && tagIconConfig[i].label}

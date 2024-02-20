@@ -50,7 +50,6 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
     };
 
     const inputBlurHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // todo error
         const { id, value } = e.target;
         const newId = id.split("[")[0];
         const isMatchRegex = !!value && value.match(uploadConfig[newId].regex as RegExp);

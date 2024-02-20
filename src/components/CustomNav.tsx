@@ -1,6 +1,6 @@
 import React from "react";
 import { allTagsType, navType } from "../constant/types";
-import { Button } from "@mui/material";
+import { Button, ButtonProps } from "@mui/material";
 import { tagIconConfig } from "../constant/configs";
 
 interface ICustomNavProps {
@@ -23,7 +23,7 @@ const CustomNav = (props: ICustomNavProps) => {
                         id={i}
                         variant={i === status ? "contained" : "outlined"}
                         size='small'
-                        color={tagIconConfig[i].color}
+                        color={tagIconConfig[i].color as ButtonProps["color"]}
                         startIcon={i === status ? tagIconConfig[i].checkedIcon : tagIconConfig[i].icon}
                         onClick={(e) => handleClick(e)}
                     >

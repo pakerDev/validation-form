@@ -1,5 +1,5 @@
 import { Checkbox } from "@mui/material";
-import { FormControl, FormHelperText, TextField } from "@mui/material";
+import { FormControl, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { allTagsType } from "../constant/types";
 
@@ -78,7 +78,6 @@ const CustomInput = (prop: ICustomInput) => {
                     disabled={disabled}
                     helperText={isError ? errorMessage : helperText}
                 />
-                {/* <FormHelperText>{isError ? "error" : helperText}</FormHelperText> */}
             </FormControl>
             {!!maxLength && <span className='customInputCount'>{`${count}/${maxLength}`}</span>}
         </div>

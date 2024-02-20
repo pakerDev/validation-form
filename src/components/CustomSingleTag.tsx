@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox } from "@mui/material/";
+import { Checkbox, CheckboxProps } from "@mui/material/";
 import { allTagsType } from "../constant/types";
 import { tagIconConfig } from "../constant/configs";
 
@@ -24,7 +24,7 @@ const CustomSingleTag = (props: ICustomTagProp) => {
                 icon={icon}
                 checkedIcon={checkedIcon}
                 checked={isChecked}
-                color={color}
+                color={color as CheckboxProps["color"]}
                 id={type}
                 onClick={onClick}
                 sx={{ "& .MuiSvgIcon-root": { fontSize: iconSize }, "&": { padding: 0 } }}
