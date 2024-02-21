@@ -11,19 +11,20 @@ import { fetchData } from "../constant/main";
 import CustomEditorModal from "../container/CustomEditorModal";
 import { IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
+import EmptyResult from "./EmptyResult";
 
 const Home = () => {
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
     const [isCardMode, setIsCardMode] = useState(true);
     const [isUpload, setIsUpload] = useState(false);
-    const [renderPage, setRenderPage] = useState("home");
     const [category, setCategory] = useState<allTagsType>("all");
     const [searchInfo, setSearchInfo] = useState<ISearchInfo>({ by: "title", keyWord: "" });
 
     const homeIconClickHandler = () => {
         setSavedDataJson(fetchData());
         setCategory("all");
+        setSearchInfo({ by: "title", keyWord: "" });
     };
 
     const dropDownHandler = (mode: string) => {
@@ -40,7 +41,6 @@ const Home = () => {
     };
 
     const searchBarHandler = ({ by, keyWord }: ISearchInfo) => {
-        setRenderPage("home");
         setSearchInfo({ by: by, keyWord: keyWord });
     };
 
@@ -99,36 +99,29 @@ const Home = () => {
 
     return (
         <>
-            {renderPage === "home" && (
-                <>
-                    <div className='row homeHead'>
-                        <Link to='/'>
-                            <IconButton color='primary' onClick={homeIconClickHandler}>
-                                <HouseIcon />
-                            </IconButton>
-                        </Link>
-                        <CustomSearch
-                            homeSearch={({ by, keyWord }: ISearchInfo) => searchBarHandler({ by, keyWord })}
-                        />
-                        <CustomDropDown homeViewMode={(mode: string) => dropDownHandler(mode)} />
-                    </div>
-                    <div className='row homeNav'>
-                        <CustomNav
-                            homeNavStatus={(category: allTagsType) => navClickHandler(category)}
-                            status={category}
-                        />
-                    </div>
-                    <div className='viewContainer'>
-                        {savedDataJson.map((data: IMainData) => {
-                            return isCardMode ? (
-                                <CustomPreview key={data.videoURL} data={data} />
-                            ) : (
-                                <CustomPreviewPro key={data.videoURL} data={data} />
-                            );
-                        })}
-                    </div>
-                </>
-            )}
+            <div className='row homeHead'>
+                <Link to='/'>
+                    <IconButton color='primary' onClick={homeIconClickHandler}>
+                        <HouseIcon />
+                    </IconButton>
+                </Link>
+                <CustomSearch homeSearch={({ by, keyWord }: ISearchInfo) => searchBarHandler({ by, keyWord })} />
+                <CustomDropDown homeViewMode={(mode: string) => dropDownHandler(mode)} />
+            </div>
+            <div className='row homeNav'>
+                <CustomNav homeNavStatus={(category: allTagsType) => navClickHandler(category)} status={category} />
+            </div>
+            <div className='viewContainer'>
+                {savedDataJson.length === 0 && <EmptyResult />}
+                {savedDataJson.length > 0 &&
+                    savedDataJson.map((data: IMainData) => {
+                        return isCardMode ? (
+                            <CustomPreview key={data.videoURL} data={data} />
+                        ) : (
+                            <CustomPreviewPro key={data.videoURL} data={data} />
+                        );
+                    })}
+            </div>
 
             {isUpload && <CustomEditorModal type='UPLOAD' closePopupHandler={closePopupHandler} />}
         </>
