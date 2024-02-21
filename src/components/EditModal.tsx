@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomInput from "./CustomInput";
 import CustomAllTags from "../components/CustomAllTags";
 import { Button, IconButton, Link } from "@mui/material";
@@ -22,7 +22,9 @@ const EditModal = (props: IPops) => {
     const [error, setError] = useState<string[]>([]);
     const [checkedState, setCheckedState] = useState([""]);
 
-    modelData(data);
+    useEffect(() => {
+        modelData(data);
+    }, [data, modelData]);
 
     const PreviewSwitchChangeHandler = (val: boolean) => {
         setPreviewMode(val);
@@ -53,7 +55,7 @@ const EditModal = (props: IPops) => {
         const { id, value } = e.target;
         const newId = id.split("[")[0];
 
-        const isMatchRegex = !!value && value.match(uploadConfig[newId].regex);
+        const isMatchRegex = !!value && value.match(uploadConfig[newId].regex as RegExp);
         !isMatchRegex && !error.includes(id) && setError([...error, id]);
 
         if (isMatchRegex) {
@@ -148,6 +150,7 @@ const EditModal = (props: IPops) => {
                 <div>
                     {!previewMode ? (
                         <>
+                            <div className='imgCover'></div>
                             <CustomPreviewPro data={data} />
                             {!!data.videoURL && <CustomVideo url={data.videoURL} height={200} width={400} />}
                         </>

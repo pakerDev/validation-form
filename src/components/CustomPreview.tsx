@@ -6,27 +6,15 @@ import CustomBookmark from "./CustomBookmark";
 interface ICustomPreview {
     data: IMainData;
     toVideo?: boolean;
-    homeToVideo: (into: IMainData) => void;
 }
 
 const CustomPreview = (props: ICustomPreview) => {
-    const { data, toVideo = true, homeToVideo } = props;
+    const { data, toVideo = true } = props;
     const { title, tag, desc } = data;
-
-    const videoPlayHandler = (info: IMainData) => {
-        homeToVideo(info);
-    };
 
     return (
         <div className='customPreviewContainer column'>
-            <CustomImage
-                className='customPreviewProImage'
-                width={240}
-                height={120}
-                data={data}
-                toVideo={toVideo}
-                handleToVideo={(info) => videoPlayHandler(info)}
-            />
+            <CustomImage className='customPreviewProImage' width={240} height={120} data={data} toVideo={toVideo} />
             <div className='column fullWidth'>
                 <div className='customPreviewHead row'>
                     {<div className='customPreviewProTitle'>{title === "" ? "title" : title}</div>}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { FavoriteBorder, Favorite } from "@mui/icons-material";
 import { Checkbox } from "@mui/material";
 import { IMainData } from "../constant/types";
-import { fetchData } from "../constant/main";
+import { fetchData, findData } from "../constant/main";
 
 interface IBookmarkProp {
     code: string;
@@ -22,12 +22,12 @@ const CustomBookmark = ({ code, iconSize = 24 }: IBookmarkProp) => {
 
     const bookmarkClickHandler = () => {
         const savedDataJson = fetchData();
-        const thisIndex = savedDataJson.findIndex((i: IMainData) => i.videoURL === code);
+        const { dataIndex } = findData(code);
 
-        if (thisIndex !== -1) {
-            savedDataJson[thisIndex].isLiked = !savedDataJson[thisIndex].isLiked;
+        if (dataIndex !== -1) {
+            savedDataJson[dataIndex].isLiked = !savedDataJson[dataIndex].isLiked;
             localStorage.setItem("mainData", JSON.stringify(savedDataJson));
-            setIsLiked(savedDataJson[thisIndex].isLiked);
+            setIsLiked(savedDataJson[dataIndex].isLiked);
         }
     };
 

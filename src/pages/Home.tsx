@@ -6,12 +6,11 @@ import { mainData } from "../constant/configs";
 import CustomPreview from "../components/CustomPreview";
 import CustomPreviewPro from "../components/CustomPreviewPro";
 import { IMainData, ISearchInfo, allTagsType } from "../constant/types";
-import Studio from "../components/CustomStudioContainer";
 import CustomNav from "../components/CustomNav";
 import { fetchData } from "../constant/main";
 import CustomEditorModal from "../container/CustomEditorModal";
-import VideoPage from "../pages/VideoPage";
 import { IconButton } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
@@ -19,22 +18,17 @@ const Home = () => {
     const [isCardMode, setIsCardMode] = useState(true);
     const [isUpload, setIsUpload] = useState(false);
     const [renderPage, setRenderPage] = useState("home");
-    const [isVideoData, setIsVideoData] = useState(savedDataJson[0]);
     const [category, setCategory] = useState<allTagsType>("all");
     const [searchInfo, setSearchInfo] = useState<ISearchInfo>({ by: "title", keyWord: "" });
 
     const homeIconClickHandler = () => {
         setSavedDataJson(fetchData());
         setCategory("all");
-        setRenderPage("home");
     };
 
     const dropDownHandler = (mode: string) => {
         if (mode === "cardMode") {
             setIsCardMode((i) => !i);
-        }
-        if (mode === "studio") {
-            setRenderPage("studio");
         }
         if (mode === "upload") {
             setIsUpload(true);
@@ -103,19 +97,16 @@ const Home = () => {
         setSavedDataJson(fetchData());
     };
 
-    const videoPlayHandler = (info: IMainData) => {
-        setRenderPage("video");
-        setIsVideoData(info);
-    };
-
     return (
         <>
             {renderPage === "home" && (
                 <>
                     <div className='row homeHead'>
-                        <IconButton color='primary' onClick={homeIconClickHandler}>
-                            <HouseIcon />
-                        </IconButton>
+                        <Link to='/'>
+                            <IconButton color='primary' onClick={homeIconClickHandler}>
+                                <HouseIcon />
+                            </IconButton>
+                        </Link>
                         <CustomSearch
                             homeSearch={({ by, keyWord }: ISearchInfo) => searchBarHandler({ by, keyWord })}
                         />
@@ -130,50 +121,11 @@ const Home = () => {
                     <div className='viewContainer'>
                         {savedDataJson.map((data: IMainData) => {
                             return isCardMode ? (
-                                <CustomPreview
-                                    key={data.videoURL}
-                                    data={data}
-                                    homeToVideo={(info) => videoPlayHandler(info)}
-                                />
+                                <CustomPreview key={data.videoURL} data={data} />
                             ) : (
                                 <CustomPreviewPro key={data.videoURL} data={data} />
                             );
                         })}
-                    </div>
-                </>
-            )}
-            {renderPage === "studio" && (
-                <>
-                    <div className='row homeHead'>
-                        <IconButton color='primary' onClick={homeIconClickHandler}>
-                            <HouseIcon />
-                        </IconButton>
-                        <CustomDropDown homeViewMode={(mode: string) => dropDownHandler(mode)} />
-                    </div>
-                    <div className='viewContainer'>
-                        <Studio />
-                    </div>
-                </>
-            )}
-            {renderPage === "video" && (
-                <>
-                    <div className='row homeHead'>
-                        <IconButton color='primary' onClick={homeIconClickHandler}>
-                            <HouseIcon />
-                        </IconButton>
-                        <CustomSearch
-                            homeSearch={({ by, keyWord }: ISearchInfo) => searchBarHandler({ by, keyWord })}
-                        />
-                        <CustomDropDown homeViewMode={(mode: string) => dropDownHandler(mode)} />
-                    </div>
-                    <div className='row homeNav'>
-                        <CustomNav
-                            homeNavStatus={(category: allTagsType) => navClickHandler(category)}
-                            status={category}
-                        />
-                    </div>
-                    <div className='viewContainer'>
-                        <VideoPage data={isVideoData} />
                     </div>
                 </>
             )}

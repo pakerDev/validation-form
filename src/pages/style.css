@@ -17,6 +17,11 @@
     padding: 0;
 }
 
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .row {
     display: flex;
     flex-direction: row;
@@ -98,6 +103,13 @@
 
 .uploadModalPreviewPro {
     margin-left: -16px;
+}
+
+.imgCover {
+    width: 420px;
+    height: 140px;
+    position: absolute;
+    z-index: 2;
 }
 
 .uploadModalSchema {
@@ -283,7 +295,7 @@
 }
 
 .CustomNavContainer {
-    width: 40%;
+    width: auto;
     justify-content: space-between;
 }
 
