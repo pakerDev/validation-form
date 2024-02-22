@@ -5,7 +5,7 @@ import { tagIconConfig } from "../constant/configs.tsx";
 
 interface ICustomAllTagsProps {
     data: allTagsType[];
-    onClick: () => React.MouseEvent<HTMLButtonElement>;
+    onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
     isShowLabel: boolean;
 }
 
