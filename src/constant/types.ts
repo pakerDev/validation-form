@@ -21,6 +21,6 @@ export interface IEditorModal {
 }
 
 export interface ISearchInfo {
-    by: keyof IMainData;
+    by: "title" | "desc";
     keyWord: string;
 }
