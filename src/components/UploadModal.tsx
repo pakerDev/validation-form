@@ -16,7 +16,7 @@ const UploadModal = ({ modelData }: IEditorModal) => {
     const [checkedState, setCheckedState] = useState([""]);
 
     useEffect(() => {
-        modelData!(data);
+        modelData(data);
     }, [data, modelData]);
 
     const PreviewSwitchChangeHandler = (val: boolean) => {
