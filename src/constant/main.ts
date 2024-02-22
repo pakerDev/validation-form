@@ -41,7 +41,16 @@ export const checkCanSubmit = (data: IMainData) => {
 
 export const getTime = (timeStamp: number) => {
     var date = new Date(timeStamp);
-    const time = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate();
+    const time =
+        date.getFullYear() +
+        "/" +
+        (date.getMonth() + 1) +
+        "/" +
+        date.getDate() +
+        " " +
+        date.getHours() +
+        ":" +
+        date.getMinutes();
     return time;
 };
 

@@ -41,7 +41,7 @@ const EditModal = (props: IPops) => {
         if (id.includes("URL")) {
             setData({ ...data, [id]: value });
         } else if (id.includes("desc")) {
-            const index = parseInt(id.match(/\d+/)[0]);
+            const index = parseInt(id.split("")[5]);
             const newDesc = [...data.desc];
             newDesc[index] = value;
             setData({ ...data, desc: newDesc });
@@ -51,7 +51,6 @@ const EditModal = (props: IPops) => {
     };
 
     const inputBlurHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // todo error
         const { id, value } = e.target;
         const newId = id.split("[")[0];
 
@@ -124,7 +123,7 @@ const EditModal = (props: IPops) => {
             id: "videoURL",
             inputLabel: "影片連結",
             helperText: "僅接受youtube連結",
-            error: error.includes("videoURL"),
+            isError: error.includes("videoURL"),
             required: true,
             errorMessage: uploadConfig.videoURL.errorMessage,
         },
@@ -132,7 +131,7 @@ const EditModal = (props: IPops) => {
             value: data.imgURL,
             id: "imgURL",
             inputLabel: "圖片連結",
-            error: error.includes("imgURL"),
+            isError: error.includes("imgURL"),
             required: true,
             errorMessage: uploadConfig.imgURL.errorMessage,
         },
@@ -140,7 +139,7 @@ const EditModal = (props: IPops) => {
             value: data.title,
             id: "title",
             inputLabel: "標題",
-            error: error.includes("title"),
+            isError: error.includes("title"),
             required: true,
             maxLength: 15,
             errorMessage: uploadConfig.title.errorMessage,
@@ -206,7 +205,7 @@ const EditModal = (props: IPops) => {
             />
             {data.desc.map((each, index) => {
                 return (
-                    <div className='row'>
+                    <div className='row' key={index}>
                         <CustomInput
                             key={index}
                             id={`desc[${index}]`}

@@ -50,7 +50,6 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
     };
 
     const inputBlurHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // todo error
         const { id, value } = e.target;
         const newId = id.split("[")[0];
         const isMatchRegex = !!value && value.match(uploadConfig[newId].regex as RegExp);
@@ -122,7 +121,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
             id: "videoURL",
             inputLabel: "影片連結",
             helperText: "僅接受youtube連結",
-            error: error.includes("videoURL"),
+            isError: error.includes("videoURL"),
             required: true,
             errorMessage: uploadConfig.videoURL.errorMessage,
         },
@@ -130,7 +129,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
             value: data.imgURL,
             id: "imgURL",
             inputLabel: "圖片連結",
-            error: error.includes("imgURL"),
+            isError: error.includes("imgURL"),
             required: true,
             errorMessage: uploadConfig.imgURL.errorMessage,
         },
@@ -138,7 +137,7 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
             value: data.title,
             id: "title",
             inputLabel: "標題",
-            error: error.includes("title"),
+            isError: error.includes("title"),
             required: true,
             maxLength: 15,
             errorMessage: uploadConfig.title.errorMessage,
@@ -154,7 +153,9 @@ const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) =>
                             <div className='uploadModalPreviewPro'>
                                 <CustomPreviewPro data={data} isClickable={false} />
                             </div>
-                            {!!data.videoURL && <CustomVideo url={data.videoURL} height={200} width={400} />}
+                            {data.videoURL.match(uploadConfig.videoURL.regex as RegExp) && (
+                                <CustomVideo url={data.videoURL} height={200} width={400} />
+                            )}
                         </>
                     ) : (
                         <div className='uploadModalSchema'>
