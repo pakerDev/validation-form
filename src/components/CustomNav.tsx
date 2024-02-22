@@ -1,22 +1,26 @@
 import React from "react";
-import { allTagsType, navType } from "../constant/types";
+import { allTagsType, initNav } from "../constant/types";
 import { Button, ButtonProps } from "@mui/material";
 import { tagIconConfig } from "../constant/configs";
+import { fetchNav } from "../constant/main";
 
 interface ICustomNavProps {
     homeNavStatus: (status: allTagsType) => void;
     status?: allTagsType;
 }
 
+!localStorage.getItem("nav") && localStorage.setItem("nav", initNav.join());
+
 const CustomNav = (props: ICustomNavProps) => {
     const { homeNavStatus, status = "all" } = props;
+    const navList = fetchNav();
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         homeNavStatus(event.currentTarget.id as allTagsType);
     };
 
     return (
         <div className='row CustomNavContainer'>
-            {navType.map((i, idx) => {
+            {navList.map((i, idx) => {
                 return (
                     <Button
                         key={idx}

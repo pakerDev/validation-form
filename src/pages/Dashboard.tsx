@@ -8,11 +8,12 @@ import { IconButton } from "@mui/material";
 import { Link } from "react-router-dom";
 import { fetchData } from "../constant/main";
 import { IMainData, TModal } from "../constant/types";
+import SettingNavModal from "../components/SettingNavModal";
 
 const Dashboard = () => {
     !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     const [savedDataJson, setSavedDataJson] = useState(fetchData());
-    const [isUpload, setIsUpload] = useState(false);
+    const [openingModal, setOpeningModal] = useState("");
     const [editorModalProp, setEditorModalProp] = useState<{ type: TModal; data: IMainData | undefined }>({
         type: "",
         data: undefined,
@@ -20,10 +21,13 @@ const Dashboard = () => {
 
     const dropDownHandler = (mode: string) => {
         if (mode === "upload") {
-            setIsUpload(true);
+            setOpeningModal("upload");
         }
         if (mode === "editTemp") {
             editTempClickHandler();
+        }
+        if (mode === "editNav") {
+            setOpeningModal("settingNav");
         }
     };
 
@@ -33,7 +37,7 @@ const Dashboard = () => {
     };
 
     const closePopupHandler = () => {
-        setIsUpload(false);
+        setOpeningModal("");
         setSavedDataJson(fetchData());
     };
 
@@ -51,13 +55,14 @@ const Dashboard = () => {
             <div className='viewContainer'>
                 <CustomStudioContainer data={savedDataJson} />
             </div>
-            {isUpload && <CustomEditorModal type='UPLOAD' closePopupHandler={closePopupHandler} />}
+            {openingModal === "upload" && <CustomEditorModal type='UPLOAD' closePopupHandler={closePopupHandler} />}
             {
                 <CustomEditorModal
                     closePopupHandler={() => setEditorModalProp({ type: "", data: undefined })}
                     {...editorModalProp}
                 />
             }
+            {openingModal === "settingNav" && <SettingNavModal closePopupHandler={closePopupHandler} />}
         </>
     );
 };
