@@ -9,7 +9,7 @@ interface ICustomPreviewPro {
 }
 
 const CustomPreviewPro = (props: ICustomPreviewPro) => {
-    const { data, isClickable: isClickAble = true } = props;
+    const { data, isClickable = true } = props;
     const { videoURL, title, tag, desc } = data;
 
     return (
@@ -19,7 +19,7 @@ const CustomPreviewPro = (props: ICustomPreviewPro) => {
                 width={240}
                 height={120}
                 data={data}
-                isClickable={isClickAble}
+                isClickable={isClickable}
             />
             <div className='column fullWidth customPreviewProRight'>
                 <div className='customPreviewProTitleRow row'>

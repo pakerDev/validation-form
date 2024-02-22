@@ -15,7 +15,7 @@ interface IProps {
 }
 
 const CustomImage = (props: IProps) => {
-    const { width = 160, height = 120, className, data, isClickable: isClickAble = true } = props;
+    const { width = 160, height = 120, className, data, isClickable = true } = props;
     const { videoURL, imgURL, tag } = data;
     const isYellow = tag.includes("yellow");
     const [imageSrc, setImageSrc] = useState(imgURL);
@@ -33,7 +33,7 @@ const CustomImage = (props: IProps) => {
 
     return (
         <>
-            {isClickAble ? (
+            {isClickable ? (
                 <Link to={`/video/${getVideoCode(videoURL)}`}>
                     <img className={className} width={width} height={height} src={imageSrc} alt='Custom' />
                 </Link>

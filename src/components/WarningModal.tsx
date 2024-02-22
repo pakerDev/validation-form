@@ -1,32 +1,41 @@
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import { Box, Button, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
 interface IProps {
     closePopupHandler: () => void;
-    handleConfirmClick?: () => void;
+    handleConfirmClick: () => void;
 }
 
 const WarningModal = (props: IProps) => {
-    const { closePopupHandler, handleConfirmClick } = props;
+    const { handleConfirmClick } = props;
+    const navigate = useNavigate();
+
+    const closeWarningHandler = () => {
+        navigate(-1);
+    };
 
     return (
         <>
             <div className='modal'>
-                <div className='modalWrapper'>
-                    <div className='modalHeader'>
+                <div className='warningModalWrapper'>
+                    <div className='warningModalHeader'>
                         <Box width={40}></Box>
-                        <IconButton onClick={closePopupHandler}>
+                        {"Warning"}
+                        <IconButton onClick={closeWarningHandler}>
                             <CloseIcon className='modalCloseBtn' />
                         </IconButton>
                     </div>
-                    <div className='modalBody'>
+                    <div className='row'>
                         <ErrorOutlineOutlinedIcon color='warning' fontSize='large' />
-                        <p>本影片設定為黃標影片</p>
-                        <p>僅供18歲以上用戶觀賞</p>
+                        <div>
+                            <p>本影片設定為黃標影片</p>
+                            <p>僅供18歲以上用戶觀賞</p>
+                        </div>
                     </div>
                     <div className='modalFooter'>
-                        <Button className='modalBtn' onClick={closePopupHandler}>
+                        <Button className='modalBtn' onClick={closeWarningHandler}>
                             離開
                         </Button>
                         <Button className='modalBtn' onClick={handleConfirmClick}>

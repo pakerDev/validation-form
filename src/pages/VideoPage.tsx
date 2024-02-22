@@ -10,7 +10,8 @@ import CustomDropDown from "../components/CustomDropDown";
 import { useParams } from "react-router-dom";
 import CustomEditorModal from "../container/CustomEditorModal";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import WarningModal from "../components/WarningModal";
 
 const VideoPage = () => {
     const params = useParams();
@@ -18,6 +19,7 @@ const VideoPage = () => {
     const { videoURL, title, tag, desc } = data;
     const savedDataJson = fetchData();
     const [isUpload, setIsUpload] = useState(false);
+    const [isYellowTagVideo, setIsYellowTagVideo] = useState(tag.includes("yellow"));
 
     const dropDownHandler = (mode: string) => {
         if (mode === "upload") {
@@ -29,6 +31,10 @@ const VideoPage = () => {
         setIsUpload(false);
     };
 
+    const handleConfirmClick = () => {
+        setIsYellowTagVideo(false);
+    };
+
     const hasCommonTags = (tags1: allTagsType[], tags2: allTagsType[]) => {
         return tags1.some((tag) => tags2.includes(tag));
     };
@@ -36,6 +42,10 @@ const VideoPage = () => {
     const relatedVideos = savedDataJson.filter(
         (item: IMainData) => item.videoURL !== videoURL && hasCommonTags(item.tag, tag)
     );
+
+    useEffect(() => {
+        setIsYellowTagVideo(tag.includes("yellow"));
+    }, [videoURL]);
 
     return (
         <>
@@ -75,6 +85,11 @@ const VideoPage = () => {
                 </div>
             </div>
             {isUpload && <CustomEditorModal type='UPLOAD' closePopupHandler={closePopupHandler} />}
+            {isYellowTagVideo ? (
+                <WarningModal closePopupHandler={closePopupHandler} handleConfirmClick={handleConfirmClick} />
+            ) : (
+                <></>
+            )}
         </>
     );
 };
