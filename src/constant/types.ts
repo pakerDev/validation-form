@@ -17,7 +17,7 @@ export interface IMainData {
 
 export interface IEditorModal {
     info?: IMainData;
-    modelData?: (data: IMainData) => void;
+    modelData: (data: IMainData) => void;
 }
 
 export interface ISearchInfo {
