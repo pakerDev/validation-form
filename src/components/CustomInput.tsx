@@ -1,6 +1,6 @@
 import { Checkbox } from "@mui/material";
 import { FormControl, FormHelperText, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { allTagsType } from "../constant/types";
 
 interface ICustomInput {
@@ -10,7 +10,7 @@ interface ICustomInput {
     helperText?: string;
     required?: boolean;
     disabled?: boolean;
-    error?: boolean;
+    isError?: boolean;
     fullWidth?: boolean;
     defaultValue?: unknown;
     value?: string | allTagsType;
@@ -18,6 +18,7 @@ interface ICustomInput {
     isShowCheckBox?: boolean;
     isChecked?: boolean;
     maxLength?: number;
+    errorMessage?: string;
     onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -30,12 +31,13 @@ const CustomInput = (prop: ICustomInput) => {
         helperText,
         required = false,
         disabled = false,
-        error = false,
+        isError = false,
         fullWidth = false,
         value,
         maxLength,
         isShowCheckBox = false,
         isChecked = true,
+        errorMessage = "",
         onChange,
         onBlur,
         onClick,
@@ -50,6 +52,10 @@ const CustomInput = (prop: ICustomInput) => {
         onChange && onChange(e);
         setCount(e.target.value.length);
     };
+
+    useEffect(() => {
+        setCount(value?.length ?? 0);
+    }, [value]);
 
     return (
         <div className='row customInputRow fullWidth'>
@@ -66,12 +72,13 @@ const CustomInput = (prop: ICustomInput) => {
                     size='small'
                     type='search'
                     onBlur={onBlur}
-                    error={error}
+                    error={isError}
                     multiline
                     maxRows={3}
                     disabled={disabled}
+                    helperText={isError ? errorMessage : helperText}
                 />
-                <FormHelperText>{helperText}</FormHelperText>
+                {/* <FormHelperText>{isError ? "error" : helperText}</FormHelperText> */}
             </FormControl>
             {!!maxLength && <span className='customInputCount'>{`${count}/${maxLength}`}</span>}
         </div>

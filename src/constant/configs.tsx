@@ -194,19 +194,22 @@ export const uploadConfig: {
         limit: number;
         regex?: RegExp;
         maxLength?: number;
+        errorMessage: string;
     };
 } = {
-    videoURL: { limit: 1, regex: youtubeURLRegex },
-    imgURL: { limit: 1, regex: imgURLRegex },
+    videoURL: { limit: 1, regex: youtubeURLRegex, errorMessage: "請提供youtube影片連結" },
+    imgURL: { limit: 1, regex: imgURLRegex, errorMessage: "請提供正確的圖片連結" },
     title: {
         limit: 1,
         maxLength: 15,
         regex: titleRegex,
+        errorMessage: "僅允許半形英數及中文字",
     },
-    tag: { limit: 5 },
+    tag: { limit: 5, errorMessage: "" },
     desc: {
         limit: 3,
         maxLength: 60,
         regex: descRegex,
+        errorMessage: "僅允許半形英數及中文字",
     },
 };
