@@ -88,7 +88,10 @@ const Home = () => {
                         <HouseIcon />
                     </IconButton>
                 </Link>
-                <CustomSearch homeSearch={({ by, keyWord }: ISearchInfo) => searchBarHandler({ by, keyWord })} />
+                <CustomSearch
+                    homeSearch={({ by, keyWord }: ISearchInfo) => searchBarHandler({ by, keyWord })}
+                    data={searchInfo}
+                />
                 <CustomDropDown homeViewMode={(mode: string) => dropDownHandler(mode)} />
             </div>
             <div className='row homeNav'>
