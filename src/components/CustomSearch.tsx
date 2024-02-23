@@ -14,6 +14,11 @@ const CustomSearch = (props: ICustomSearchProps) => {
 
     const open = Boolean(anchorEl);
 
+    const searchBy = {
+        title: "請輸入 標題 關鍵字",
+        desc: "請輸入 內容 關鍵字",
+    };
+
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -54,13 +59,13 @@ const CustomSearch = (props: ICustomSearchProps) => {
                 TransitionComponent={Fade}
             >
                 <MenuItem id='title' onClick={handleClose}>
-                    依標題
+                    找標題
                 </MenuItem>
                 <MenuItem id='desc' onClick={handleClose}>
-                    依內容
+                    找內容
                 </MenuItem>
             </Menu>
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder='輸入搜尋關鍵字' onBlur={inputBlurHandler} />
+            <InputBase sx={{ ml: 1, flex: 1 }} placeholder={searchBy[homeSearchArg.by]} onBlur={inputBlurHandler} />
             <IconButton type='button' aria-label='search' onClick={searchClickHandler}>
                 <Search />
             </IconButton>

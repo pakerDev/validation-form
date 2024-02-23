@@ -49,46 +49,33 @@ const Home = () => {
 
         let filteredData;
         if (searchInfo.by === "desc") {
-            //todo 模糊搜尋
             if (searchInfo.keyWord === "") {
                 filteredData = [...allUploadedData];
             } else {
                 filteredData = allUploadedData.filter((item: IMainData) =>
-                    item.desc.some((descItem) => descItem.includes(searchInfo.keyWord))
+                    item.desc.some((descItem) => {
+                        const dataDesc = descItem.toLowerCase();
+                        const keyWordDesc = searchInfo.keyWord.toLowerCase();
+                        return dataDesc.includes(keyWordDesc);
+                    })
                 );
             }
         } else {
-            filteredData = allUploadedData.filter((item: IMainData) =>
-                item[searchInfo.by].toString().includes(searchInfo.keyWord)
-            );
+            filteredData = allUploadedData.filter((item: IMainData) => {
+                const dataTitle = item[searchInfo.by].toString().toLowerCase();
+                const keyWordTitle = searchInfo.keyWord.toLowerCase();
+                return dataTitle.includes(keyWordTitle);
+            });
         }
 
         if (category === "all") {
-            setSavedDataJson(
-                !!searchInfo.keyWord
-                    ? filteredData.filter((item: IMainData) =>
-                          item[searchInfo.by].toString().includes(searchInfo.keyWord)
-                      )
-                    : filteredData
-            );
+            setSavedDataJson(filteredData);
         } else if (category === "bookmark") {
             const allLickedData = filteredData.filter((i: IMainData) => i.isLiked === true);
-            setSavedDataJson(
-                !!searchInfo.keyWord
-                    ? allLickedData.filter((item: IMainData) =>
-                          item[searchInfo.by].toString().includes(searchInfo.keyWord)
-                      )
-                    : allLickedData
-            );
+            setSavedDataJson(allLickedData);
         } else {
             const theTagData = filteredData.filter((i: IMainData) => i.tag.includes(category));
-            setSavedDataJson(
-                !!searchInfo.keyWord
-                    ? theTagData.filter((item: IMainData) =>
-                          item[searchInfo.by].toString().includes(searchInfo.keyWord)
-                      )
-                    : theTagData
-            );
+            setSavedDataJson(theTagData);
         }
     }, [category, searchInfo.by, searchInfo.keyWord]);
 

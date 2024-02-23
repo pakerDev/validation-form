@@ -1,5 +1,5 @@
 import { mainData, uploadConfig } from "./configs";
-import { IMainData } from "./types";
+import { IMainData, initNav } from "./types";
 
 export const getVideoCode = (url: string) => {
     let videoID = "";
@@ -56,6 +56,11 @@ export const getTime = (timeStamp: number) => {
 
 export const fetchData = () => {
     return JSON.parse(localStorage.getItem("mainData") ?? "") || mainData;
+};
+
+export const fetchNav = () => {
+    !localStorage.getItem("nav") && localStorage.setItem("nav", initNav.join());
+    return (localStorage.getItem("nav") ?? "").split(",");
 };
 
 export const findData = (videoInfo: string) => {

@@ -1,7 +1,8 @@
 import React from "react";
-import { allTagsType, navType } from "../constant/types";
+import { allTagsType } from "../constant/types";
 import { Button, ButtonProps } from "@mui/material";
 import { tagIconConfig } from "../constant/configs";
+import { fetchNav } from "../constant/main";
 
 interface ICustomNavProps {
     homeNavStatus: (status: allTagsType) => void;
@@ -10,13 +11,14 @@ interface ICustomNavProps {
 
 const CustomNav = (props: ICustomNavProps) => {
     const { homeNavStatus, status = "all" } = props;
+    const navList = fetchNav();
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         homeNavStatus(event.currentTarget.id as allTagsType);
     };
 
     return (
         <div className='row CustomNavContainer'>
-            {navType.map((i, idx) => {
+            {navList.map((i, idx) => {
                 return (
                     <Button
                         key={idx}

@@ -7,17 +7,10 @@ import CustomPreviewPro from "./CustomPreviewPro";
 import { AddCircleOutline, RemoveCircleOutline, SmartDisplay, Photo } from "@mui/icons-material";
 import { initData, uploadConfig } from "../constant/configs.tsx";
 import CustomVideo from "./CustomVideo.tsx";
-import { IMainData, allTagsType } from "../constant/types.ts";
+import { IEditorModal, allTagsType } from "../constant/types.ts";
 
-interface IPops {
-    modelData: (data: IMainData) => void;
-    info: IMainData;
-}
-
-const EditModal = (props: IPops) => {
-    const { modelData, info } = props;
-
-    const [data, setData] = useState(info);
+const EditModal = ({ info, modelData }: IEditorModal) => {
+    const [data, setData] = useState(info || initData);
     const [previewMode, setPreviewMode] = useState(false);
     const [error, setError] = useState<string[]>([]);
     const [checkedState, setCheckedState] = useState([""]);
@@ -31,7 +24,7 @@ const EditModal = (props: IPops) => {
     };
 
     const clearHandler = () => {
-        setData({ ...initData, ["videoURL"]: data.videoURL });
+        setData({ ...initData, ["videoURL"]: data!.videoURL });
         setError([]);
         setCheckedState([""]);
     };

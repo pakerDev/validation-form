@@ -50,9 +50,14 @@ const CustomDropDown = ({ homeViewMode }: { homeViewMode: (arg: string) => void 
                     </MenuItem>
                 )}
                 {location === "/dashboard" && (
-                    <MenuItem id='editTemp' onClick={(e) => handleClose(e)}>
-                        編輯我的模板
-                    </MenuItem>
+                    <>
+                        <MenuItem id='editTemp' onClick={(e) => handleClose(e)}>
+                            編輯我的模板
+                        </MenuItem>
+                        <MenuItem id='editNav' onClick={(e) => handleClose(e)}>
+                            編輯我的快選
+                        </MenuItem>
+                    </>
                 )}
                 <MenuItem id='upload' onClick={(e) => handleClose(e)}>
                     上傳新影片

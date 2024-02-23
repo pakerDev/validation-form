@@ -7,9 +7,9 @@ import CustomPreviewPro from "./CustomPreviewPro";
 import { AddCircleOutline, RemoveCircleOutline, SmartDisplay, Photo } from "@mui/icons-material";
 import { initData, uploadConfig } from "../constant/configs.tsx";
 import CustomVideo from "./CustomVideo.tsx";
-import { IMainData, allTagsType } from "../constant/types.ts";
+import { IEditorModal, IMainData, allTagsType } from "../constant/types.ts";
 
-const UploadModal = ({ modelData }: { modelData: (data: IMainData) => void }) => {
+const UploadModal = ({ modelData }: IEditorModal) => {
     const [data, setData] = useState(initData);
     const [previewMode, setPreviewMode] = useState(false);
     const [error, setError] = useState<string[]>([]);

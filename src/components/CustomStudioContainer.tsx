@@ -89,51 +89,49 @@ const CustomStudioContainer = ({ data }: { data: IMainData[] }) => {
             </TableHead>
             {savedDataJson.map((data: IMainData) => {
                 return (
-                    <>
-                        <TableBody className='row' key={data.videoURL}>
-                            <TableRow>
-                                <CustomStudioItem data={data} />
-                                <TableCell align='center'>
-                                    {data.isUploaded ? (
-                                        <Button
-                                            startIcon={<CloudDownload />}
-                                            onClick={() => uploadClickHandler(data.videoURL)}
-                                            variant='outlined'
-                                            color='error'
-                                        >
-                                            下架影片
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            startIcon={<CloudUpload />}
-                                            onClick={() => uploadClickHandler(data.videoURL)}
-                                            variant='contained'
-                                            color='success'
-                                        >
-                                            上架影片
-                                        </Button>
-                                    )}
-                                    <div className='row'>
-                                        <Button
-                                            startIcon={<Edit />}
-                                            onClick={() => editClickHandler(data.videoURL)}
-                                            size='small'
-                                        >
-                                            編輯
-                                        </Button>
-                                        <Button
-                                            startIcon={<Delete />}
-                                            onClick={() => dropClickHandler(data.videoURL)}
-                                            size='small'
-                                            color='warning'
-                                        >
-                                            丟棄
-                                        </Button>
-                                    </div>
-                                </TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </>
+                    <TableBody className='row' key={data.videoURL}>
+                        <TableRow>
+                            <CustomStudioItem data={data} />
+                            <TableCell align='center'>
+                                {data.isUploaded ? (
+                                    <Button
+                                        startIcon={<CloudDownload />}
+                                        onClick={() => uploadClickHandler(data.videoURL)}
+                                        variant='outlined'
+                                        color='error'
+                                    >
+                                        下架影片
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        startIcon={<CloudUpload />}
+                                        onClick={() => uploadClickHandler(data.videoURL)}
+                                        variant='contained'
+                                        color='success'
+                                    >
+                                        上架影片
+                                    </Button>
+                                )}
+                                <div className='row'>
+                                    <Button
+                                        startIcon={<Edit />}
+                                        onClick={() => editClickHandler(data.videoURL)}
+                                        size='small'
+                                    >
+                                        編輯
+                                    </Button>
+                                    <Button
+                                        startIcon={<Delete />}
+                                        onClick={() => dropClickHandler(data.videoURL)}
+                                        size='small'
+                                        color='warning'
+                                    >
+                                        丟棄
+                                    </Button>
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
                 );
             })}
 
