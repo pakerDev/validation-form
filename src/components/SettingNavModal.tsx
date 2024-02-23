@@ -36,7 +36,7 @@ const SettingNavModal = (props: IProps) => {
     return (
         <>
             <div className='modal'>
-                <div className='modalWrapper'>
+                <div className='navModalWrapper'>
                     <div className='warningModalHeader'>
                         <Box width={40}></Box>
                         {"編輯快選"}

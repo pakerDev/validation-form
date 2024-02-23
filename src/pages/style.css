@@ -333,3 +333,16 @@ a {
     height: 180px;
     text-align: center;
 }
+
+.navModalWrapper {
+    padding: 16px;
+    width: 320px;
+    height: 160px;
+    border: var(--bg0) 1px solid;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+}
