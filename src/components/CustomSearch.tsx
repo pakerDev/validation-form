@@ -1,17 +1,22 @@
 import { IconButton, InputBase, Menu, MenuItem, Fade, Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search, KeyboardArrowDown } from "@mui/icons-material/";
 import { ISearchInfo, TSearchBy } from "../constant/types";
 import CheckIcon from "@mui/icons-material/Check";
 
 interface ICustomSearchProps {
     homeSearch: ({ by, keyWord }: ISearchInfo) => void;
+    data: ISearchInfo;
 }
 
 const CustomSearch = (props: ICustomSearchProps) => {
-    const { homeSearch } = props;
+    const { homeSearch, data } = props;
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [homeSearchArg, setHomeSearchArg] = useState<ISearchInfo>({ by: "title", keyWord: "" });
+    const [homeSearchArg, setHomeSearchArg] = useState<ISearchInfo>(data);
+
+    useEffect(() => {
+        setHomeSearchArg(data);
+    }, [data]);
 
     const open = Boolean(anchorEl);
 
@@ -69,7 +74,12 @@ const CustomSearch = (props: ICustomSearchProps) => {
                     找內容
                 </MenuItem>
             </Menu>
-            <InputBase sx={{ ml: 1, flex: 1 }} placeholder={searchBy[homeSearchArg.by]} onBlur={inputBlurHandler} />
+            <InputBase
+                sx={{ ml: 1, flex: 1 }}
+                placeholder={searchBy[homeSearchArg.by]}
+                onChange={inputBlurHandler}
+                value={homeSearchArg.keyWord}
+            />
             <IconButton type='button' aria-label='search' onClick={searchClickHandler}>
                 <Search />
             </IconButton>
