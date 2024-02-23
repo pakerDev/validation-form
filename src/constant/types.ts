@@ -21,7 +21,9 @@ export interface IEditorModal {
     modelData: (data: IMainData) => void;
 }
 
+export type TSearchBy = "title" | "desc";
+
 export interface ISearchInfo {
-    by: "title" | "desc";
+    by: TSearchBy;
     keyWord: string;
 }
