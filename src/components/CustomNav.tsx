@@ -1,5 +1,5 @@
 import React from "react";
-import { allTagsType, initNav } from "../constant/types";
+import { allTagsType } from "../constant/types";
 import { Button, ButtonProps } from "@mui/material";
 import { tagIconConfig } from "../constant/configs";
 import { fetchNav } from "../constant/main";
