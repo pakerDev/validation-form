@@ -22,7 +22,7 @@ const Home = () => {
     const [searchInfo, setSearchInfo] = useState<ISearchInfo>({ by: "title", keyWord: "" });
 
     const homeIconClickHandler = () => {
-        setSavedDataJson(fetchData());
+        setSavedDataJson(fetchData().filter((i: IMainData) => i.isUploaded === true));
         setCategory("all");
         setSearchInfo({ by: "title", keyWord: "" });
     };
