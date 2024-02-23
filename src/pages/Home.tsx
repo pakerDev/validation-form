@@ -46,6 +46,7 @@ const Home = () => {
 
     useEffect(() => {
         const allUploadedData = fetchData().filter((i: IMainData) => i.isUploaded === true);
+        const keywords = searchInfo.keyWord.toLowerCase().split(" ");
 
         let filteredData;
         if (searchInfo.by === "desc") {
@@ -53,18 +54,13 @@ const Home = () => {
                 filteredData = [...allUploadedData];
             } else {
                 filteredData = allUploadedData.filter((item: IMainData) =>
-                    item.desc.some((descItem) => {
-                        const dataDesc = descItem.toLowerCase();
-                        const keyWordDesc = searchInfo.keyWord.toLowerCase();
-                        return dataDesc.includes(keyWordDesc);
-                    })
+                    item.desc.some((descItem) => keywords.every((keyword) => descItem.toLowerCase().includes(keyword)))
                 );
             }
         } else {
             filteredData = allUploadedData.filter((item: IMainData) => {
                 const dataTitle = item[searchInfo.by].toString().toLowerCase();
-                const keyWordTitle = searchInfo.keyWord.toLowerCase();
-                return dataTitle.includes(keyWordTitle);
+                return keywords.every((keyword) => dataTitle.includes(keyword));
             });
         }
 
