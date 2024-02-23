@@ -2,7 +2,6 @@ import CustomSearch from "../components/CustomSearch";
 import CustomDropDown from "../components/CustomDropDown";
 import { useEffect, useState } from "react";
 import HouseIcon from "@mui/icons-material/House";
-import { mainData } from "../constant/configs";
 import CustomPreview from "../components/CustomPreview";
 import CustomPreviewPro from "../components/CustomPreviewPro";
 import { IMainData, ISearchInfo, allTagsType } from "../constant/types";
@@ -14,8 +13,7 @@ import { Link } from "react-router-dom";
 import EmptyResult from "./EmptyResult";
 
 const Home = () => {
-    !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
-    const [savedDataJson, setSavedDataJson] = useState(JSON.parse(localStorage.getItem("mainData") ?? ""));
+    const [savedDataJson, setSavedDataJson] = useState(fetchData());
     const [isCardMode, setIsCardMode] = useState(true);
     const [isUpload, setIsUpload] = useState(false);
     const [category, setCategory] = useState<allTagsType>("all");

@@ -55,6 +55,7 @@ export const getTime = (timeStamp: number) => {
 };
 
 export const fetchData = () => {
+    !localStorage.getItem("mainData") && localStorage.setItem("mainData", JSON.stringify(mainData));
     return JSON.parse(localStorage.getItem("mainData") ?? "") || mainData;
 };
 
