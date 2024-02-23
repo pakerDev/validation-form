@@ -40,18 +40,16 @@ export const checkCanSubmit = (data: IMainData) => {
 };
 
 export const getTime = (timeStamp: number) => {
-    var date = new Date(timeStamp);
-    const time =
-        date.getFullYear() +
-        "/" +
-        (date.getMonth() + 1) +
-        "/" +
-        date.getDate() +
-        " " +
-        date.getHours() +
-        ":" +
-        date.getMinutes();
-    return time;
+    const date = new Date(timeStamp);
+
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+
+    const formattedTime = `${year}/${month}/${day} ${hours}:${minutes}`;
+    return formattedTime;
 };
 
 export const fetchData = () => {
