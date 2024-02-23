@@ -1,7 +1,8 @@
-import { IconButton, InputBase, Menu, MenuItem, Fade } from "@mui/material";
+import { IconButton, InputBase, Menu, MenuItem, Fade, Box } from "@mui/material";
 import React, { useState } from "react";
 import { Search, KeyboardArrowDown } from "@mui/icons-material/";
-import { IMainData, ISearchInfo } from "../constant/types";
+import { ISearchInfo, TSearchBy } from "../constant/types";
+import CheckIcon from "@mui/icons-material/Check";
 
 interface ICustomSearchProps {
     homeSearch: ({ by, keyWord }: ISearchInfo) => void;
@@ -24,7 +25,8 @@ const CustomSearch = (props: ICustomSearchProps) => {
     };
     const handleClose = (e: React.MouseEvent<HTMLLIElement>) => {
         const target = e.target as HTMLButtonElement;
-        setHomeSearchArg({ ...homeSearchArg, by: target.id as keyof IMainData });
+        const id = target.id as TSearchBy;
+        setHomeSearchArg({ ...homeSearchArg, by: id });
         setAnchorEl(null);
     };
 
@@ -59,9 +61,11 @@ const CustomSearch = (props: ICustomSearchProps) => {
                 TransitionComponent={Fade}
             >
                 <MenuItem id='title' onClick={handleClose}>
+                    {homeSearchArg.by === "title" ? <CheckIcon /> : <Box width={24} />}
                     找標題
                 </MenuItem>
                 <MenuItem id='desc' onClick={handleClose}>
+                    {homeSearchArg.by === "desc" ? <CheckIcon /> : <Box width={24} />}
                     找內容
                 </MenuItem>
             </Menu>
