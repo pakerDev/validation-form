@@ -59,7 +59,8 @@ export const fetchData = () => {
 };
 
 export const fetchNav = () => {
-    return (localStorage.getItem("nav") ?? "").split(",") || initNav;
+    !localStorage.getItem("nav") && localStorage.setItem("nav", initNav.join());
+    return (localStorage.getItem("nav") ?? "").split(",");
 };
 
 export const findData = (videoInfo: string) => {

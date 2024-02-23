@@ -9,8 +9,6 @@ interface ICustomNavProps {
     status?: allTagsType;
 }
 
-!localStorage.getItem("nav") && localStorage.setItem("nav", initNav.join());
-
 const CustomNav = (props: ICustomNavProps) => {
     const { homeNavStatus, status = "all" } = props;
     const navList = fetchNav();
