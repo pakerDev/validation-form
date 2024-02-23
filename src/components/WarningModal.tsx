@@ -4,7 +4,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useNavigate } from "react-router-dom";
 
 interface IProps {
-    closePopupHandler: () => void;
     handleConfirmClick: () => void;
 }
 
@@ -13,7 +12,7 @@ const WarningModal = (props: IProps) => {
     const navigate = useNavigate();
 
     const closeWarningHandler = () => {
-        navigate(-1);
+        navigate("/");
     };
 
     return (

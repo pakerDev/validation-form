@@ -85,11 +85,7 @@ const VideoPage = () => {
                 </div>
             </div>
             {isUpload && <CustomEditorModal type='UPLOAD' closePopupHandler={closePopupHandler} />}
-            {isYellowTagVideo ? (
-                <WarningModal closePopupHandler={closePopupHandler} handleConfirmClick={handleConfirmClick} />
-            ) : (
-                <></>
-            )}
+            {isYellowTagVideo ? <WarningModal handleConfirmClick={handleConfirmClick} /> : <></>}
         </>
     );
 };
